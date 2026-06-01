@@ -1,54 +1,134 @@
 {{-- resources/views/livewire/pages/terminal.blade.php --}}
 <div>
-
 {{-- ═══ HERO ═══ --}}
-<section class="pt-[100px] pb-12 relative min-h-[400px] flex items-center overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 55% 55% at 62% 44%,rgba(123,92,245,.2),transparent 65%)"></div>
-  <div class="absolute right-4 top-6 w-[46%] hidden lg:flex items-center justify-end pr-2 pointer-events-none">
-    <div style="position:relative;width:390px;height:300px">
-      <div class="absolute inset-0 rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.96);border:1px solid rgba(123,92,245,.22);box-shadow:0 20px 80px rgba(123,92,245,.27)">
-        <div class="flex items-center gap-2 px-4 py-2.5 border-b" style="border-color:rgba(255,255,255,.07)">
-          <span class="w-2 h-2 rounded-full" style="background:rgba(244,63,94,.6)"></span>
-          <span class="w-2 h-2 rounded-full" style="background:rgba(245,158,11,.6)"></span>
-          <span class="w-2 h-2 rounded-full" style="background:rgba(16,185,129,.6)"></span>
-          <div class="flex-1 h-[17px] rounded ml-2 flex items-center px-2" style="background:rgba(123,92,245,.08)"><span class="text-[10px] text-[#4a4a6a]">senflux.io/terminal</span></div>
+<section class="pt-[100px] pb-12 relative min-h-[480px] flex items-center overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none"
+         style="background:radial-gradient(ellipse 55% 55% at 70% 50%,rgba(123,92,245,.2),transparent 65%)"></div>
+
+    <div class="max-w-[1180px] mx-auto px-6 w-full relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {{-- LEFT: Text --}}
+            <div>
+                <span class="pill mb-5 inline-block">The Terminal</span>
+
+                <h1 class="font-syne font-bold text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.15] mb-4 max-w-[440px]">
+                    The Terminal for<br/>
+                    <span class="tg">Market Formation Intelligence</span>
+                </h1>
+
+                <p class="text-[14px] text-[#7a7a9a] max-w-[360px] mb-6 leading-[1.75]">
+                    Real-time visibility into where participation is building, strengthening, and preparing for expansion.
+                </p>
+
+                <div class="grid grid-cols-2 gap-x-6 gap-y-2 max-w-[400px] mb-7">
+                    <div class="flex items-center gap-2 text-[13px] text-[#c8c8e0]">
+                        <span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>
+                        Live Participation Tracking
+                    </div>
+                    <div class="flex items-center gap-2 text-[13px] text-[#c8c8e0]">
+                        <span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>
+                        Wallet Intelligence &amp; Clusters
+                    </div>
+                    <div class="flex items-center gap-2 text-[13px] text-[#c8c8e0]">
+                        <span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>
+                        Formation States &amp; Signals
+                    </div>
+                    <div class="flex items-center gap-2 text-[13px] text-[#c8c8e0]">
+                        <span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>
+                        Transparent by Design
+                    </div>
+                </div>
+
+                <div class="flex gap-3 flex-wrap">
+                    <a href="{{ route('register') }}" class="btn-p">Explore Intelligence →</a>
+                    <button class="btn-o">View Capital Flows</button>
+                </div>
+            </div>
+
+            {{-- RIGHT: Dashboard mockup --}}
+            <div class="hidden lg:flex items-center justify-center">
+                <div style="position:relative;width:380px;height:290px">
+                    <div class="absolute inset-0 rounded-2xl overflow-hidden"
+                         style="background:rgba(8,8,18,.96);border:1px solid rgba(123,92,245,.22);box-shadow:0 20px 80px rgba(123,92,245,.27)">
+
+                        {{-- Browser bar --}}
+                        <div class="flex items-center gap-2 px-4 py-2.5 border-b"
+                             style="border-color:rgba(255,255,255,.07)">
+                            <span class="w-2 h-2 rounded-full" style="background:rgba(244,63,94,.6)"></span>
+                            <span class="w-2 h-2 rounded-full" style="background:rgba(245,158,11,.6)"></span>
+                            <span class="w-2 h-2 rounded-full" style="background:rgba(16,185,129,.6)"></span>
+                            <div class="flex-1 h-[17px] rounded ml-2 flex items-center px-2"
+                                 style="background:rgba(123,92,245,.08)">
+                                <span class="text-[10px] text-[#4a4a6a]">senflux.io/terminal</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3">
+                            {{-- Stats row --}}
+                            <div class="grid grid-cols-2 gap-2 mb-2.5">
+                                <div class="rounded-lg p-2"
+                                     style="background:rgba(123,92,245,.08);border:1px solid rgba(123,92,245,.15)">
+                                    <p class="text-[9px] text-[#4a4a6a]">FORMATION FEED</p>
+                                    <p class="text-[11px] text-white font-semibold mt-0.5">Live</p>
+                                </div>
+                                <div class="rounded-lg p-2"
+                                     style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15)">
+                                    <p class="text-[9px] text-[#4a4a6a]">ACTIVE</p>
+                                    <p class="text-[11px] text-[#10B981] font-semibold mt-0.5">14,682</p>
+                                </div>
+                            </div>
+
+                            {{-- Asset rows --}}
+                            <div class="flex flex-col gap-1.5 mb-2.5">
+                                <div class="flex items-center justify-between py-1.5 border-b"
+                                     style="border-color:rgba(255,255,255,.04)">
+                                    <span class="font-syne font-bold text-white text-[11px]">WIF</span>
+                                    <span class="text-[10px] rounded px-1.5 py-0.5"
+                                          style="background:rgba(16,185,129,.15);color:#10B981">Active</span>
+                                    <span class="text-[11px] text-[#9B7DFF] font-semibold">+214%</span>
+                                </div>
+                                <div class="flex items-center justify-between py-1.5 border-b"
+                                     style="border-color:rgba(255,255,255,.04)">
+                                    <span class="font-syne font-bold text-white text-[11px]">BONK</span>
+                                    <span class="text-[10px] rounded px-1.5 py-0.5"
+                                          style="background:rgba(123,92,245,.15);color:#9B7DFF">Building</span>
+                                    <span class="text-[11px] text-[#9B7DFF] font-semibold">+143%</span>
+                                </div>
+                                <div class="flex items-center justify-between py-1.5">
+                                    <span class="font-syne font-bold text-white text-[11px]">POPCAT</span>
+                                    <span class="text-[10px] rounded px-1.5 py-0.5"
+                                          style="background:rgba(6,182,212,.12);color:#06B6D4">Early</span>
+                                    <span class="text-[11px] text-[#9B7DFF] font-semibold">+67%</span>
+                                </div>
+                            </div>
+
+                            {{-- Map dots --}}
+                            <div class="relative h-[42px] rounded-lg overflow-hidden"
+                                 style="background:rgba(123,92,245,.05);border:1px solid rgba(123,92,245,.1)">
+                                <span class="absolute w-2.5 h-2.5 rounded-full ap block"
+                                      style="background:#10B981;top:10px;left:28%;box-shadow:0 0 8px rgba(16,185,129,.7)"></span>
+                                <span class="absolute w-2 h-2 rounded-full ap2 block"
+                                      style="background:#7B5CF5;top:18px;right:22%;box-shadow:0 0 8px rgba(123,92,245,.7)"></span>
+                                <span class="absolute w-1.5 h-1.5 rounded-full ap3 block"
+                                      style="background:#F59E0B;top:8px;left:54%;box-shadow:0 0 6px rgba(245,158,11,.7)"></span>
+                            </div>
+                        </div>
+
+                        <div class="py-2 text-center border-t" style="border-color:rgba(255,255,255,.04)">
+                            <span class="font-syne text-[10px] tracking-widest"
+                                  style="color:rgba(123,92,245,.5)">SENFLUX TERMINAL</span>
+                        </div>
+                    </div>
+
+                    {{-- Bottom glow --}}
+                    <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[270px] h-7 rounded-full"
+                         style="background:rgba(123,92,245,.22);filter:blur(20px)"></div>
+                </div>
+            </div>
+
         </div>
-        <div class="p-3">
-          <div class="grid grid-cols-2 gap-2 mb-2.5">
-            <div class="rounded-lg p-2" style="background:rgba(123,92,245,.08);border:1px solid rgba(123,92,245,.15)"><p class="text-[9px] text-[#4a4a6a]">FORMATION FEED</p><p class="text-[11px] text-white font-semibold mt-0.5">Live</p></div>
-            <div class="rounded-lg p-2" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.15)"><p class="text-[9px] text-[#4a4a6a]">ACTIVE</p><p class="text-[11px] text-[#10B981] font-semibold mt-0.5">14,682</p></div>
-          </div>
-          <div class="flex flex-col gap-1.5 mb-2.5">
-            <div class="flex items-center justify-between py-1.5 border-b" style="border-color:rgba(255,255,255,.04)"><span class="font-syne font-bold text-white text-[11px]">WIF</span><span class="text-[10px] rounded px-1.5 py-0.5" style="background:rgba(16,185,129,.15);color:#10B981">Active</span><span class="text-[11px] text-[#9B7DFF] font-semibold">+214%</span></div>
-            <div class="flex items-center justify-between py-1.5 border-b" style="border-color:rgba(255,255,255,.04)"><span class="font-syne font-bold text-white text-[11px]">BONK</span><span class="text-[10px] rounded px-1.5 py-0.5" style="background:rgba(123,92,245,.15);color:#9B7DFF">Building</span><span class="text-[11px] text-[#9B7DFF] font-semibold">+143%</span></div>
-            <div class="flex items-center justify-between py-1.5"><span class="font-syne font-bold text-white text-[11px]">POPCAT</span><span class="text-[10px] rounded px-1.5 py-0.5" style="background:rgba(6,182,212,.12);color:#06B6D4">Early</span><span class="text-[11px] text-[#9B7DFF] font-semibold">+67%</span></div>
-          </div>
-          <div class="relative h-[52px] rounded-lg overflow-hidden" style="background:rgba(123,92,245,.05);border:1px solid rgba(123,92,245,.1)">
-            <span class="absolute w-2.5 h-2.5 rounded-full ap block" style="background:#10B981;top:13px;left:28%;box-shadow:0 0 8px rgba(16,185,129,.7)"></span>
-            <span class="absolute w-2 h-2 rounded-full ap2 block" style="background:#7B5CF5;top:22px;right:22%;box-shadow:0 0 8px rgba(123,92,245,.7)"></span>
-            <span class="absolute w-1.5 h-1.5 rounded-full ap3 block" style="background:#F59E0B;top:9px;left:54%;box-shadow:0 0 6px rgba(245,158,11,.7)"></span>
-          </div>
-        </div>
-        <div class="py-2 text-center border-t" style="border-color:rgba(255,255,255,.04)"><span class="font-syne text-[10px] tracking-widest" style="color:rgba(123,92,245,.5)">SENFLUX TERMINAL</span></div>
-      </div>
-      <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[270px] h-7 rounded-full" style="background:rgba(123,92,245,.22);filter:blur(20px)"></div>
     </div>
-  </div>
-  <div class="max-w-[1180px] mx-auto px-6 relative z-10">
-    <span class="pill mb-5 inline-block">The Terminal</span>
-    <h1 class="font-syne font-extrabold text-[clamp(1.9rem,4.5vw,3rem)] max-w-[460px] leading-[1.1] mb-4">The Terminal for<br/><span class="tg">Market Formation Intelligence</span></h1>
-    <p class="text-[14px] text-[#7a7a9a] max-w-[360px] mb-5 leading-[1.75]">Real-time visibility into where participation is building, strengthening, and preparing for expansion.</p>
-    <div class="grid grid-cols-2 gap-x-6 gap-y-2 max-w-[400px] mb-6">
-      <div class="flex items-center gap-2 text-[13.5px] text-[#c8c8e0]"><span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>Live Participation Tracking</div>
-      <div class="flex items-center gap-2 text-[13.5px] text-[#c8c8e0]"><span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>Wallet Intelligence &amp; Clusters</div>
-      <div class="flex items-center gap-2 text-[13.5px] text-[#c8c8e0]"><span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>Formation States &amp; Signals</div>
-      <div class="flex items-center gap-2 text-[13.5px] text-[#c8c8e0]"><span class="w-[6px] h-[6px] rounded-full bg-[#7B5CF5] flex-shrink-0 block"></span>Transparent by Design</div>
-    </div>
-    <div class="flex gap-3 flex-wrap">
-      <a href="{{ route('register') }}" class="btn-p" style="padding:10px 22px;font-size:13.5px">Explore Intelligence →</a>
-      <button class="btn-o" style="padding:10px 22px;font-size:13.5px">View Capital Flows</button>
-    </div>
-  </div>
 </section>
 
 {{-- ═══ LIVE FORMATION SECTION ═══ --}}

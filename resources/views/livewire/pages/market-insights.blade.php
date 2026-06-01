@@ -2,30 +2,70 @@
 <div>
 
 {{-- ═══ HERO ═══ --}}
-<section class="pt-[100px] pb-14 relative min-h-[400px] flex items-center overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 55% 50% at 65% 44%,rgba(123,92,245,.18),transparent 65%)"></div>
-  <div class="absolute right-0 top-4 w-[52%] hidden lg:flex items-center justify-end pr-4 pointer-events-none">
-    <div class="relative w-[420px] h-[310px]">
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-end gap-2.5">
-        <div class="w-[28px] rounded-t-sm" style="height:105px;background:linear-gradient(180deg,rgba(123,92,245,.42),rgba(79,70,229,.2));border:1px solid rgba(123,92,245,.32)"></div>
-        <div class="w-[28px] rounded-t-sm relative" style="height:172px;background:linear-gradient(180deg,rgba(123,92,245,.65),rgba(79,70,229,.3));border:1px solid rgba(123,92,245,.46)"><span class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#7B5CF5] ap block" style="box-shadow:0 0 10px rgba(123,92,245,.9)"></span></div>
-        <div class="w-[28px] rounded-t-sm relative" style="height:238px;background:linear-gradient(180deg,rgba(123,92,245,.88),rgba(79,70,229,.42));border:1px solid rgba(123,92,245,.58)"><span class="absolute -top-3 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full ap2 block" style="background:#9B7DFF;box-shadow:0 0 14px rgba(123,92,245,1)"></span></div>
-        <div class="w-[28px] rounded-t-sm" style="height:152px;background:linear-gradient(180deg,rgba(123,92,245,.52),rgba(79,70,229,.26));border:1px solid rgba(123,92,245,.38)"></div>
-        <div class="w-[28px] rounded-t-sm" style="height:192px;background:linear-gradient(180deg,rgba(123,92,245,.72),rgba(79,70,229,.36));border:1px solid rgba(123,92,245,.48)"></div>
-        <div class="w-[28px] rounded-t-sm" style="height:128px;background:linear-gradient(180deg,rgba(123,92,245,.42),rgba(79,70,229,.2));border:1px solid rgba(123,92,245,.3)"></div>
-      </div>
-      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[300px] h-5 rounded-full" style="background:rgba(123,92,245,.28);filter:blur(16px)"></div>
-      <div class="absolute top-2 right-12 w-[46px] h-[46px] rounded-[10px] flex items-center justify-center af" style="background:linear-gradient(135deg,rgba(123,92,245,.42),rgba(79,70,229,.22));border:1px solid rgba(123,92,245,.5);box-shadow:0 0 20px rgba(123,92,245,.42)">
-        <x-senflux.logo width="20" height="20" color="white" gradient-id="insightsHero" />
-      </div>
+<section class="pt-[100px] pb-14 relative min-h-[480px] flex items-center overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none"
+         style="background:radial-gradient(ellipse 55% 50% at 70% 50%,rgba(123,92,245,.18),transparent 65%)"></div>
+
+    <div class="max-w-[1180px] mx-auto px-6 w-full relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {{-- LEFT: Text --}}
+            <div>
+                <span class="pill mb-5 inline-block">Market Insights</span>
+
+                <h1 class="font-syne font-bold text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.15] mb-4 max-w-[440px]">
+                    Intelligence. Not Noise.
+                    <span class="tg">Insights</span> That Reveal What's Next.
+                </h1>
+
+                <p class="text-[14px] text-[#7a7a9a] max-w-[360px] mb-7 leading-[1.75]">
+                    In-depth analysis on market formation, participation trends,
+                    and emerging opportunities across ecosystems.
+                </p>
+
+                <button class="btn-o">Request Access →</button>
+            </div>
+
+            {{-- RIGHT: Bar chart visual --}}
+            <div class="hidden lg:flex items-center justify-center">
+                <div class="relative w-[360px] h-[280px]">
+
+                    {{-- Floating logo icon --}}
+                    <div class="absolute top-2 right-8 w-[46px] h-[46px] rounded-[10px] flex items-center justify-center af"
+                         style="background:linear-gradient(135deg,rgba(123,92,245,.42),rgba(79,70,229,.22));border:1px solid rgba(123,92,245,.5);box-shadow:0 0 20px rgba(123,92,245,.42)">
+                        <x-senflux.logo width="20" height="20" color="white" gradient-id="insightsHero" />
+                    </div>
+
+                    {{-- Bar chart --}}
+                    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-end gap-2.5">
+                        <div class="w-[28px] rounded-t-sm"
+                             style="height:105px;background:linear-gradient(180deg,rgba(123,92,245,.42),rgba(79,70,229,.2));border:1px solid rgba(123,92,245,.32)"></div>
+                        <div class="w-[28px] rounded-t-sm relative"
+                             style="height:172px;background:linear-gradient(180deg,rgba(123,92,245,.65),rgba(79,70,229,.3));border:1px solid rgba(123,92,245,.46)">
+                            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ap block"
+                                  style="background:#7B5CF5;box-shadow:0 0 10px rgba(123,92,245,.9)"></span>
+                        </div>
+                        <div class="w-[28px] rounded-t-sm relative"
+                             style="height:238px;background:linear-gradient(180deg,rgba(123,92,245,.88),rgba(79,70,229,.42));border:1px solid rgba(123,92,245,.58)">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full ap2 block"
+                                  style="background:#9B7DFF;box-shadow:0 0 14px rgba(123,92,245,1)"></span>
+                        </div>
+                        <div class="w-[28px] rounded-t-sm"
+                             style="height:152px;background:linear-gradient(180deg,rgba(123,92,245,.52),rgba(79,70,229,.26));border:1px solid rgba(123,92,245,.38)"></div>
+                        <div class="w-[28px] rounded-t-sm"
+                             style="height:192px;background:linear-gradient(180deg,rgba(123,92,245,.72),rgba(79,70,229,.36));border:1px solid rgba(123,92,245,.48)"></div>
+                        <div class="w-[28px] rounded-t-sm"
+                             style="height:128px;background:linear-gradient(180deg,rgba(123,92,245,.42),rgba(79,70,229,.2));border:1px solid rgba(123,92,245,.3)"></div>
+                    </div>
+
+                    {{-- Bottom glow --}}
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-[280px] h-5 rounded-full"
+                         style="background:rgba(123,92,245,.28);filter:blur(16px)"></div>
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
-  <div class="max-w-[1180px] mx-auto px-6 relative z-10">
-    <span class="pill mb-5 inline-block">Market Insights</span>
-    <h1 class="font-syne font-extrabold text-[clamp(1.9rem,4.5vw,3.2rem)] max-w-[480px] leading-[1.1] mb-4">Intelligence. Not Noise.<br/><span class="tg">Insights</span> That Reveal<br/>What's Next.</h1>
-    <p class="text-[14px] text-[#7a7a9a] max-w-[360px] mb-7 leading-[1.75]">In-depth analysis on market formation, participation trends, and emerging opportunities across ecosystems.</p>
-    <button class="btn-o" style="padding:10px 22px;font-size:13.5px">Request Access →</button>
-  </div>
 </section>
 
 {{-- ═══ FEATURED INSIGHTS ═══ --}}

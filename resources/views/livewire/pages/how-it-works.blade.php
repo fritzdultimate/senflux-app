@@ -2,29 +2,68 @@
 <div>
 
 {{-- ═══ HERO ═══ --}}
-<section class="pt-[100px] pb-14 relative min-h-[400px] flex items-center overflow-hidden">
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 58% 50% at 62% 42%,rgba(123,92,245,.2),transparent 65%)"></div>
-  <div class="absolute right-4 top-6 w-[46%] hidden lg:flex items-center justify-end pr-4 pointer-events-none">
-    <div class="relative w-[350px] h-[290px]">
-      <div class="absolute right-8 top-2 w-[138px] h-[138px] rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,rgba(123,92,245,.25),rgba(79,70,229,.14));border:1px solid rgba(123,92,245,.3);transform:perspective(500px) rotateX(8deg) rotateY(-14deg);box-shadow:0 20px 60px rgba(123,92,245,.3)">
-        <div class="w-[50px] h-[50px] rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,rgba(123,92,245,.55),rgba(79,70,229,.35));border:1px solid rgba(155,125,255,.4)">
-          <x-senflux.logo width="24" height="24" color="white" gradient-id="howHero" />
+<section class="pt-[100px] pb-14 relative min-h-[480px] flex items-center overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none"
+         style="background:radial-gradient(ellipse 58% 50% at 70% 50%,rgba(123,92,245,.2),transparent 65%)"></div>
+
+    <div class="max-w-[1180px] mx-auto px-6 w-full relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {{-- LEFT: Text --}}
+            <div>
+                <span class="pill mb-5 inline-block">How It Works</span>
+
+                <h1 class="font-syne font-bold text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.15] mb-4 max-w-[460px]">
+                    From On-Chain Activity to
+                    <span class="tg">Market Formation Intelligence</span>
+                </h1>
+
+                <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-7 leading-[1.75]">
+                    Senflux transforms millions of on-chain signals into clear, actionable insight
+                    by focusing on what truly matters: participation.
+                </p>
+
+                <div class="flex gap-3 flex-wrap">
+                    <a href="{{ route('terminal') }}" class="btn-p">Explore the Process →</a>
+                    <a href="{{ route('terminal') }}" class="btn-o">View Terminal</a>
+                </div>
+            </div>
+
+            {{-- RIGHT: 3D cube visual --}}
+            <div class="hidden lg:flex items-center justify-center">
+                <div class="relative w-[340px] h-[280px]">
+
+                    {{-- Main cube --}}
+                    <div class="absolute right-8 top-2 w-[138px] h-[138px] rounded-xl flex items-center justify-center"
+                         style="background:linear-gradient(135deg,rgba(123,92,245,.25),rgba(79,70,229,.14));border:1px solid rgba(123,92,245,.3);transform:perspective(500px) rotateX(8deg) rotateY(-14deg);box-shadow:0 20px 60px rgba(123,92,245,.3)">
+                        <div class="w-[50px] h-[50px] rounded-xl flex items-center justify-center"
+                             style="background:linear-gradient(135deg,rgba(123,92,245,.55),rgba(79,70,229,.35));border:1px solid rgba(155,125,255,.4)">
+                            <x-senflux.logo width="24" height="24" color="white" gradient-id="howHero" />
+                        </div>
+                    </div>
+
+                    {{-- Back cube right --}}
+                    <div class="absolute right-0 top-14 w-[118px] h-[118px] rounded-xl overflow-hidden"
+                         style="background:linear-gradient(135deg,rgba(79,70,229,.2),rgba(123,92,245,.1));border:1px solid rgba(123,92,245,.2);transform:perspective(500px) rotateX(8deg) rotateY(-10deg);box-shadow:0 15px 40px rgba(123,92,245,.2)">
+                        <div class="absolute inset-0"
+                             style="background:repeating-linear-gradient(0deg,transparent,transparent 13px,rgba(123,92,245,.07) 13px,rgba(123,92,245,.07) 14px)"></div>
+                    </div>
+
+                    {{-- Back cube left --}}
+                    <div class="absolute left-6 top-10 w-[126px] h-[126px] rounded-xl overflow-hidden"
+                         style="background:linear-gradient(135deg,rgba(123,92,245,.2),rgba(6,182,212,.1));border:1px solid rgba(123,92,245,.22);transform:perspective(500px) rotateX(5deg) rotateY(10deg);box-shadow:0 18px 50px rgba(123,92,245,.22)">
+                        <div class="absolute inset-0"
+                             style="background:repeating-linear-gradient(90deg,transparent,transparent 13px,rgba(123,92,245,.06) 13px,rgba(123,92,245,.06) 14px)"></div>
+                    </div>
+
+                    {{-- Bottom glow --}}
+                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[210px] h-[22px] rounded-full"
+                         style="background:rgba(123,92,245,.26);filter:blur(18px)"></div>
+                </div>
+            </div>
+
         </div>
-      </div>
-      <div class="absolute right-0 top-14 w-[118px] h-[118px] rounded-xl overflow-hidden" style="background:linear-gradient(135deg,rgba(79,70,229,.2),rgba(123,92,245,.1));border:1px solid rgba(123,92,245,.2);transform:perspective(500px) rotateX(8deg) rotateY(-10deg);box-shadow:0 15px 40px rgba(123,92,245,.2)"><div class="absolute inset-0" style="background:repeating-linear-gradient(0deg,transparent,transparent 13px,rgba(123,92,245,.07) 13px,rgba(123,92,245,.07) 14px)"></div></div>
-      <div class="absolute left-6 top-10 w-[126px] h-[126px] rounded-xl overflow-hidden" style="background:linear-gradient(135deg,rgba(123,92,245,.2),rgba(6,182,212,.1));border:1px solid rgba(123,92,245,.22);transform:perspective(500px) rotateX(5deg) rotateY(10deg);box-shadow:0 18px 50px rgba(123,92,245,.22)"><div class="absolute inset-0" style="background:repeating-linear-gradient(90deg,transparent,transparent 13px,rgba(123,92,245,.06) 13px,rgba(123,92,245,.06) 14px)"></div></div>
-      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[210px] h-[22px] rounded-full" style="background:rgba(123,92,245,.26);filter:blur(18px)"></div>
     </div>
-  </div>
-  <div class="max-w-[1180px] mx-auto px-6 relative z-10">
-    <span class="pill mb-5 inline-block">How It Works</span>
-    <h1 class="font-syne font-extrabold text-[clamp(1.9rem,4.5vw,3.2rem)] max-w-[540px] leading-[1.1] mb-4">From On-Chain Activity<br/>to <span class="tg">Market Formation Intelligence</span></h1>
-    <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-7 leading-[1.75]">Senflux transforms millions of on-chain signals into clear, actionable insight by focusing on what truly matters: participation.</p>
-    <div class="flex gap-3 flex-wrap">
-      <a href="{{ route('terminal') }}" class="btn-p" style="padding:10px 22px;font-size:13.5px">Explore the Process →</a>
-      <a href="{{ route('terminal') }}" class="btn-o" style="padding:10px 22px;font-size:13.5px">View Terminal</a>
-    </div>
-  </div>
 </section>
 
 {{-- ═══ FORMATION PROCESS ═══ --}}
