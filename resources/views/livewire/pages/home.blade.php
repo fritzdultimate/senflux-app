@@ -135,7 +135,7 @@
 				DETECT • VALIDATE • DEPLOY
 			</div>
 
-			<h1 class="font-syne font-extrabold text-[clamp(2rem,5vw,3.5rem)] text-white leading-[1.1] mb-4">
+			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
 				We Track <span class="tg">Participation.</span> <br> And Position Early before prices react
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
@@ -400,7 +400,7 @@
 	</section>
 
 	{{-- ═══ SYSTEM IN MOTION ═══ --}}
-	<section class="py-20" style="background:rgba(8,8,18,.72)">
+	<section class="py-20 hidden" style="background:rgba(8,8,18,.72)">
 		<div class="max-w-[1180px] mx-auto px-6">
 			<div class="text-center mb-10">
 				<p class="text-[11px] text-[#4a4a6a] uppercase tracking-widest mb-2">Live Dashboard</p>
