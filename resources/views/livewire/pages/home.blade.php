@@ -136,7 +136,7 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				We Track <span class="tg">Participation.</span> <br> And Position Early before prices react
+				Markets Leave  <span class="tg">Footprints</span> <br> Before They Move.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
 				Trade smarter with real-time participation tracking. Detect market momentum before it peaks, allocate
@@ -192,7 +192,7 @@
 	<section class="py-20 text-center">
 		<div class="max-w-[1180px] mx-auto px-6">
 			<p class="text-[11px] text-[#4a4a6a] uppercase tracking-widest mb-2">How Markets Behave</p>
-			<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)] mb-3">Market Move When <span
+			<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)] mb-3">Prices Move When <span
 					class="tg">Capital Moves</span></h2>
 			<p class="text-[14px] text-[#7a7a9a] max-w-[400px] mx-auto mb-10">Price doesn't dictate market
 				capitalisation — participation does.</p>
@@ -308,8 +308,6 @@
 						<p class="text-[12px] text-[#7a7a9a] mt-1">Full deployment at peak signal</p>
 					</div>
 				</div>
-				<p class="text-[12px] text-[#4a4a6a] text-center mt-3.5 pt-3.5 border-t"
-					style="border-color:rgba(255,255,255,.06)">Capital is deployed in 3 stages for 30 days or less.</p>
 			</div>
 		</div>
 	</section>

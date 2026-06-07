@@ -16,17 +16,24 @@
                     <span class="pill mb-5 inline-block">About Us</span>
 
                     <h1 class="font-syne font-bold text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.15] mb-5 max-w-[480px]">
-                        We Built Senflux for
-                        <span class="tg">One Reason</span>:
-                        To See What Others Don't—Until It's Too Late.
+                        We Built Senflux Because 
+                        <span class="tg">Markets</span>
+                        Leave Clues Before They Move.
                     </h1>
 
                     <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
-                        Markets don't move randomly, they move after participation concentrates.
-                        Senflux exists to bring visibility to that formation before the world catches on.
+                        Markets rarely move without warning.
                     </p>
 
-                    <div class="flex gap-3 flex-wrap">
+                    <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
+                        Participation, liquidity, and capital activity often strengthen before broader market attention arrives.
+                    </p>
+
+                    <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
+                        Senflux combines real-time participation intelligence with structured deployment systems to help users identify, validate, and act on emerging market opportunities earlier.
+                    </p>
+
+                    <div class="fledx gap-3 flex-wrap hidden">
                         <a href="{{ route('terminal') }}" class="btn-p">Explore Intelligence →</a>
                         <a href="{{ route('home') }}" class="btn-o">View Capital Flows</a>
                     </div>
@@ -99,11 +106,12 @@
     <section class="py-20 text-center" style="background:rgba(8,8,18,.65)">
         <div class="max-w-[1180px] mx-auto px-6">
             <span class="pill mb-3.5 inline-block">Our Mission</span>
-            <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Make Market Formation <span
-                    class="tg">Visible</span> to Everyone.</h2>
-            <p class="text-[14px] text-[#7a7a9a] max-w-[520px] mx-auto mt-3 mb-12 leading-[1.75]">We transform complex
-                on-chain data into real-time participation intelligence—helping users identify opportunity at the
-                earliest stages of formation.</p>
+            <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Make Early Market Opportunity <span
+                    class="tg">Visible.</span>
+            </h2>
+            <p class="text-[14px] text-[#7a7a9a] max-w-[520px] mx-auto mt-3 mb-12 leading-[1.75]">
+                Senflux transforms real-time on-chain activity into actionable participation intelligence, helping users identify strengthening market conditions and deploy with greater confidence.
+            </p>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 rv">
                 <div class="card card-brand p-6 text-left">
                     <div class="ib mb-3.5"><svg width="18" height="18" fill="none">
@@ -276,87 +284,18 @@
         <div class="max-w-[1180px] mx-auto px-6">
             <div class="text-center mb-12">
                 <span class="pill mb-3.5 inline-block">Who We Are</span>
-                <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Who <span class="tg">We</span> Are</h2>
-                <p class="text-[14px] text-[#7a7a9a] max-w-[480px] mx-auto mt-3 leading-[1.75]">We are a team of
-                    builders, analysts, and on-chain researchers passionate about market structure, data, and giving
-                    users a real edge.</p>
+                <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Built By <span class="tg">Operators.</span> Designed For Scale.</h2>
+                <p class="text-[14px] text-[#7a7a9a] max-w-[520px] mx-auto mt-3 leading-[1.75]">
+                    Senflux is led by a team focused on market intelligence, technology infrastructure, and deployment systems.
+                </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start rv">
-                <div>
-                    <p class="text-[12px] text-[#4a4a6a] uppercase tracking-wider mb-3.5">Our Background Spans:</p>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <div class="flex items-center gap-2.5 p-3 rounded-xl text-[13px] text-[#c8c8e0]"
-                            style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><svg
-                                width="16" height="16" fill="none">
-                                <rect x="2" y="2" width="5" height="5" rx="1" fill="#9B7DFF" opacity=".7" />
-                                <rect x="9" y="2" width="5" height="5" rx="1" fill="#9B7DFF" opacity=".5" />
-                                <rect x="2" y="9" width="5" height="5" rx="1" fill="#9B7DFF" opacity=".5" />
-                                <rect x="9" y="9" width="5" height="5" rx="1" fill="#9B7DFF" opacity=".7" />
-                            </svg>Blockchain Engineering</div>
-                        <div class="flex items-center gap-2.5 p-3 rounded-xl text-[13px] text-[#c8c8e0]"
-                            style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><svg
-                                width="16" height="16" fill="none">
-                                <path d="M2 12L5 8L8 10L11 6L14 8" stroke="#9B7DFF" stroke-width="1.2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>Quantitative Analysis</div>
-                        <div class="flex items-center gap-2.5 p-3 rounded-xl text-[13px] text-[#c8c8e0]"
-                            style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><svg
-                                width="16" height="16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="#9B7DFF" stroke-width="1.2" />
-                                <path d="M8 5V8L10 10" stroke="#9B7DFF" stroke-width="1.2" stroke-linecap="round" />
-                            </svg>Data Science</div>
-                        <div class="flex items-center gap-2.5 p-3 rounded-xl text-[13px] text-[#c8c8e0]"
-                            style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><svg
-                                width="16" height="16" fill="none">
-                                <path d="M8 1L12 4V8C12 11 10.2 13.5 8 14.5C5.8 13.5 4 11 4 8V4L8 1Z" stroke="#9B7DFF"
-                                    stroke-width="1.2" stroke-linejoin="round" />
-                            </svg>Risk Management</div>
-                        <div class="flex items-center gap-2.5 p-3 rounded-xl text-[13px] text-[#c8c8e0] col-span-2"
-                            style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)"><svg
-                                width="16" height="16" fill="none">
-                                <rect x="2" y="3" width="12" height="10" rx="2" stroke="#9B7DFF" stroke-width="1.2" />
-                                <path d="M5 7H11M5 10H9" stroke="#9B7DFF" stroke-width="1.2" stroke-linecap="round" />
-                            </svg>Product Design</div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="card p-4 text-center">
-                        <div class="ib mx-auto mb-2.5"><svg width="16" height="16" fill="none">
-                                <circle cx="5" cy="5" r="2" stroke="#9B7DFF" stroke-width="1.3" />
-                                <circle cx="11" cy="5" r="2" stroke="#9B7DFF" stroke-width="1.3" />
-                                <circle cx="8" cy="11" r="2" stroke="#9B7DFF" stroke-width="1.3" />
-                            </svg></div>
-                        <p class="font-syne font-bold text-[20px] text-white">50K+</p>
-                        <p class="text-[11px] text-[#4a4a6a] mt-0.5">Active Users</p>
-                        <p class="text-[10px] text-[#4a4a6a]">Global Community</p>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="ib mx-auto mb-2.5"><svg width="16" height="16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="#9B7DFF" stroke-width="1.3" />
-                            </svg></div>
-                        <p class="font-syne font-bold text-[20px] text-white">500+</p>
-                        <p class="text-[11px] text-[#4a4a6a] mt-0.5">Across Chains</p>
-                        <p class="text-[10px] text-[#4a4a6a]">Markets Monitored</p>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="ib mx-auto mb-2.5"><svg width="16" height="16" fill="none">
-                                <rect x="2" y="6" width="12" height="8" rx="1.5" stroke="#9B7DFF" stroke-width="1.3" />
-                                <path d="M5 6V4C5 2.3 11 2.3 11 4V6" stroke="#9B7DFF" stroke-width="1.3"
-                                    stroke-linecap="round" />
-                            </svg></div>
-                        <p class="font-syne font-bold text-[20px] text-white">1B+</p>
-                        <p class="text-[11px] text-[#4a4a6a] mt-0.5">On-Chain Events</p>
-                        <p class="text-[10px] text-[#4a4a6a]">Data Points Daily</p>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="ib ib-y mx-auto mb-2.5"><svg width="16" height="16" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="#F59E0B" stroke-width="1.3" />
-                                <path d="M8 5V8L10 10" stroke="#F59E0B" stroke-width="1.3" stroke-linecap="round" />
-                            </svg></div>
-                        <p class="font-syne font-bold text-[20px] text-white">99.9%</p>
-                        <p class="text-[11px] text-[#4a4a6a] mt-0.5">Reliability</p>
-                        <p class="text-[10px] text-[#4a4a6a]">System Uptime</p>
-                    </div>
+            <div class="max-w-[640px] mx-auto">
+                <p class="text-[13px] text-[#4a4a6a] uppercase tracking-wider mb-4 text-center">Our Mission</p>
+                <div class="p-6 rounded-2xl text-center" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)">
+                    <p class="text-[15px] text-[#c8c8e0] leading-[1.8]">
+                        To create a smarter way to identify, validate, and act on market opportunities through
+                        <span class="text-white font-medium">real-time participation intelligence.</span>
+                    </p>
                 </div>
             </div>
         </div>
