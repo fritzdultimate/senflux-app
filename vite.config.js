@@ -7,6 +7,8 @@ export default defineConfig({
     laravel({
             input: [
                 'resources/css/app.css', 
+                'resources/css/dashboard-shared.css', 
+
                 'resources/js/app.js',
                 'resources/js/nav.js'
             ],
