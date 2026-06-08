@@ -1,0 +1,144 @@
+{{-- resources/views/layouts/protected/aside.blade.php --}}
+<aside class="sidebar" id="sidebar">
+
+    {{-- Logo --}}
+    <div class="sb-logo">
+        <svg width="26" height="26" viewBox="0 0 100 100" fill="none">
+            <defs>
+                <linearGradient id="slg" x1="20" y1="10" x2="80" y2="90" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#9B7DFF" />
+                    <stop offset="1" stop-color="#4F46E5" />
+                </linearGradient>
+            </defs>
+            <path d="M65 18C65 18 80 22 80 38C80 52 66 58 52 55C38 52 28 44 30 33C32 22 46 20 52 28C58 36 52 46 40 44C34 43 30 38 30 38M30 38C30 38 18 48 22 62C26 76 42 82 56 76C70 70 72 56 64 48C58 42 48 42 44 50C40 58 46 66 56 64"
+                stroke="url(#slg)" stroke-width="9" stroke-linecap="round" fill="none" />
+        </svg>
+        <span class="sb-logo-txt">Sen<em>flux</em></span>
+    </div>
+
+    {{-- Overview --}}
+    <div class="sb-sect">OVERVIEW</div>
+    <a href="{{ route('dashboard') }}" class="sb-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 1h5.5v5.5H1zm8.5 0H15v5.5H9.5zM1 9.5h5.5V15H1zm8.5 0H15V15H9.5z" />
+        </svg>
+        <span>Dashboard</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 11L5 7.5L7.5 9.5L10.5 5.5L13 7.5" />
+        </svg>
+        <span>Markets</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 11.5L5 8L7.5 10L11 5L13.5 7M11.5 5h2v2" />
+        </svg>
+        <span>Live Trades</span>
+        <span class="sb-badge sb-badge-live">LIVE</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8.5h11M7.5 4L11 8.5L7.5 13M2 4v9" />
+        </svg>
+        <span>Signals</span>
+        <span class="sb-badge sb-badge-pro">PRO</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h11v9H2zM4 6l2 2-2 2M7.5 10h3" />
+        </svg>
+        <span>Terminal</span>
+        <span class="sb-badge sb-badge-new">NEW</span>
+    </a>
+
+    {{-- Trading --}}
+    <div class="sb-sect">TRADING</div>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1L13 4V8c0 3.1-2.7 5.8-5.5 6.5C4.2 13.8 2 11.1 2 8V4z" />
+        </svg>
+        <span>Trading Bots</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 5h11v8.5H2zM5 5V3.5C5 2.1 10 2.1 10 3.5V5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+        </svg>
+        <span>My Bots</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1L13 4V8c0 3.1-2.7 5.8-5.5 6.5C4.2 13.8 2 11.1 2 8V4z" />
+        </svg>
+        <span>Earn / Staking</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 2.3a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zm6 0a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zM7.5 9a2.2 2.2 0 1 0 0 4.4A2.2 2.2 0 0 0 7.5 9z" />
+        </svg>
+        <span>Affiliate</span>
+    </a>
+
+    {{-- Analytics --}}
+    <div class="sb-sect">ANALYTICS</div>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12L5 8l2.5 2L11 5l2 2M1 14h13" />
+        </svg>
+        <span>Portfolio</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0zM7.5 5v3l2 1.5" />
+        </svg>
+        <span>Market Insights</span>
+    </a>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1.5c-2.5 0-4.5 2-4.5 4.5v3.5l-1 1.5h11l-1-1.5V6c0-2.5-2-4.5-4.5-4.5zM6 11.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5" />
+        </svg>
+        <span>Alerts</span>
+    </a>
+
+    {{-- System --}}
+    <div class="sb-sect">SYSTEM</div>
+    <a href="#" class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1L9 4l3-.5L13 6l-2 2 1.5 3-2.5 1L8 10H7l-1.5 2-2.5-1L4.5 8 2 6l1.5-2.5L6.5 4zM7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+        </svg>
+        <span>Settings</span>
+    </a>
+
+    {{-- Bottom: user + logout --}}
+    <div class="sb-bottom">
+        <a href="#" class="sb-item">
+            <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35">
+                <circle cx="7.5" cy="7.5" r="6" />
+                <path d="M5 7.5a2.5 2.5 0 0 1 5 0" stroke-linecap="round" />
+            </svg>
+            Light mode
+        </a>
+        <a href="{{ route('logout') }}" class="sb-item" style="color:#F43F5E; margin-top:2px"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35">
+                <path d="M6 2H3C2.4 2 2 2.4 2 3V12C2 12.6 2.4 13 3 13H6" stroke-linecap="round" />
+                <path d="M10 5L13 7.5L10 10M13 7.5H6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Logout
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
+            @csrf
+        </form>
+        <div class="sb-av-wrap">
+            <div class="sb-av">
+                {{ strtoupper(substr(auth()->user()->name ?? 'JD', 0, 2)) }}
+                <div class="ldot"></div>
+            </div>
+            <div>
+                <div class="sb-name">{{ auth()->user()->name ?? 'John Doe' }}</div>
+                <div class="sb-role">Pro Member</div>
+            </div>
+        </div>
+    </div>
+
+</aside>
