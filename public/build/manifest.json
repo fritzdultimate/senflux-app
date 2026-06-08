@@ -9,5 +9,11 @@
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
+  },
+  "resources/js/nav.js": {
+    "file": "assets/nav-DsPhxLRx.js",
+    "name": "nav",
+    "src": "resources/js/nav.js",
+    "isEntry": true
   }
 }
