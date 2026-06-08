@@ -70,11 +70,14 @@ body {
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   z-index: 20;
   flex-shrink: 0;
-  /* Hidden below lg */
+  /* Mobile: fixed drawer, stops above bottom nav so it scrolls independently */
   position: fixed;
-  top: 0; left: 0; bottom: 0;
+  top: 0; left: 0;
+  bottom: var(--mob-nav-h);
+  padding-bottom: 8px;
   transform: translateX(-100%);
   transition: transform .25s ease;
 }
@@ -297,6 +300,9 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 14px 12px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .gbg {
   background-image:
@@ -324,8 +330,9 @@ body {
 }
 .sc-val {
   font-family: 'Syne', sans-serif; font-weight: 800;
-  font-size: clamp(1.2rem, 4vw, 1.65rem);
+  font-size: clamp(1rem, 3.5vw, 1.65rem);
   color: #fff; line-height: 1.05;
+  word-break: break-all;   /* long dollar values like $4,826.50 won't overflow */
 }
 .sc-sub { font-size: 11.5px; color: var(--t3); margin-top: 6px; display: flex; align-items: center; gap: 5px; }
 .sc-ico {
@@ -339,6 +346,17 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   margin-bottom: 12px;
+  width: 100%;
+  min-width: 0;        /* prevent grid from blowing past its container */
+  overflow: hidden;
+}
+.stats-grid .sc {
+  min-width: 0;        /* each card must shrink, not push the grid wider */
+  overflow: hidden;
+}
+/* 5th card: spans full width so it never sits orphaned half-width */
+.stats-grid .sc:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 
 /* ── Badge ── */
@@ -530,6 +548,12 @@ body {
     position: sticky; /* back to in-flow */
     transform: translateX(0);
     top: 0; height: 100vh;
+    bottom: auto;        /* override the mobile bottom offset */
+    padding-bottom: 0;
+  }
+  /* Restore the orphan-fix only when not 5-col — not needed on desktop */
+  .stats-grid .sc:last-child:nth-child(odd) {
+    grid-column: auto;
   }
   .mob-nav { display: none; }
   .main { padding-bottom: 0; }

@@ -5,74 +5,8 @@
          ROW 1 — Stat Cards
          Mobile: 2-col | Tablet: 3-col | Desktop: 5-col
     ═══════════════════════════════════ --}}
-    <div class="stats-grid">
-
-        {{-- Wallet Balance --}}
-        <div class="sc card-p">
-            <div class="sc-lbl">
-                Wallet Balance
-                <div class="sc-ico" style="background:var(--bg-p)">
-                    <svg width="14" height="14" fill="none" viewBox="0 0 14 14" stroke="#9B7DFF" stroke-width="1.3">
-                        <rect x="1" y="4" width="12" height="9" rx="1.8" />
-                        <path d="M1 7h12" stroke-linecap="round" />
-                        <path d="M10 10.5h1.5" stroke-linecap="round" />
-                    </svg>
-                </div>
-            </div>
-            <div class="sc-val">$4,826.50</div>
-            <div class="sc-sub"><span class="up">↑ 2.4%</span><span style="color:var(--t4)">today</span></div>
-        </div>
-
-        {{-- Staking --}}
-        <div class="sc card-g">
-            <div class="sc-lbl">
-                Staking
-                <div class="sc-ico" style="background:var(--bg-g)">
-                    <svg width="14" height="14" fill="none" viewBox="0 0 14 14" stroke="#10B981" stroke-width="1.3" stroke-linejoin="round">
-                        <path d="M7 1L12.5 3.5V7C12.5 10.1 10 12.6 7 13.5C4 12.6 1.5 10.1 1.5 7V3.5z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="sc-val" style="color:var(--green)">$2,700.00</div>
-            <div class="sc-sub">
-                <span class="badge b-g" style="font-size:9.5px">18% APY</span>
-                <span style="color:var(--t4)">Pro</span>
-            </div>
-        </div>
-
-        {{-- Total Earned --}}
-        <div class="sc">
-            <div class="sc-lbl">Total Earned</div>
-            <div class="sc-val tg">$324.18</div>
-            <div class="sc-sub" style="color:var(--t4)">All-time rewards</div>
-        </div>
-
-        {{-- Bot P&L --}}
-        <div class="sc" style="border-color:rgba(16,185,129,.22)">
-            <div class="sc-lbl" style="justify-content:space-between">
-                Bot P&L Today
-                <span class="ap" style="width:6px;height:6px;border-radius:50%;background:var(--green);display:block;flex-shrink:0"></span>
-            </div>
-            <div class="sc-val" style="color:var(--green)">+$48.14</div>
-            <div class="sc-sub">
-                <span class="badge b-g" style="font-size:9.5px">Running</span>
-                <a href="#" style="font-size:11.5px;color:var(--pl);text-decoration:underline;text-underline-offset:2px">Pause</a>
-            </div>
-        </div>
-
-        {{-- Active Signals --}}
-        <div class="sc" style="border-color:rgba(123,92,245,.22)">
-            <div class="sc-lbl" style="justify-content:space-between">
-                Active Signals
-                <span class="ap" style="width:6px;height:6px;border-radius:50%;background:var(--pl);display:block;flex-shrink:0"></span>
-            </div>
-            <div class="sc-val tg">7</div>
-            <div class="sc-sub">
-                <a href="#" style="font-size:11.5px;color:var(--pl);text-decoration:none">View all →</a>
-            </div>
-        </div>
-
-    </div>{{-- /stats-grid --}}
+    
+    @include('dashboard.stats-grid')
 
 
     {{-- ══════════════════════════════════
