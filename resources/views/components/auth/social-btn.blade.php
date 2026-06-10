@@ -7,13 +7,13 @@
 
 @props(['provider' => 'google'])
 
-<button
-    type="button"
+<a
+    href="{{ route('social.redirect', $provider) }}"
     class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl
            border border-[rgba(255,255,255,.07)] bg-[rgba(255,255,255,.04)]
            text-[#c8c8e0] text-sm font-medium font-syne
            hover:border-[rgba(155,125,255,.35)] hover:bg-[rgba(155,125,255,.06)]
-           transition-all duration-200 cursor-pointer"
+           transition-all duration-200 cursor-pointer no-underline"
 >
     @if($provider === 'google')
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -29,4 +29,4 @@
         </svg>
         GitHub
     @endif
-</button>
+</a>

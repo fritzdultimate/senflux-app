@@ -1,7 +1,6 @@
 <?php
 
-use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Pages\About;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\HowItWorks;
@@ -16,8 +15,11 @@ Route::get('/terminal',       Terminal::class)->name('terminal');
 Route::get('/how-it-works',   HowItWorks::class)->name('how-it-works');
 Route::get('/market-insights',MarketInsights::class)->name('market-insights');
 
-Route::get('/login', Login::class)->name('login');
-Route::get('/register', Register::class)->name('register');
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
+    ->name('social.redirect');
+
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+    ->name('social.callback');
 
 
 Route::get('/dashboard', Dashboard::class)
