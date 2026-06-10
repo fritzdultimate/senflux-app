@@ -11,7 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller {
     // ── Supported providers ───────────────────────────────────────
-    private array $providers = ['google', 'github'];
+    private array $providers = ['google', 'github', 'facebook'];
 
     // ── Redirect to provider ──────────────────────────────────────
     public function redirect(string $provider) {
@@ -47,6 +47,11 @@ class SocialAuthController extends Controller {
             session(['2fa_user_id' => $user->id]);
             Auth::logout();
             return redirect()->route('two-factor.challenge');
+        }
+
+        // Email collection needed
+        if ($user->needs_email) {
+            return redirect()->route('social.collect-email');
         }
 
         return redirect()->intended(route('dashboard'));
@@ -91,17 +96,26 @@ class SocialAuthController extends Controller {
         $base = Str::slug($firstname . $lastname) ?: 'user';
         $username = $this->uniqueUsername($base);
 
+        $email      = $social->getEmail();
+        $needsEmail = false;
+
+        if (! $email) {
+            $email = $provider . '_' . $social->getId() . '@placeholder.senflux.io';
+            $needsEmail = true;
+        }
+
         return User::create([
             'name' => $username,
             'firstname' => $firstname,
             'lastname' => $lastname,
-            'email' => $social->getEmail(),
+            'email' => $email,
             'password' => Hash::make(Str::random(32)), // unusable password
             'provider' => $provider,
             'provider_id' => $social->getId(),
             'avatar' => $social->getAvatar(),
             'affiliate_code' => $this->generateAffiliateCode(),
             'email_verified_at' => now(),
+            'needs_email' => $needsEmail
         ]);
     }
 

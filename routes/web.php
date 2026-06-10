@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Livewire\Auth\CollectEmail;
 use App\Livewire\Pages\About;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\HowItWorks;
@@ -20,6 +21,11 @@ Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'
 
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])
     ->name('social.callback');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/complete-profile', CollectEmail::class)
+        ->name('social.collect-email');
+});
 
 
 Route::get('/dashboard', Dashboard::class)

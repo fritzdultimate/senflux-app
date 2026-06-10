@@ -36,7 +36,7 @@
             {{-- Social --}}
             <div class="fade-up-d1 grid grid-cols-2 gap-2.5 mb-1">
                 <x-auth.social-btn provider="google" />
-                <x-auth.social-btn provider="github" />
+                <x-auth.social-btn provider="facebook" />
             </div>
  
             {{-- Divider --}}
