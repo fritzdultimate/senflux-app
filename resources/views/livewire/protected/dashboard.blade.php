@@ -5,6 +5,8 @@
          ROW 1 — Stat Cards
          Mobile: 2-col | Tablet: 3-col | Desktop: 5-col
     ═══════════════════════════════════ --}}
+
+    <livewire:onboarding.checklist />
     
     @include('dashboard.stats-grid')
 

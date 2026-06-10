@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -40,5 +41,13 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     public function sendPasswordResetNotification($token): void {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function onboarding(): HasOne {
+        return $this->hasOne(OnboardingProgress::class);
+    }
+
+    public function getOnboardingAttribute(): OnboardingProgress {
+        return $this->onboarding()->firstOrCreate(['user_id' => $this->id]);
     }
 }

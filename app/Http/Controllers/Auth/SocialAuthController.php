@@ -54,7 +54,13 @@ class SocialAuthController extends Controller {
             return redirect()->route('social.collect-email');
         }
 
-        return redirect()->intended(route('dashboard'));
+        // return redirect()->intended(route('dashboard'));
+
+        $destination = $user->onboarding->welcome_dismissed
+            ? route('dashboard')
+            : route('welcome');
+
+        return redirect()->intended($destination);
     }
 
     // ── Find or create user ───────────────────────────────────────

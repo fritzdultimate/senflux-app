@@ -102,7 +102,14 @@ class Login extends Component {
         }
 
         session()->regenerate();
-        $this->redirect(route('dashboard'), navigate: true);
+        // $this->redirect(route('dashboard'), navigate: true);
+
+        $onboarding = $user->onboarding;
+        $destination = $onboarding->welcome_dismissed
+            ? route('dashboard')
+            : route('welcome');
+
+        $this->redirect($destination, navigate: true);
     }
 
     public function render(): \Illuminate\View\View {
