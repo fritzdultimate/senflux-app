@@ -20,7 +20,8 @@ Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
 
 
-Route::get('/dashboard', Dashboard::class)->name('dashboard');
-Route::get('/logout', function() {
-    return 'logged out';
-})->name('logout');
+Route::get('/dashboard', Dashboard::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+require __DIR__ . '/auth.php';
