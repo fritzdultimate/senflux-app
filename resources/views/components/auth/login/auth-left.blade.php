@@ -60,7 +60,6 @@
         {{-- Feature list --}}
         <div class="flex flex-col gap-3">
             @foreach([
-                'Live formation feed from BirdEye & DexScreener',
                 'Whale cluster & wallet cohesion intelligence',
                 'Automated bots + 73% win rate signals',
                 '18% APY staking & affiliate rewards',
