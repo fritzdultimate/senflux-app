@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',               Home::class)->name('home');
 Route::get('/about',          About::class)->name('about');
-Route::get('/terminal',       Terminal::class)->name('terminal');
+Route::get('/web/terminal',       \App\Livewire\Pages\Terminal::class)->name('terminal');
 Route::get('/how-it-works',   HowItWorks::class)->name('how-it-works');
 Route::get('/market-insights',MarketInsights::class)->name('market-insights');
 

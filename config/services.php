@@ -53,4 +53,10 @@ return [
         'redirect'      => env('FACEBOOK_REDIRECT_URI'),
     ],
 
+    'nowpayments' => [
+        'api_key'    => env('NOWPAYMENTS_API_KEY', ''),
+        'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET', ''),
+        'sandbox'    => env('NOWPAYMENTS_SANDBOX', true),
+    ],
+
 ];
