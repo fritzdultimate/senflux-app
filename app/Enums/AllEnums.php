@@ -1,91 +1,5 @@
 <?php namespace App\Enums;
 
-// ─── PlanInterval ─────────────────────────────────────────────────────────────
-enum PlanInterval: string {
-    case MONTHLY   = 'monthly';
-    case QUARTERLY = 'quarterly';
-    case YEARLY    = 'yearly';
-
-    public function label(): string {
-        return match($this) {
-            self::MONTHLY   => 'Monthly',
-            self::QUARTERLY => 'Quarterly',
-            self::YEARLY    => 'Yearly',
-        };
-    }
-
-    public function months(): int {
-        return match($this) {
-            self::MONTHLY   => 1,
-            self::QUARTERLY => 3,
-            self::YEARLY    => 12,
-        };
-    }
-}
-
-// ─── DepositStatus ────────────────────────────────────────────────────────────
-enum DepositStatus: string {
-    case PENDING    = 'pending';
-    case WAITING    = 'waiting';
-    case CONFIRMING = 'confirming';
-    case CONFIRMED  = 'confirmed';
-    case ACTIVE     = 'active';
-    case FINISHED   = 'finished';
-    case FAILED     = 'failed';
-    case EXPIRED    = 'expired';
-    case REFUNDED   = 'refunded';
-
-    public function label(): string {
-        return match($this) {
-            self::PENDING    => 'Pending',
-            self::WAITING    => 'Awaiting Payment',
-            self::CONFIRMING => 'Confirming',
-            self::CONFIRMED  => 'Confirmed',
-            self::ACTIVE     => 'Active',
-            self::FINISHED   => 'Finished',
-            self::FAILED     => 'Failed',
-            self::EXPIRED    => 'Expired',
-            self::REFUNDED   => 'Refunded',
-        };
-    }
-
-    public function color(): string {
-        return match($this) {
-            self::PENDING    => 'yellow',
-            self::WAITING    => 'blue',
-            self::CONFIRMING => 'indigo',
-            self::CONFIRMED  => 'cyan',
-            self::ACTIVE     => 'green',
-            self::FINISHED   => 'gray',
-            self::FAILED     => 'red',
-            self::EXPIRED    => 'orange',
-            self::REFUNDED   => 'pink',
-        };
-    }
-
-    public function isEarning(): bool {
-        return $this === self::ACTIVE;
-    }
-
-    public function isTerminal(): bool {
-        return in_array($this, [self::FINISHED, self::FAILED, self::EXPIRED, self::REFUNDED]);
-    }
-
-    /** Map NowPayments payment_status to our DepositStatus */
-    public static function fromNowPayments(string $npStatus): self {
-        return match($npStatus) {
-            'waiting'             => self::WAITING,
-            'confirming'          => self::CONFIRMING,
-            'confirmed', 'sending', 'partially_paid' => self::CONFIRMING,
-            'finished'            => self::CONFIRMED,
-            'failed'              => self::FAILED,
-            'refunded'            => self::REFUNDED,
-            'expired'             => self::EXPIRED,
-            default               => self::PENDING,
-        };
-    }
-}
-
 // ─── WithdrawalStatus ─────────────────────────────────────────────────────────
 enum WithdrawalStatus: string {
     case PENDING  = 'pending';
@@ -108,37 +22,6 @@ enum WithdrawalStatus: string {
             self::APPROVED => 'blue',
             self::REJECTED => 'red',
             self::PAID     => 'green',
-        };
-    }
-}
-
-// ─── WalletType ───────────────────────────────────────────────────────────────
-enum WalletType: string {
-    case MAIN     = 'main';
-    case REFERRAL = 'referral';
-    case RANK     = 'rank';
-
-    public function label(): string {
-        return match($this) {
-            self::MAIN     => 'Main Wallet',
-            self::REFERRAL => 'Referral Wallet',
-            self::RANK     => 'Rank Bonus Wallet',
-        };
-    }
-
-    public function description(): string {
-        return match($this) {
-            self::MAIN     => 'Daily earnings and principal',
-            self::REFERRAL => 'Referral commissions',
-            self::RANK     => 'Rank advancement bonuses',
-        };
-    }
-
-    public function icon(): string {
-        return match($this) {
-            self::MAIN     => 'heroicon-o-banknotes',
-            self::REFERRAL => 'heroicon-o-users',
-            self::RANK     => 'heroicon-o-trophy',
         };
     }
 }

@@ -1,12 +1,17 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Webhook\NowPaymentsWebhookController;
 use App\Livewire\Auth\CollectEmail;
 use App\Livewire\Pages\About;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\HowItWorks;
 use App\Livewire\Pages\MarketInsights;
 use App\Livewire\Protected\Dashboard;
+use App\Livewire\Protected\Deposit\CreateDeposit;
+use App\Livewire\Protected\Deposit\DepositTracker;
+use App\Livewire\Protected\Subscription\Subscribe;
+use App\Livewire\Protected\Subscription\SubscriptionTracker;
 use App\Livewire\Protected\Terminal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +38,40 @@ Route::get('/dashboard', Dashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/termina', Terminal::class)
+// Dashboard deposit routes
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
+    Route::get('/deposit/{deposit}/track', DepositTracker::class)
+         ->name('deposit.track');
+
+    Route::get('/deposit/create', CreateDeposit::class)
+         ->name('deposit.create');
+
+    Route::get('/subscribe', Subscribe::class)
+         ->name('subscribe');
+
+    Route::get('/subscription/{subscription}/track', SubscriptionTracker::class)
+        ->name('subscription.track');
+});
+
+Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
+    ->name('webhook.nowpayments')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
+
+
+
+
+
+
+
+
+
+
+
+// _______________________________________________________________________________________________________________________________
+// _______________________________________________________________________________________________________________________________
+
+Route::get('/terminal', Terminal::class)
     ->middleware(['auth', 'verified'])
     ->name('terminal');
 

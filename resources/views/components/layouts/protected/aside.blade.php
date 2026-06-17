@@ -54,6 +54,18 @@
 
     {{-- Trading --}}
     <div class="sb-sect">TRADING</div>
+    <a href="{{ route('dashboard.subscribe') }}" class="sb-item {{ request()->routeIs('dashboard.subscribe') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1L13 4V8c0 3.1-2.7 5.8-5.5 6.5C4.2 13.8 2 11.1 2 8V4z" />
+        </svg>
+        <span>Subscription</span>
+    </a>
+    <a href="{{ route('dashboard.deposit.create') }}" class="sb-item {{ request()->routeIs('dashboard.deposit.*') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 1v9M4 7l3.5 3.5L11 7M2 13.5h11" />
+        </svg>
+        <span>Deposit</span>
+    </a>
     <a href="#" class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1L13 4V8c0 3.1-2.7 5.8-5.5 6.5C4.2 13.8 2 11.1 2 8V4z" />

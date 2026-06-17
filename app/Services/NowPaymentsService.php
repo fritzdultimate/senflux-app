@@ -5,20 +5,16 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class NowPaymentsService
-{
+class NowPaymentsService {
     private string $apiKey;
     private string $ipnSecret;
     private string $baseUrl;
 
-    public function __construct()
-    {
-        $sandbox       = config('services.nowpayments.sandbox', true);
+    public function __construct() {
+        $sandbox = config('services.nowpayments.sandbox', true);
         $this->apiKey  = config('services.nowpayments.api_key', '');
         $this->ipnSecret = config('services.nowpayments.ipn_secret', '');
-        $this->baseUrl = $sandbox
-            ? 'https://api-sandbox.nowpayments.io/v1'
-            : 'https://api.nowpayments.io/v1';
+        $this->baseUrl = 'https://api.nowpayments.io/v1';
     }
 
     /**
@@ -37,9 +33,10 @@ class NowPaymentsService
         string $successUrl = '',
         string $cancelUrl = '',
     ): array {
+        // dd($this->apiKey);
         $response = Http::withHeaders([
             'x-api-key'    => $this->apiKey,
-            'Content-Type' => 'application/json',
+            // 'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/payment", [
             'price_amount'        => $priceAmount,
             'price_currency'      => $priceCurrency,
@@ -68,8 +65,7 @@ class NowPaymentsService
     /**
      * Get payment status from NowPayments.
      */
-    public function getPaymentStatus(string $paymentId): array
-    {
+    public function getPaymentStatus(string $paymentId): array {
         $response = Http::withHeaders(['x-api-key' => $this->apiKey])
             ->get("{$this->baseUrl}/payment/{$paymentId}");
 
@@ -83,8 +79,7 @@ class NowPaymentsService
     /**
      * Get minimum payment amount for a currency.
      */
-    public function getMinimumPaymentAmount(string $currency, string $fiatCurrency = 'usd'): float
-    {
+    public function getMinimumPaymentAmount(string $currency, string $fiatCurrency = 'usd'): float {
         $response = Http::withHeaders(['x-api-key' => $this->apiKey])
             ->get("{$this->baseUrl}/min-amount", [
                 'currency_from' => $currency,
@@ -97,8 +92,7 @@ class NowPaymentsService
     /**
      * Get list of available currencies.
      */
-    public function getAvailableCurrencies(): array
-    {
+    public function getAvailableCurrencies(): array {
         $response = Http::withHeaders(['x-api-key' => $this->apiKey])
             ->get("{$this->baseUrl}/currencies");
 
@@ -109,8 +103,7 @@ class NowPaymentsService
      * Verify IPN webhook signature.
      * NowPayments signs with HMAC-SHA512 using your IPN secret.
      */
-    public function verifyIpnSignature(string $rawBody, string $receivedSignature): bool
-    {
+    public function verifyIpnSignature(string $rawBody, string $receivedSignature): bool {
         if (empty($this->ipnSecret)) {
             Log::warning('NowPayments IPN secret not configured');
             return false;
@@ -131,8 +124,7 @@ class NowPaymentsService
     /**
      * Estimate conversion: how much crypto for a given USD amount.
      */
-    public function estimatePrice(float $amount, string $fromCurrency, string $toCurrency): array
-    {
+    public function estimatePrice(float $amount, string $fromCurrency, string $toCurrency): array {
         $response = Http::withHeaders(['x-api-key' => $this->apiKey])
             ->get("{$this->baseUrl}/estimate", [
                 'amount'          => $amount,
