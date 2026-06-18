@@ -165,8 +165,7 @@ class SubscriptionService
      * Expire subscriptions past their end date, and abandon stale pending invoices.
      * Called by scheduler.
      */
-    public function expireStale(): void
-    {
+    public function expireStale(): void {
         // Active subscriptions past expiry
         Subscription::where('status', 'active')
             ->where('expires_at', '<=', now())

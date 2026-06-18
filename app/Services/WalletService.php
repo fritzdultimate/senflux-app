@@ -31,7 +31,6 @@ class WalletService
         ) {
             $wallet = $this->getOrCreateWallet($user, $walletType);
 
-            // Lock row for update to prevent race conditions
             $wallet = Wallet::lockForUpdate()->find($wallet->id);
 
             $balanceBefore = (float) $wallet->balance;
@@ -41,17 +40,17 @@ class WalletService
             $wallet->save();
 
             return WalletTransaction::create([
-                'wallet_id'        => $wallet->id,
-                'user_id'          => $user->id,
-                'type'             => $type->value,
-                'amount'           => $amount,
-                'balance_before'   => $balanceBefore,
-                'balance_after'    => $balanceAfter,
-                'reference_type'   => $referenceType,
-                'reference_id'     => $referenceId,
-                'description'      => $description,
-                'meta'             => $meta ?: null,
-                'created_by'       => $createdBy,
+                'wallet_id' => $wallet->id,
+                'user_id' => $user->id,
+                'type' => $type->value,
+                'amount' => $amount,
+                'balance_before' => $balanceBefore,
+                'balance_after' => $balanceAfter,
+                'reference_type' => $referenceType,
+                'reference_id' => $referenceId,
+                'description' => $description,
+                'meta' => $meta ?: null,
+                'created_by' => $createdBy,
             ]);
         });
     }
@@ -93,17 +92,17 @@ class WalletService
             $wallet->save();
 
             return WalletTransaction::create([
-                'wallet_id'      => $wallet->id,
-                'user_id'        => $user->id,
-                'type'           => $type->value,
-                'amount'         => $amount,
+                'wallet_id' => $wallet->id,
+                'user_id' => $user->id,
+                'type' => $type->value,
+                'amount' => $amount,
                 'balance_before' => $balanceBefore,
-                'balance_after'  => $balanceAfter,
+                'balance_after' => $balanceAfter,
                 'reference_type' => $referenceType,
-                'reference_id'   => $referenceId,
-                'description'    => $description,
-                'meta'           => $meta ?: null,
-                'created_by'     => $createdBy,
+                'reference_id' => $referenceId,
+                'description' => $description,
+                'meta' => $meta ?: null,
+                'created_by' => $createdBy,
             ]);
         });
     }
@@ -111,8 +110,7 @@ class WalletService
     /**
      * Lock balance for a pending withdrawal.
      */
-    public function lockBalance(Wallet $wallet, float $amount): void
-    {
+    public function lockBalance(Wallet $wallet, float $amount): void {
         DB::transaction(function () use ($wallet, $amount) {
             $wallet = Wallet::lockForUpdate()->find($wallet->id);
 
@@ -130,8 +128,7 @@ class WalletService
     /**
      * Release locked balance (on withdrawal rejection or cancellation).
      */
-    public function releaseLockedBalance(Wallet $wallet, float $amount): void
-    {
+    public function releaseLockedBalance(Wallet $wallet, float $amount): void {
         DB::transaction(function () use ($wallet, $amount) {
             $wallet = Wallet::lockForUpdate()->find($wallet->id);
             $wallet->locked_balance = max(0, (float) $wallet->locked_balance - $amount);
@@ -142,8 +139,7 @@ class WalletService
     /**
      * Get available (unlocked) balance.
      */
-    public function availableBalance(User $user, WalletType $walletType): float
-    {
+    public function availableBalance(User $user, WalletType $walletType): float {
         $wallet = $user->wallets()->where('type', $walletType->value)->first();
         if (!$wallet) return 0.0;
         return max(0, (float) $wallet->balance - (float) $wallet->locked_balance);
@@ -152,15 +148,13 @@ class WalletService
     /**
      * Initialize all wallets for a new user.
      */
-    public function initializeUserWallets(User $user): void
-    {
+    public function initializeUserWallets(User $user): void {
         foreach (WalletType::cases() as $type) {
             $this->getOrCreateWallet($user, $type);
         }
     }
 
-    private function getOrCreateWallet(User $user, WalletType $walletType): Wallet
-    {
+    private function getOrCreateWallet(User $user, WalletType $walletType): Wallet {
         return Wallet::firstOrCreate(
             ['user_id' => $user->id, 'type' => $walletType->value],
             ['balance' => 0, 'locked_balance' => 0, 'currency' => 'USD', 'is_active' => true]

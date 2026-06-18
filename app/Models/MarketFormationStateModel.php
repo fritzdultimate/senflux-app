@@ -33,8 +33,8 @@ class MarketFormationStateModel extends Model
             'formation_score'     => 'decimal:2',
             'earnings_multiplier' => 'decimal:4',
             'is_current'          => 'boolean',
-            'state'               => MarketFormationState::class,
-            'bot_status'          => BotDeploymentStatus::class,
+            'state' => MarketFormationState::class,
+            'bot_status' => BotDeploymentStatus::class,
         ];
     }
 

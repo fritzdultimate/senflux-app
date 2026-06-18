@@ -114,7 +114,7 @@ class Register extends Component
         do {
             $code = strtoupper(Str::random(8));
         } while (User::where('affiliate_code', $code)->exists());
-
+ 
         return $code;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\RankLevel;
 use App\Enums\WalletType;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail {
@@ -31,15 +33,15 @@ class User extends Authenticatable implements MustVerifyEmail {
      */
     protected function casts(): array {
         return [
-            'email_verified_at'      => 'datetime',
-            'rank_achieved_at'       => 'datetime',
-            'subscription_expires_at'=> 'datetime',
-            'kyc_verified_at'        => 'datetime',
-            'last_login_at'          => 'datetime',
-            'password'               => 'hashed',
-            'two_factor_enabled'     => 'boolean',
-            'is_active'              => 'boolean',
-            // 'rank'                   => RankLevel::class,
+            'email_verified_at' => 'datetime',
+            'rank_achieved_at' => 'datetime',
+            'subscription_expires_at' => 'datetime',
+            'kyc_verified_at' => 'datetime',
+            'last_login_at' => 'datetime',
+            'password' => 'hashed',
+            'two_factor_enabled' => 'boolean',
+            'is_active' => 'boolean',
+            'rank' => RankLevel::class,
             'balances' => 'array',
             'notify_email_notifications' => 'boolean'
         ];
@@ -61,25 +63,25 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->onboarding()->firstOrCreate(['user_id' => $this->id]);
     }
 
-    // protected static function boot(): void {
-    //     parent::boot();
+    protected static function boot(): void {
+        parent::boot();
 
-    //     static::creating(function (User $user) {
-    //         if (empty($user->affiliate_code)) {
-    //             $user->affiliate_code = static::generateUniqueAffiliateCode();
-    //         }
-    //     });
+        static::creating(function (User $user) {
+            if (empty($user->affiliate_code)) {
+                $user->affiliate_code = static::generateUniqueAffiliateCode();
+            }
+        });
 
-    //     // Initialize wallets on creation
-    //     static::created(function (User $user) {
-    //         foreach (WalletType::cases() as $type) {
-    //             $user->wallets()->firstOrCreate(
-    //                 ['type' => $type->value],
-    //                 ['balance' => 0, 'locked_balance' => 0, 'currency' => 'USD', 'is_active' => true]
-    //             );
-    //         }
-    //     });
-    // }
+        // Initialize wallets on creation
+        static::created(function (User $user) {
+            foreach (WalletType::cases() as $type) {
+                $user->wallets()->firstOrCreate(
+                    ['type' => $type->value],
+                    ['balance' => 0, 'locked_balance' => 0, 'currency' => 'USD', 'is_active' => true]
+                );
+            }
+        });
+    }
 
     public function referrals(): HasMany {
         return $this->hasMany(User::class, 'referrer_id');
@@ -204,8 +206,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->referrals()->count();
     }
 
-    public function getRankLevelAttribute(): RankLevel
-    {
+    public function getRankLevelAttribute(): RankLevel {
         return $this->rank instanceof RankLevel ? $this->rank : RankLevel::from($this->rank ?? 'none');
     }
 
@@ -217,18 +218,15 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     // ── Scopes ────────────────────────────────────────────────────────────────
 
-    public function scopeActive($query)
-    {
+    public function scopeActive($query) {
         return $query->where('is_active', true);
     }
 
-    public function scopeWithActiveDeposit($query)
-    {
+    public function scopeWithActiveDeposit($query) {
         return $query->whereHas('deposits', fn($q) => $q->where('status', 'active'));
     }
 
-    public function scopeByRank($query, RankLevel $rank)
-    {
+    public function scopeByRank($query, RankLevel $rank) {
         return $query->where('rank', $rank->value);
     }
 

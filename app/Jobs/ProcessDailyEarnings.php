@@ -9,15 +9,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessDailyEarnings implements ShouldQueue
-{
+class ProcessDailyEarnings implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 3;
     public int $timeout = 300;
 
-    public function handle(EarningsEngineService $engine): void
-    {
+    public function handle(EarningsEngineService $engine): void {
         $engine->processAllActiveDeposits();
     }
 }

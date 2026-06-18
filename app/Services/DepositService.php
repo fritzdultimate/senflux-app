@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\DepositStatus;
+use App\Models\ActivityLog;
 use App\Models\Deposit;
 use App\Models\PlanConfig;
 use App\Models\User;
@@ -186,11 +187,66 @@ class DepositService
     /**
      * Paginated history for a user — used by the inline history panel.
      */
-    public function getHistoryForUser(User $user, int $perPage = 8)
-    {
+    public function getHistoryForUser(User $user, int $perPage = 8) {
         return $user->deposits()
             ->with('planConfig')
             ->latest()
             ->paginate($perPage);
+    }
+
+    public function manualActivate(
+        Deposit $deposit,
+        User $admin,
+        float $actuallyPaidUsd,
+        ?float $actuallyPaid,
+        string $reason,
+    ): void {
+        if ($deposit->status === DepositStatus::ACTIVE) {
+            throw new \RuntimeException('ALREADY_ACTIVE');
+        }
+    
+        DB::transaction(function () use ($deposit, $admin, $actuallyPaidUsd, $actuallyPaid, $reason) {
+            $plan = $deposit->planConfig;
+    
+            $before = [
+                'status' => $deposit->status->value,
+                'actually_paid_usd' => $deposit->actually_paid_usd,
+                'actually_paid' => $deposit->actually_paid,
+            ];
+    
+            $deposit->update([
+                'status' => DepositStatus::ACTIVE->value,
+                'actually_paid_usd' => $actuallyPaidUsd,
+                'actually_paid' => $actuallyPaid,
+                'daily_rate' => $plan->daily_rate_max,
+                'activated_at' => now(),
+            ]);
+    
+            ActivityLog::record(
+                action: 'deposit.manual_activation',
+                userId: $admin->id,
+                description: "Manually activated deposit #{$deposit->id} for user #{$deposit->user_id}. Reason: {$reason}",
+                subject: $deposit,
+                meta: [
+                    'before' => $before,
+                    'after' => [
+                        'status'            => 'active',
+                        'actually_paid_usd' => $actuallyPaidUsd,
+                        'actually_paid'     => $actuallyPaid,
+                    ],
+                    'reason' => $reason,
+                    'activated_by' => $admin->id,
+                    'activated_by_name'=> $admin->name,
+                ],
+            );
+    
+            ProcessReferralBonus::dispatch($deposit);
+    
+            Log::info('Deposit manually activated by admin', [
+                'deposit_id' => $deposit->id,
+                'admin_id' => $admin->id,
+                'reason' => $reason,
+            ]);
+        });
     }
 }

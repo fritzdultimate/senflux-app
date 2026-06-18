@@ -20,8 +20,7 @@ class EarningsEngineService
      * Process daily earnings for all active deposits.
      * Called by scheduler — idempotent via unique(deposit_id, earned_date).
      */
-    public function processAllActiveDeposits(): void
-    {
+    public function processAllActiveDeposits(): void {
         $today = now()->toDateString();
         $formation = $this->getCurrentFormationState();
 
@@ -35,8 +34,7 @@ class EarningsEngineService
             });
     }
 
-    public function processDepositEarning(Deposit $deposit, string $date, ?object $formation = null): ?DepositEarning
-    {
+    public function processDepositEarning(Deposit $deposit, string $date, ?object $formation = null): ?DepositEarning {
         // Already processed today?
         if (DepositEarning::where('deposit_id', $deposit->id)->where('earned_date', $date)->exists()) {
             return null;
@@ -44,36 +42,36 @@ class EarningsEngineService
 
         $formation ??= $this->getCurrentFormationState();
         $multiplier = $formation ? (float) $formation->earnings_multiplier : 1.0;
-        $state      = $formation?->state ?? 'active';
+        $state = $formation?->state ?? 'active';
 
-        $baseRate   = (float) $deposit->daily_rate;
-        $principal  = (float) $deposit->amount_usd;
-        $earning    = round($principal * $baseRate * $multiplier, 8);
+        $baseRate = (float) $deposit->daily_rate;
+        $principal = (float) $deposit->actually_paid_usd;
+        $earning = round($principal * $baseRate * $multiplier, 8);
 
         return DB::transaction(function () use ($deposit, $date, $earning, $baseRate, $multiplier, $state) {
             $user = $deposit->user;
 
             $tx = $this->wallet->credit(
-                user:          $user,
-                walletType:    WalletType::MAIN,
-                amount:        $earning,
-                type:          TransactionType::DAILY_EARNING,
-                description:   "Daily earning — {$date}",
-                referenceId:   $deposit->id,
+                user: $user,
+                walletType: WalletType::MAIN,
+                amount: $earning,
+                type: TransactionType::DAILY_EARNING,
+                description: "Daily earning — {$date}",
+                referenceId: $deposit->id,
                 referenceType: Deposit::class,
-                meta:          ['date' => $date, 'rate' => $baseRate, 'multiplier' => $multiplier],
+                meta: ['date' => $date, 'rate' => $baseRate, 'multiplier' => $multiplier],
             );
 
             $record = DepositEarning::create([
-                'deposit_id'           => $deposit->id,
-                'user_id'              => $user->id,
-                'wallet_transaction_id'=> $tx->id,
-                'amount'               => $earning,
-                'rate_applied'         => $baseRate,
-                'formation_state'      => $state,
+                'deposit_id' => $deposit->id,
+                'user_id' => $user->id,
+                'wallet_transaction_id' => $tx->id,
+                'amount' => $earning,
+                'rate_applied' => $baseRate,
+                'formation_state' => $state,
                 'formation_multiplier' => $multiplier,
-                'earned_date'          => $date,
-                'processed_at'         => now(),
+                'earned_date' => $date,
+                'processed_at' => now(),
             ]);
 
             $deposit->increment('total_earnings', $earning);
@@ -83,8 +81,7 @@ class EarningsEngineService
         });
     }
 
-    private function getCurrentFormationState(): ?object
-    {
+    private function getCurrentFormationState(): ?object {
         return DB::table('market_formation_states')
             ->where('is_current', true)
             ->first();
