@@ -14,6 +14,11 @@
     "src": "resources/css/dashboard-shared.css",
     "isEntry": true
   },
+  "resources/css/dashboard.css": {
+    "file": "assets/dashboard-ChtD0HXE.css",
+    "src": "resources/css/dashboard.css",
+    "isEntry": true
+  },
   "resources/css/dc.css": {
     "file": "assets/dc-yiSZKvd4.css",
     "src": "resources/css/dc.css",
