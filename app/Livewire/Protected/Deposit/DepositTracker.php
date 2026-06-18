@@ -16,11 +16,11 @@ class DepositTracker extends Component {
     #[Locked]
     public int $depositId;
 
-    public bool $confirmed    = false;
-    public bool $failed       = false;
-    public bool $expired      = false;
-    public bool $stopPolling  = false;
-    public int  $pollCount    = 0;
+    public bool $confirmed = true;
+    public bool $failed = false;
+    public bool $expired = false;
+    public bool $stopPolling = false;
+    public int  $pollCount = 0;
 
     public function mount(Deposit $deposit): void
     {
@@ -38,8 +38,7 @@ class DepositTracker extends Component {
     }
 
     #[Computed]
-    public function statusSteps(): array
-    {
+    public function statusSteps(): array {
         $status = DepositStatus::from($this->deposit->status->value);
 
         $steps = [
@@ -86,21 +85,19 @@ class DepositTracker extends Component {
         $this->syncLocalState($deposit);
     }
 
-    private function syncLocalState(Deposit $deposit): void
-    {
+    private function syncLocalState(Deposit $deposit): void {
         $status = DepositStatus::from($deposit->status->value);
 
         $this->confirmed = in_array($status, [DepositStatus::CONFIRMED, DepositStatus::ACTIVE]);
-        $this->failed    = $status === DepositStatus::FAILED;
-        $this->expired   = $status === DepositStatus::EXPIRED;
+        $this->failed = $status === DepositStatus::FAILED;
+        $this->expired = $status === DepositStatus::EXPIRED;
 
         if ($this->confirmed || $this->failed || $this->expired) {
             $this->stopPolling = true;
         }
     }
 
-    public function goToDashboard(): void
-    {
+    public function goToDashboard(): void {
         $this->redirect(route('dashboard'), navigate: true);
     }
 

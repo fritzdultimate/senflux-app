@@ -86,9 +86,12 @@ class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /** Referral record (as the referred user) */
-    public function referralRecord(): HasOne
-    {
+    public function referralRecord(): HasOne {
         return $this->hasOne(Referral::class, 'referred_id');
+    }
+
+    public function referredBy() {
+        return $this->hasOne(User::class, 'referrer_id');
     }
 
     /** Referral records where this user is the referrer */

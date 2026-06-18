@@ -29,8 +29,7 @@ class ReferralBonusService
     /**
      * Walk 8 levels of upline and credit referral bonuses.
      */
-    public function processForDeposit(Deposit $deposit): void
-    {
+    public function processForDeposit(Deposit $deposit): void {
         $depositor  = $deposit->user;
         $amount     = (float) $deposit->actually_paid_usd ?? (float) $deposit->amount_usd;
         $currentUser = $depositor;
@@ -45,25 +44,25 @@ class ReferralBonusService
             if ($bonus > 0) {
                 DB::transaction(function () use ($upline, $depositor, $deposit, $level, $rate, $bonus) {
                     $tx = $this->wallet->credit(
-                        user:          $upline,
-                        walletType:    WalletType::REFERRAL,
-                        amount:        $bonus,
-                        type:          TransactionType::REFERRAL_BONUS,
-                        description:   "Level {$level} referral bonus from deposit #{$deposit->id}",
-                        referenceId:   $deposit->id,
+                        user: $upline,
+                        walletType: WalletType::REFERRAL,
+                        amount: $bonus,
+                        type: TransactionType::REFERRAL_BONUS,
+                        description: "Level {$level} referral bonus from deposit #{$deposit->id}",
+                        referenceId: $deposit->id,
                         referenceType: Deposit::class,
-                        meta:          ['level' => $level, 'rate' => $rate, 'from_user' => $depositor->id],
+                        meta: ['level' => $level, 'rate' => $rate, 'from_user' => $depositor->id],
                     );
 
                     ReferralBonus::create([
-                        'earner_id'              => $upline->id,
-                        'source_user_id'         => $depositor->id,
-                        'deposit_id'             => $deposit->id,
-                        'level'                  => $level,
-                        'rate'                   => $rate,
-                        'amount'                 => $bonus,
-                        'wallet_transaction_id'  => $tx->id,
-                        'processed_at'           => now(),
+                        'earner_id' => $upline->id,
+                        'source_user_id' => $depositor->id,
+                        'deposit_id' => $deposit->id,
+                        'level' => $level,
+                        'rate' => $rate,
+                        'amount' => $bonus,
+                        'wallet_transaction_id' => $tx->id,
+                        'processed_at' => now(),
                     ]);
                 });
             }
@@ -72,8 +71,7 @@ class ReferralBonusService
         }
     }
 
-    private function getDirectUpline(User $user): ?User
-    {
+    private function getDirectUpline(User $user): ?User {
         return $user->referredBy ?? null;
     }
 }

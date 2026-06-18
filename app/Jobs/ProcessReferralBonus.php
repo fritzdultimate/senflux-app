@@ -10,16 +10,14 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessReferralBonus implements ShouldQueue
-{
+class ProcessReferralBonus implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public int $tries = 3;
 
     public function __construct(public Deposit $deposit) {}
 
-    public function handle(ReferralBonusService $service): void
-    {
-        $this->service->processForDeposit($this->deposit);
+    public function handle(ReferralBonusService $service): void {
+        $service->processForDeposit($this->deposit);
     }
 }

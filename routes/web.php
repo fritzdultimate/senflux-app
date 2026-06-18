@@ -54,8 +54,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
-    ->name('webhook.nowpayments')
-    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+    ->name('webhook.nowpayments');
 
 
 

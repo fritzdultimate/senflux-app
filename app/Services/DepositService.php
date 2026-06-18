@@ -117,8 +117,7 @@ class DepositService
     /**
      * Handle NowPayments IPN update. Idempotent.
      */
-    public function handleIpnUpdate(array $ipnData): void
-    {
+    public function handleIpnUpdate(array $ipnData): void {
         $paymentId = $ipnData['payment_id'] ?? null;
         if (!$paymentId) return;
 
@@ -133,12 +132,12 @@ class DepositService
         $newStatus = DepositStatus::fromNowPayments($ipnData['payment_status'] ?? '');
 
         $deposit->update([
-            'status'                  => $newStatus->value,
-            'actually_paid'           => $ipnData['actually_paid'] ?? null,
-            'actually_paid_usd'       => $ipnData['actually_paid_fiat'] ?? null,
-            'confirmations'           => $ipnData['confirmations_count'] ?? 0,
-            'required_confirmations'  => $ipnData['required_confirmations'] ?? 0,
-            'ipn_received_at'         => now(),
+            'status' => $newStatus->value,
+            'actually_paid' => $ipnData['actually_paid'] ?? null,
+            'actually_paid_usd' => $ipnData['actually_paid_fiat'] ?? null,
+            'confirmations' => $ipnData['confirmations_count'] ?? 0,
+            'required_confirmations' => $ipnData['required_confirmations'] ?? 0,
+            'ipn_received_at'  => now(),
         ]);
 
         if ($newStatus === DepositStatus::CONFIRMED) {
@@ -148,7 +147,7 @@ class DepositService
 
     public function activate(Deposit $deposit): void
     {
-        if ($deposit->status === DepositStatus::ACTIVE->value) return;
+        if ($deposit->status->value === DepositStatus::ACTIVE->value) return;
 
         DB::transaction(function () use ($deposit) {
             $plan = $deposit->planConfig;
@@ -163,8 +162,7 @@ class DepositService
         });
     }
 
-    public function syncStatus(Deposit $deposit): Deposit
-    {
+    public function syncStatus(Deposit $deposit): Deposit {
         if (DepositStatus::from($deposit->status->value)->isTerminal()) {
             return $deposit;
         }
