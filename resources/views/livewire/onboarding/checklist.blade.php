@@ -1,7 +1,7 @@
 <div>
     @if(! $onboarding->completed)
     <div x-data="{ open: {{ $collapsed ? 'true' : 'false' }} }"
-        class="rounded-2xl border border-white/[.07] bg-[#0d0d1a] overflow-hidden mb-5">
+        class="rounded-2xl border border-white/[.07] bg-[#0d0d1a] overflow-hidden mb-2">
 
         {{-- ── Header ── --}}
         <div class="flex items-center justify-between px-5 py-4 cursor-pointer
