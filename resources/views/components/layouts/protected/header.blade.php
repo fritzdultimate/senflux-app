@@ -10,17 +10,10 @@
 
     {{-- Logo — visible on mobile only (topbar), hidden on desktop (sidebar has it) --}}
     <a href="{{ route('dashboard') }}" class="tb-logo-mob">
-        <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
-            <defs>
-                <linearGradient id="tlg" x1="20" y1="10" x2="80" y2="90" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#9B7DFF" />
-                    <stop offset="1" stop-color="#4F46E5" />
-                </linearGradient>
-            </defs>
-            <path d="M65 18C65 18 80 22 80 38C80 52 66 58 52 55C38 52 28 44 30 33C32 22 46 20 52 28C58 36 52 46 40 44C34 43 30 38 30 38M30 38C30 38 18 48 22 62C26 76 42 82 56 76C70 70 72 56 64 48C58 42 48 42 44 50C40 58 46 66 56 64"
-                stroke="url(#tlg)" stroke-width="9" stroke-linecap="round" fill="none" />
-        </svg>
-        Sen<em>flux</em>
+        <div class="flex items-center justify-center gap-2.5">
+            <x-senflux.logo width="20" height="20" gradient-id="wlc-logo" />
+            <span class="font-syne font-semibold text-[13px] text-white tracking-[.1em]">SENFLUX</span>
+        </div>
     </a>
 
     {{-- Page title — desktop only --}}
@@ -40,20 +33,20 @@
 
     {{-- Right actions --}}
     <div class="tb-right">
-        <button class="btn-dep">
+        <a href="{{ route('dashboard.deposit.create') }}" wire:navigate class="btn-dep">
             <svg width="12" height="12" fill="none" viewBox="0 0 12 12" stroke="white" stroke-width="1.5">
                 <path d="M6 1V8M3 5l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M1 10.5h10" stroke-linecap="round"/>
             </svg>
             <span class="btn-text">Deposit</span>
-        </button>
-        <button class="btn-wd">
+        </a>
+        <a href="#" wire:navigate class="btn-wd">
             <svg width="12" height="12" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
                 <path d="M6 8V1M3 4l3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M1 10.5h10" stroke-linecap="round"/>
             </svg>
             <span class="btn-text">Withdraw</span>
-        </button>
+        </a>
         <div class="tb-ico">
             <svg width="14" height="14" fill="none" viewBox="0 0 14 14" stroke="#c8c8e0" stroke-width="1.3">
                 <path d="M7 1.5C4.5 1.5 2.5 3.5 2.5 6v3.5l-1 1.5h11l-1-1.5V6C11.5 3.5 9.5 1.5 7 1.5z"/>
