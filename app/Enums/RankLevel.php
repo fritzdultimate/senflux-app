@@ -1,67 +1,7 @@
-<?php namespace App\Enums;
+<?php
 
-// ─── WithdrawalStatus ─────────────────────────────────────────────────────────
-enum WithdrawalStatus: string {
-    case PENDING  = 'pending';
-    case APPROVED = 'approved';
-    case REJECTED = 'rejected';
-    case PAID     = 'paid';
+namespace App\Enums;
 
-    public function label(): string {
-        return match($this) {
-            self::PENDING  => 'Pending',
-            self::APPROVED => 'Approved',
-            self::REJECTED => 'Rejected',
-            self::PAID     => 'Paid',
-        };
-    }
-
-    public function color(): string {
-        return match($this) {
-            self::PENDING  => 'yellow',
-            self::APPROVED => 'blue',
-            self::REJECTED => 'red',
-            self::PAID     => 'green',
-        };
-    }
-}
-
-// ─── TransactionType ──────────────────────────────────────────────────────────
-enum TransactionType: string {
-    case DEPOSIT          = 'deposit';
-    case WITHDRAWAL       = 'withdrawal';
-    case DAILY_EARNING    = 'daily_earning';
-    case REFERRAL_BONUS   = 'referral_bonus';
-    case RANK_BONUS       = 'rank_bonus';
-    case LEADERSHIP_MATCH = 'leadership_match';
-    case FEE              = 'fee';
-    case ADJUSTMENT       = 'adjustment';
-
-    public function label(): string {
-        return match($this) {
-            self::DEPOSIT          => 'Deposit',
-            self::WITHDRAWAL       => 'Withdrawal',
-            self::DAILY_EARNING    => 'Daily Earning',
-            self::REFERRAL_BONUS   => 'Referral Bonus',
-            self::RANK_BONUS       => 'Rank Bonus',
-            self::LEADERSHIP_MATCH => 'Leadership Match',
-            self::FEE              => 'Fee',
-            self::ADJUSTMENT       => 'Admin Adjustment',
-        };
-    }
-
-    public function isCredit(): bool {
-        return in_array($this, [
-            self::DEPOSIT,
-            self::DAILY_EARNING,
-            self::REFERRAL_BONUS,
-            self::RANK_BONUS,
-            self::LEADERSHIP_MATCH,
-        ]);
-    }
-}
-
-// ─── RankLevel ────────────────────────────────────────────────────────────────
 enum RankLevel: string {
     case NONE      = 'none';
     case GENESIS   = 'genesis';
