@@ -12,6 +12,7 @@ use App\Livewire\Protected\Alerts;
 use App\Livewire\Protected\Dashboard;
 use App\Livewire\Protected\Deposit\CreateDeposit;
 use App\Livewire\Protected\Deposit\DepositTracker;
+use App\Livewire\Protected\LiveTrades;
 use App\Livewire\Protected\Markets;
 use App\Livewire\Protected\MyBots;
 use App\Livewire\Protected\Portfolio;
@@ -91,6 +92,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/bots/mine', MyBots::class)
         ->name('bots.mine');
+
+    Route::get('/live-trades', LiveTrades::class)
+        ->name('live-trades');
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
