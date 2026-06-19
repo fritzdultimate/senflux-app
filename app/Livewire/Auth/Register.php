@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Referral;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,14 @@ class Register extends Component
             'referrer_id' => $referrer?->id,
             'notify_email_notifications' => $this->marketing,
         ]);
+
+        if($referrer) {
+            Referral::create([
+                'referrer_id' => $referrer->id,
+                'referred_id' => $user->id,
+                'level'       => 1,
+            ]);
+        }
 
         event(new Registered($user));
 
