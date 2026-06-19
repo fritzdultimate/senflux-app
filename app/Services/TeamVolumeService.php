@@ -69,16 +69,16 @@ class TeamVolumeService
         $record = TeamVolume::updateOrCreate(
             ['user_id' => $user->id],
             [
-                'level_1'          => $levels[1] ?? 0,
-                'level_2'          => $levels[2] ?? 0,
-                'level_3'          => $levels[3] ?? 0,
-                'level_4'          => $levels[4] ?? 0,
-                'level_5'          => $levels[5] ?? 0,
-                'level_6'          => $levels[6] ?? 0,
-                'level_7'          => $levels[7] ?? 0,
-                'level_8'          => $levels[8] ?? 0,
-                'raw_total'        => $rawTotal,
-                'weighted_total'   => $weightedTotal,
+                'level_1' => $levels[1] ?? 0,
+                'level_2' => $levels[2] ?? 0,
+                'level_3' => $levels[3] ?? 0,
+                'level_4' => $levels[4] ?? 0,
+                'level_5' => $levels[5] ?? 0,
+                'level_6' => $levels[6] ?? 0,
+                'level_7' => $levels[7] ?? 0,
+                'level_8' => $levels[8] ?? 0,
+                'raw_total' => $rawTotal,
+                'weighted_total' => $weightedTotal,
                 'last_computed_at' => now(),
             ]
         );
