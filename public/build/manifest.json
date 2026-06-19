@@ -34,6 +34,11 @@
     "src": "resources/css/deposit.css",
     "isEntry": true
   },
+  "resources/css/withdraw.css": {
+    "file": "assets/withdraw-BaRQpLYE.css",
+    "src": "resources/css/withdraw.css",
+    "isEntry": true
+  },
   "resources/js/app.js": {
     "file": "assets/app-l0sNRNKZ.js",
     "name": "app",

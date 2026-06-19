@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/css/dc.css', 
                 'resources/css/deposit.css', 
                 'resources/css/deposit-additions.css', 
+                'resources/css/withdraw.css', 
 
                 'resources/js/app.js',
                 'resources/js/nav.js'
