@@ -57,12 +57,12 @@ class DepositsTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn ($state) => match($state instanceof DepositStatus ? $state->value : $state) {
-                        'active'              => 'success',
-                        'confirmed'           => 'info',
+                        'active' => 'success',
+                        'confirmed' => 'info',
                         'confirming', 'waiting', 'pending' => 'warning',
                         'failed', 'expired'   => 'danger',
-                        'finished'            => 'gray',
-                        default               => 'gray',
+                        'finished' => 'gray',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn ($state) => ($state instanceof DepositStatus ? $state : DepositStatus::from($state))->label()),
                 TextColumn::make('total_earnings')

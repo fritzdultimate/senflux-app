@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Subscriptions\Tables;
 
+use App\Enums\BotDeploymentStatus;
 use App\Models\Subscription;
 use App\Services\SubscriptionService;
 use Filament\Actions\Action;
@@ -27,13 +28,14 @@ class SubscriptionsTable
                 TextColumn::make('amount_paid')->money('usd'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn ($s) => match($s) {
-                        'active'    => 'success',
+                    ->color(fn ($state) => match($state) {
+                        'active' => 'success',
                         'pending', 'waiting' => 'warning',
                         'expired'   => 'gray',
                         'cancelled' => 'danger',
-                        default     => 'gray',
-                    }),
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn ($state) => ucfirst($state)),
                 TextColumn::make('starts_at')->dateTime('M j, Y'),
                 TextColumn::make('expires_at')->dateTime('M j, Y'),
                 TextColumn::make('created_at')->dateTime('M j, Y H:i')->sortable(),
