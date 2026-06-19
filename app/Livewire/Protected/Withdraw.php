@@ -163,8 +163,7 @@ class Withdraw extends Component
         $this->showConfirm = false;
     }
 
-    public function cancelWithdrawal(int $id, WithdrawalService $service): void
-    {
+    public function cancelWithdrawal(int $id, WithdrawalService $service): void {
         $withdrawal = Withdrawal::findOrFail($id);
 
         try {

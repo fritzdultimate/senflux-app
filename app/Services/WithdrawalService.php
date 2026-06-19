@@ -157,13 +157,12 @@ class WithdrawalService
     /**
      * User cancels their own pending withdrawal (within grace period).
      */
-    public function cancel(Withdrawal $withdrawal, User $user): void
-    {
+    public function cancel(Withdrawal $withdrawal, User $user): void {
         if ($withdrawal->user_id !== $user->id) {
             throw new \RuntimeException('Unauthorized.');
         }
 
-        if ($withdrawal->status !== WithdrawalStatus::PENDING->value) {
+        if ($withdrawal->status->value !== WithdrawalStatus::PENDING->value) {
             throw new \RuntimeException('Only pending withdrawals can be cancelled.');
         }
 
