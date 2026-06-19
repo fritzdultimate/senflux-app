@@ -216,7 +216,7 @@
                                         {{ strtoupper($w->network) }} · {{ strtoupper($w->crypto_currency) }}
                                         · {{ $w->created_at->format('M j, Y') }}
                                     </div>
-                                    <div class="wd-history-row__addr">{{ Str::limit($w->wallet_address, 24) }}</div>
+                                    <div class="wd-history-row__addr">{{ Illuminate\Support\Str::limit($w->wallet_address, 18) }}</div>
                                 </div>
                                 <div class="wd-history-row__right">
                                     <span class="wd-status-badge" style="color: {{ $color }}; background: {{ $color }}22; border-color: {{ $color }}44">
