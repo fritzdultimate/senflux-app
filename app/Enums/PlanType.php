@@ -34,4 +34,12 @@ enum PlanType: string {
     public function isPopular(): bool {
         return $this === self::PRO;
     }
+
+    public function order(): int {
+        return match($this) {
+            self::CORE => 1,
+            self::PRO  => 2,
+            self::APEX => 3,
+        };
+    }
 }

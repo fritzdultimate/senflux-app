@@ -14,7 +14,10 @@ class TrackedAssetForm
         return $schema
             ->components([
                 Section::make('Asset')->columnSpanFull()->columns(2)->schema([
-                    TextInput::make('symbol')->required()->maxLength(20)->uppercase(),
+                    TextInput::make('symbol')
+                        ->required()
+                        ->maxLength(20)
+                        ->formatStateUsing(fn ($state) => strtoupper($state)),
                     TextInput::make('name')->required()->maxLength(80),
                     TextInput::make('network')->maxLength(40),
                     TextInput::make('sort_order')->numeric()->default(0),

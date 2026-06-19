@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\AssetPriceHistory;
 use App\Models\LiveTrade;
 use App\Models\TrackedAsset;
 use Illuminate\Bus\Queueable;
@@ -12,8 +13,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Syncs current_price on all active tracked assets, then recomputes
- * P&L on every open live trade tied to that asset.
+ * Syncs current_price on all active tracked assets, appends a history
+ * row for charting, then recomputes P&L on every open live trade tied
+ * to that asset.
  *
  * NOTE: Price source is not wired yet. fetchPrice() currently returns
  * null (no-op) so this job is safe to schedule now and wire to a real
@@ -23,7 +25,8 @@ use Illuminate\Support\Facades\Log;
 class SyncTrackedAssetPrices implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void {
+    public function handle(): void
+    {
         TrackedAsset::active()->each(function (TrackedAsset $asset) {
             $priceData = $this->fetchPrice($asset->symbol);
 
@@ -36,6 +39,12 @@ class SyncTrackedAssetPrices implements ShouldQueue {
                 'current_price'    => $priceData['price'],
                 'price_change_24h' => $priceData['change_24h'] ?? null,
                 'price_updated_at' => now(),
+            ]);
+
+            AssetPriceHistory::create([
+                'tracked_asset_id' => $asset->id,
+                'price'            => $priceData['price'],
+                'recorded_at'      => now(),
             ]);
 
             $this->syncOpenTrades($asset);
@@ -59,7 +68,8 @@ class SyncTrackedAssetPrices implements ShouldQueue {
         return null;
     }
 
-    private function syncOpenTrades(TrackedAsset $asset): void {
+    private function syncOpenTrades(TrackedAsset $asset): void
+    {
         LiveTrade::open()
             ->where('tracked_asset_id', $asset->id)
             ->each(function (LiveTrade $trade) use ($asset) {

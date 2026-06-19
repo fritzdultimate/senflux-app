@@ -18,6 +18,7 @@ use App\Livewire\Protected\MyBots;
 use App\Livewire\Protected\Portfolio;
 use App\Livewire\Protected\RankRewards;
 use App\Livewire\Protected\Settings;
+use App\Livewire\Protected\Signals;
 use App\Livewire\Protected\Subscription\Subscribe;
 use App\Livewire\Protected\Subscription\SubscriptionTracker;
 use App\Livewire\Protected\Terminal;
@@ -95,6 +96,15 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/live-trades', LiveTrades::class)
         ->name('live-trades');
+
+    Route::get('/signals', Signals::class)
+        ->name('signals');
+
+    Route::get('/terminal', Terminal::class)
+        ->name('terminal');
+
+    Route::get('/market-insights', \App\Livewire\Protected\MarketInsights::class)
+        ->name('market-insights');
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])

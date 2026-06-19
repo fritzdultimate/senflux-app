@@ -1,0 +1,175 @@
+/* ============================================================
+   signals.css — Senflux Signals Page
+   Theme tokens from dashboard.css
+   ============================================================ */
+
+.sig {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+    /* font-family: var(--d-syne, 'Syne', sans-serif); */
+    color: var(--d-text, #e7e9f3);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.sig-intro__title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0 0 .4rem;
+}
+
+.sig-intro__desc {
+    font-size: .82rem;
+    color: #6b7280;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0;
+}
+
+/* ── Grid ──────────────────────────────────────────────────────────────── */
+.sig-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .85rem;
+}
+
+@media (max-width: 900px) {
+    .sig-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+    .sig-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────── */
+.sig-card {
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 14px;
+    padding: 1.1rem 1.15rem;
+    transition: border-color .2s;
+}
+
+.sig-card:hover { border-color: var(--accent); }
+
+.sig-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: .9rem;
+}
+
+.sig-card__asset {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #e7e9f3;
+}
+
+.sig-card__network {
+    font-size: .65rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin-left: .4rem;
+}
+
+.sig-type-badge {
+    font-size: .65rem;
+    font-weight: 700;
+    padding: .2rem .55rem;
+    border-radius: 99px;
+    border: 1px solid;
+}
+
+.sig-confidence {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .9rem;
+}
+
+.sig-confidence__track {
+    flex: 1;
+    height: 5px;
+    background: #0d1120;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.sig-confidence__fill {
+    height: 100%;
+    border-radius: 99px;
+}
+
+.sig-confidence__val {
+    font-size: .68rem;
+    color: #9ca3af;
+    /* font-family: 'JetBrains Mono', monospace; */
+    white-space: nowrap;
+}
+
+.sig-card__note {
+    font-size: .76rem;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: 0 0 .9rem;
+}
+
+.sig-card__footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: .65rem;
+    color: #4b5563;
+    padding-top: .7rem;
+    border-top: 1px solid rgba(255,255,255,.05);
+}
+
+/* ── Locked card ───────────────────────────────────────────────────────── */
+.sig-locked-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: .5rem;
+    background: rgba(155,125,255,.04);
+    border: 1px dashed rgba(155,125,255,.25);
+    border-radius: 14px;
+    padding: 1.4rem 1rem;
+    color: #6b7280;
+}
+
+.sig-locked-card svg { color: #9B7DFF; }
+
+.sig-locked-card__title {
+    font-size: .85rem;
+    font-weight: 700;
+    color: #e7e9f3;
+    margin: 0;
+}
+
+.sig-locked-card__desc {
+    font-size: .72rem;
+    margin: 0;
+}
+
+.sig-locked-card__cta {
+    margin-top: .3rem;
+    font-size: .76rem;
+    font-weight: 700;
+    color: #9B7DFF;
+    text-decoration: none;
+}
+
+/* ── Empty ─────────────────────────────────────────────────────────────── */
+.sig-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+}
+
+.sig-empty p { font-size: .82rem; margin: 0; }

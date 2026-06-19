@@ -21,6 +21,7 @@ class TrackedAssetResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
     protected static UnitEnum|string|null $navigationGroup = 'Markets';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

@@ -3,6 +3,7 @@
 use App\Jobs\CheckRankAdvancement;
 use App\Jobs\ProcessDailyEarnings;
 use App\Jobs\SyncNowPaymentsStatus;
+use App\Jobs\SyncTrackedAssetPrices;
 use App\Services\DepositService;
 use App\Services\SubscriptionService;
 use Illuminate\Foundation\Inspiring;
@@ -38,3 +39,5 @@ Schedule::job(CheckRankAdvancement::class)
 Schedule::job(SyncNowPaymentsStatus::class)
     ->everyFiveMinutes()
     ->withoutOverlapping();
+
+Schedule::job(new SyncTrackedAssetPrices())->everyMinute();

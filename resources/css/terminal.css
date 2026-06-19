@@ -1,0 +1,144 @@
+/* ============================================================
+   terminal.css — Senflux Terminal Page
+   Theme tokens from dashboard.css
+   ============================================================ */
+
+.term {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+    /* font-family: var(--d-syne, 'Syne', sans-serif); */
+    color: var(--d-text, #e7e9f3);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.term-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 12px;
+    padding: .85rem 1.1rem;
+    flex-wrap: wrap;
+}
+
+.term-header__item {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.term-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: term-pulse 2s infinite;
+}
+
+@keyframes term-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.5); }
+    70%  { box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+.term-header__label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.term-header__val {
+    font-size: .76rem;
+    font-weight: 700;
+    color: #e7e9f3;
+}
+
+/* ── Feed ──────────────────────────────────────────────────────────────── */
+.term-feed {
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 12px;
+    padding: .5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.term-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem .65rem;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+}
+
+.term-row:last-child { border-bottom: none; }
+
+.term-row__icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.term-row__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+}
+
+.term-row__text {
+    font-size: .8rem;
+    color: #d1d5db;
+}
+
+.term-row__text strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.term-row__confidence {
+    font-size: .68rem;
+    color: #6b7280;
+    margin-left: .3rem;
+}
+
+.term-row__time {
+    font-size: .65rem;
+    color: #4b5563;
+}
+
+.term-row__tag {
+    font-size: .6rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+.term-pnl--pos { color: #22c55e; font-weight: 700; }
+.term-pnl--neg { color: #ef4444; font-weight: 700; }
+
+/* ── Empty ─────────────────────────────────────────────────────────────── */
+.term-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+}
+
+.term-empty p { font-size: .8rem; margin: 0; max-width: 320px; }

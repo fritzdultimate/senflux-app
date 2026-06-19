@@ -23,6 +23,10 @@ export default defineConfig({
                 'resources/css/settings.css',
                 'resources/css/trading-bots.css',
                 'resources/css/my-bots.css',
+                'resources/css/live-trades.css',
+                'resources/css/signals.css',
+                'resources/css/terminal.css',
+                'resources/css/market-insights.css',
 
                 'resources/js/app.js',
                 'resources/js/nav.js'
