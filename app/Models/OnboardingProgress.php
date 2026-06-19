@@ -55,7 +55,7 @@ class OnboardingProgress extends Model
                 'label' => 'Open the terminal',
                 'description' => 'Explore on-chain data, whale clusters, and wallet cohesion.',
                 'icon' => 'terminal',
-                'route' => '.dashboard.terminal',
+                'route' => 'dashboard.terminal',
                 'xp' => 15,
             ],
             'connected_bot' => [
