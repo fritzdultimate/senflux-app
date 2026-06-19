@@ -18,7 +18,7 @@
         <span>Dashboard</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.markets') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 11L5 7.5L7.5 9.5L10.5 5.5L13 7.5" />
         </svg>
@@ -75,7 +75,7 @@
         <span>Withdraw</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.wallet') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <rect x="1" y="3" width="13" height="9" rx="1.5" />
             <path d="M1 6h13M4 9.5h2" />
@@ -104,14 +104,14 @@
     {{-- ── NETWORK ──────────────────────────────────────────────────── --}}
     <div class="sb-sect">NETWORK</div>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.affiliate') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4.5 2.3a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zm6 0a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zM7.5 9a2.2 2.2 0 1 0 0 4.4A2.2 2.2 0 0 0 7.5 9z" />
         </svg>
         <span>Affiliate</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.rank-rewards') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01z" transform="scale(0.65) translate(0.5, 0.5)" />
             <path d="M7.5 1l1.4 4.3H14l-3.7 2.7 1.4 4.3-3.7-2.7-3.7 2.7 1.4-4.3L2 5.3h5.1z" />
@@ -122,7 +122,7 @@
     {{-- ── ANALYTICS ────────────────────────────────────────────────── --}}
     <div class="sb-sect">ANALYTICS</div>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.portfolio') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 12L5 8l2.5 2L11 5l2 2M1 14h13" />
         </svg>
@@ -136,7 +136,7 @@
         <span>Market Insights</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.alerts') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1.5c-2.5 0-4.5 2-4.5 4.5v3.5l-1 1.5h11l-1-1.5V6c0-2.5-2-4.5-4.5-4.5zM6 11.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5" />
         </svg>
@@ -146,7 +146,7 @@
     {{-- ── SYSTEM ───────────────────────────────────────────────────── --}}
     <div class="sb-sect">SYSTEM</div>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.settings') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1L9 4l3-.5L13 6l-2 2 1.5 3-2.5 1L8 10H7l-1.5 2-2.5-1L4.5 8 2 6l1.5-2.5L6.5 4zM7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
         </svg>

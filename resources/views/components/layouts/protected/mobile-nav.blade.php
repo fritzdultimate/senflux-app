@@ -26,7 +26,7 @@
         Withdraw
     </a>
 
-    <a href="#"
+    <a href="{{ route('dashboard.affiliate') }}" wire:navigate
        class="mob-nav-item {{ request()->routeIs('dashboard.affiliate*', 'dashboard.rank*') ? 'active' : '' }}">
         <svg width="18" height="18" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4.5 2.3a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zm6 0a2.2 2.2 0 1 0 0 4.4 2.2 2.2 0 0 0 0-4.4zM7.5 9a2.2 2.2 0 1 0 0 4.4A2.2 2.2 0 0 0 7.5 9z" />

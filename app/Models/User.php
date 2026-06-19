@@ -43,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail {
             'is_active' => 'boolean',
             'rank' => RankLevel::class,
             'balances' => 'array',
+            'notification_preferences' => 'array',
             'notify_email_notifications' => 'boolean'
         ];
     }

@@ -7,12 +7,20 @@ use App\Livewire\Pages\About;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\HowItWorks;
 use App\Livewire\Pages\MarketInsights;
+use App\Livewire\Protected\Affiliate;
+use App\Livewire\Protected\Alerts;
 use App\Livewire\Protected\Dashboard;
 use App\Livewire\Protected\Deposit\CreateDeposit;
 use App\Livewire\Protected\Deposit\DepositTracker;
+use App\Livewire\Protected\Markets;
+use App\Livewire\Protected\Portfolio;
+use App\Livewire\Protected\RankRewards;
+use App\Livewire\Protected\Settings;
 use App\Livewire\Protected\Subscription\Subscribe;
 use App\Livewire\Protected\Subscription\SubscriptionTracker;
 use App\Livewire\Protected\Terminal;
+use App\Livewire\Protected\Wallet;
+use App\Livewire\Protected\Withdraw;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -52,8 +60,29 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::get('/subscription/{subscription}/track', SubscriptionTracker::class)
         ->name('subscription.track');
 
-    Route::get('/withdraw', \App\Livewire\Protected\Withdraw::class)
+    Route::get('/withdraw', Withdraw::class)
     ->name('withdraw');
+
+    Route::get('/affiliate', Affiliate::class)
+        ->name('affiliate');
+
+    Route::get('/wallet', Wallet::class)
+        ->name('wallet');
+
+    Route::get('/rank-rewards', RankRewards::class)
+        ->name('rank-rewards');
+
+    Route::get('/portfolio', Portfolio::class)
+        ->name('portfolio');
+
+    Route::get('/markets', Markets::class)
+        ->name('markets');
+
+    Route::get('/alerts', Alerts::class)
+        ->name('alerts');
+
+    Route::get('/settings', Settings::class)
+        ->name('settings');
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])

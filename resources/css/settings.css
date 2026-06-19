@@ -1,0 +1,195 @@
+/* ============================================================
+   settings.css — Senflux Settings Page
+   Theme tokens from dashboard.css
+   ============================================================ */
+
+.set {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1rem 1rem 5rem;
+    font-family: var(--d-syne, 'Syne', sans-serif);
+    color: var(--d-text, #e7e9f3);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── Panel ─────────────────────────────────────────────────────────────── */
+.set-panel {
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 12px;
+    padding: 1.25rem 1.3rem;
+}
+
+.set-panel__title {
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: #9B7DFF;
+    margin: 0 0 1rem;
+}
+
+/* ── Flash messages ────────────────────────────────────────────────────── */
+.set-flash {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    border-radius: 8px;
+    padding: .6rem .85rem;
+    font-size: .76rem;
+    margin-bottom: 1rem;
+}
+
+.set-flash--success {
+    background: rgba(34,197,94,.08);
+    border: 1px solid rgba(34,197,94,.22);
+    color: #4ade80;
+}
+
+.set-flash--error {
+    background: rgba(239,68,68,.08);
+    border: 1px solid rgba(239,68,68,.22);
+    color: #fca5a5;
+}
+
+/* ── Form grid ─────────────────────────────────────────────────────────── */
+.set-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .9rem;
+    margin-bottom: 1.1rem;
+}
+
+@media (max-width: 560px) {
+    .set-grid { grid-template-columns: 1fr; }
+}
+
+.set-field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+.set-field--full { grid-column: 1 / -1; }
+
+.set-label {
+    font-size: .68rem;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: .03em;
+}
+
+.set-input {
+    background: #0d1120;
+    border: 1px solid rgba(155,125,255,.12);
+    border-radius: 8px;
+    color: #e7e9f3;
+    font-size: .82rem;
+    font-family: 'Syne', sans-serif;
+    padding: .6rem .8rem;
+    transition: border-color .15s;
+}
+
+.set-input:focus {
+    outline: none;
+    border-color: #9B7DFF;
+}
+
+.set-select { cursor: pointer; }
+
+.set-error {
+    font-size: .68rem;
+    color: #fca5a5;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.set-btn-primary {
+    padding: .7rem 1.4rem;
+    background: linear-gradient(135deg, #4F46E5, #9B7DFF);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.set-btn-primary:hover { opacity: .9; }
+.set-btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+.set-btn-ghost {
+    padding: .65rem 1.2rem;
+    background: rgba(239,68,68,.08);
+    border: 1px solid rgba(239,68,68,.2);
+    border-radius: 8px;
+    color: #ef4444;
+    font-family: 'Syne', sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s;
+    white-space: nowrap;
+}
+
+.set-btn-ghost:hover { background: rgba(239,68,68,.15); }
+
+/* ── KYC block ─────────────────────────────────────────────────────────── */
+.set-kyc {
+    display: flex;
+    align-items: flex-start;
+    gap: .85rem;
+    border-radius: 10px;
+    padding: .9rem 1rem;
+}
+
+.set-kyc--verified {
+    background: rgba(34,197,94,.06);
+    border: 1px solid rgba(34,197,94,.2);
+    color: #4ade80;
+}
+
+.set-kyc--pending {
+    background: rgba(245,158,11,.06);
+    border: 1px solid rgba(245,158,11,.2);
+    color: #f59e0b;
+}
+
+.set-kyc svg { flex-shrink: 0; margin-top: .1rem; }
+
+.set-kyc__title {
+    font-size: .82rem;
+    font-weight: 700;
+    margin: 0 0 .2rem;
+    color: #e7e9f3;
+}
+
+.set-kyc__sub {
+    font-size: .72rem;
+    color: #9ca3af;
+    margin: 0;
+}
+
+/* ── 2FA row ───────────────────────────────────────────────────────────── */
+.set-2fa-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.set-2fa-row__body {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.set-2fa-row__title {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #e7e9f3;
+}
+
+.set-2fa-row__desc {
+    font-size: .72rem;
+    color: #6b7280;
+    max-width: 380px;
+}

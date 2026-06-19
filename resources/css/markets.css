@@ -1,0 +1,268 @@
+/* ============================================================
+   markets.css — Senflux Markets Page
+   Theme tokens from dashboard.css
+   ============================================================ */
+
+.mkt {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1rem 4rem;
+    /* font-family: var(--d-syne, 'Syne', sans-serif); */
+    color: var(--d-text, #e7e9f3);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+.mkt-hero {
+    border: 1px solid;
+    border-radius: 14px;
+    padding: 1.4rem 1.5rem;
+}
+
+.mkt-hero__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.mkt-hero__label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin: 0 0 .4rem;
+}
+
+.mkt-hero__state-wrap {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.mkt-hero__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: mkt-pulse 2s infinite;
+}
+
+@keyframes mkt-pulse {
+    0%   { box-shadow: 0 0 0 0 currentColor; opacity: .8; }
+    70%  { box-shadow: 0 0 0 6px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; opacity: 1; }
+}
+
+.mkt-hero__state {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.mkt-hero__desc {
+    font-size: .76rem;
+    color: #9ca3af;
+    margin: .4rem 0 0;
+}
+
+.mkt-hero__multiplier { text-align: right; }
+
+.mkt-hero__multiplier-val {
+    font-size: 1.6rem;
+    font-weight: 800;
+    /* font-family: 'JetBrains Mono', monospace; */
+    margin: 0;
+}
+
+.mkt-meter__track {
+    height: 6px;
+    background: rgba(0,0,0,.3);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.mkt-meter__fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width .6s;
+}
+
+/* ── Stat strip ────────────────────────────────────────────────────────── */
+.mkt-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .75rem;
+}
+
+@media (max-width: 600px) {
+    .mkt-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.mkt-stat {
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 12px;
+    padding: .9rem 1rem;
+}
+
+.mkt-stat__label {
+    font-size: .63rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #6b7280;
+    margin: 0 0 .35rem;
+}
+
+.mkt-stat__value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #e7e9f3;
+    /* font-family: 'JetBrains Mono', monospace; */
+    margin: 0;
+}
+
+/* ── Notes ─────────────────────────────────────────────────────────────── */
+.mkt-notes {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    background: rgba(96,165,250,.06);
+    border: 1px solid rgba(96,165,250,.18);
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    color: #93c5fd;
+}
+
+.mkt-notes p {
+    font-size: .76rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.mkt-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+}
+
+@media (max-width: 800px) {
+    .mkt-layout { grid-template-columns: 1fr; }
+}
+
+/* ── Panel ─────────────────────────────────────────────────────────────── */
+.mkt-panel {
+    background: #0a0d18;
+    border: 1px solid rgba(155,125,255,.09);
+    border-radius: 12px;
+    padding: 1.1rem 1.15rem;
+}
+
+.mkt-panel__title {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #e7e9f3;
+    margin: 0 0 .9rem;
+}
+
+/* ── Platform stats ────────────────────────────────────────────────────── */
+.mkt-platform-stats {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.mkt-platform-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .76rem;
+    color: #9ca3af;
+}
+
+.mkt-platform-stat strong {
+    color: #e7e9f3;
+    /* font-family: 'JetBrains Mono', monospace; */
+    font-size: .82rem;
+}
+
+/* ── Plans ─────────────────────────────────────────────────────────────── */
+.mkt-plans {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+}
+
+.mkt-plan-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0d1120;
+    border-radius: 8px;
+    padding: .6rem .8rem;
+}
+
+.mkt-plan-row__name {
+    font-size: .78rem;
+    font-weight: 700;
+    color: #e7e9f3;
+}
+
+.mkt-plan-row__rate {
+    font-size: .72rem;
+    color: #9B7DFF;
+    /* font-family: 'JetBrains Mono', monospace; */
+}
+
+/* ── Formation history ────────────────────────────────────────────────── */
+.mkt-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+}
+
+.mkt-history-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    font-size: .76rem;
+}
+
+.mkt-history-row:last-child { border-bottom: none; }
+
+.mkt-history-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.mkt-history-state {
+    font-weight: 700;
+    min-width: 80px;
+}
+
+.mkt-history-meta {
+    color: #6b7280;
+    flex: 1;
+}
+
+.mkt-history-time {
+    color: #4b5563;
+    font-size: .68rem;
+}
+
+/* ── Empty ─────────────────────────────────────────────────────────────── */
+.mkt-empty {
+    text-align: center;
+    padding: 1.5rem;
+    color: #6b7280;
+    font-size: .76rem;
+}
