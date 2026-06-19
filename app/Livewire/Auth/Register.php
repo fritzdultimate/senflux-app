@@ -31,6 +31,14 @@ class Register extends Component
     public bool $showPassword = false;
     public bool   $showPasswordConfirm = false;
 
+    public function mount() {
+        $ref = request()->query('ref');
+
+        if ($ref && User::where('affiliate_code', $ref)->exists()) {
+            $this->refcode = $ref;
+        }
+    }
+
     // ── Validation rules ──────────────────────────────────────────
     protected function rules(): array {
         return [

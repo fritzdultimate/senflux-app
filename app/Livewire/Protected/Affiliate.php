@@ -43,8 +43,7 @@ class Affiliate extends Component
     }
 
     #[Computed]
-    public function referralLink(): string
-    {
+    public function referralLink(): string {
         return rtrim(config('app.url'), '/') . '/register?ref=' . $this->user->affiliate_code;
     }
 
@@ -129,6 +128,6 @@ class Affiliate extends Component
 
     public function render()
     {
-        return view('livewire.protected.affiliate');
+        return view('livewire.protected.affiliate'); 
     }
 }
