@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Tables;
 use App\Enums\RankLevel;
 use App\Enums\TransactionType;
 use App\Enums\WalletType;
+use App\Filament\Resources\WalletTransactions\WalletTransactionResource;
 use App\Models\ActivityLog;
 use App\Models\User;
 use App\Services\WalletService;
@@ -215,9 +216,18 @@ class UsersTable
                         ->successNotificationTitle('Two-factor authentication reset')
                         ->requiresConfirmation(),
 
+                    Action::make('viewLedger')
+                        ->label('Ledger')
+                        ->icon('heroicon-o-document-text')
+                        ->color('gray')
+                        ->url(fn (User $record) => WalletTransactionResource::getUrl('index', [
+                            'tableFilters' => ['user_id' => ['value' => $record->id]],
+                        ])),
+
                 
                 ])
             ])
+             ->defaultSort('created_at', 'desc')
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
