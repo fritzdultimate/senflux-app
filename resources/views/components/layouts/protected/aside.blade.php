@@ -86,7 +86,7 @@
     {{-- ── BOTS ─────────────────────────────────────────────────────── --}}
     <div class="sb-sect">BOTS</div>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.bots') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="9" height="8" rx="1.5" />
             <path d="M5.5 4V3M9.5 4V3M1 8h2M12 8h2M5.5 8.5v.5M9.5 8.5v.5" />
@@ -94,7 +94,7 @@
         <span>Trading Bots</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.bots.mine') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 5h11v8.5H2zM5 5V3.5C5 2.1 10 2.1 10 3.5V5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
         </svg>

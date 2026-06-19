@@ -13,12 +13,14 @@ use App\Livewire\Protected\Dashboard;
 use App\Livewire\Protected\Deposit\CreateDeposit;
 use App\Livewire\Protected\Deposit\DepositTracker;
 use App\Livewire\Protected\Markets;
+use App\Livewire\Protected\MyBots;
 use App\Livewire\Protected\Portfolio;
 use App\Livewire\Protected\RankRewards;
 use App\Livewire\Protected\Settings;
 use App\Livewire\Protected\Subscription\Subscribe;
 use App\Livewire\Protected\Subscription\SubscriptionTracker;
 use App\Livewire\Protected\Terminal;
+use App\Livewire\Protected\TradingBots;
 use App\Livewire\Protected\Wallet;
 use App\Livewire\Protected\Withdraw;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +85,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/settings', Settings::class)
         ->name('settings');
+
+    Route::get('/bots', TradingBots::class)
+        ->name('bots');
+
+    Route::get('/bots/mine', MyBots::class)
+        ->name('bots.mine');
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])

@@ -21,6 +21,8 @@ export default defineConfig({
                 'resources/css/markets.css',
                 'resources/css/alerts.css',
                 'resources/css/settings.css',
+                'resources/css/trading-bots.css',
+                'resources/css/my-bots.css',
 
                 'resources/js/app.js',
                 'resources/js/nav.js'
