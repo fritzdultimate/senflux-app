@@ -51,6 +51,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/subscription/{subscription}/track', SubscriptionTracker::class)
         ->name('subscription.track');
+
+    Route::get('/withdraw', \App\Livewire\Protected\Withdraw::class)
+    ->name('withdraw');
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])

@@ -40,7 +40,7 @@
             </svg>
             <span class="btn-text">Deposit</span>
         </a>
-        <a href="#" wire:navigate class="btn-wd">
+        <a href="{{ route('dashboard.withdraw') }}" wire:navigate class="btn-wd">
             <svg width="12" height="12" fill="none" viewBox="0 0 12 12" stroke="currentColor" stroke-width="1.5">
                 <path d="M6 8V1M3 4l3-3 3 3" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M1 10.5h10" stroke-linecap="round"/>

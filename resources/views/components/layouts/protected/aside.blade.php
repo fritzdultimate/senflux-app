@@ -68,7 +68,7 @@
         <span>Deposit</span>
     </a>
 
-    <a href="#" class="sb-item">
+    <a href="{{ route('dashboard.withdraw') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 14V8M4 10.5l3.5 3.5 3.5-3.5M2 5h11M2 2h11" />
         </svg>

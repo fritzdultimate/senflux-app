@@ -18,7 +18,7 @@
         Deposit
     </a>
 
-    <a href="#"
+    <a href="{{ route('dashboard.withdraw') }}" wire:navigate
        class="mob-nav-item {{ request()->routeIs('dashboard.withdraw*') ? 'active' : '' }}">
         <svg width="18" height="18" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 14V5M4 7.5l3.5-3.5L11 7.5M2 1.5h11" />
