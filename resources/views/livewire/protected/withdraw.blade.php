@@ -202,12 +202,12 @@
                         @foreach($this->history as $w)
                             @php
                                 $statusColors = [
-                                    'pending'  => '#f59e0b',
+                                    'pending' => '#f59e0b',
                                     'approved' => '#60a5fa',
                                     'rejected' => '#ef4444',
-                                    'paid'     => '#22c55e',
+                                    'paid' => '#22c55e',
                                 ];
-                                $color = $statusColors[$w->status] ?? '#6b7280';
+                                $color = $statusColors[$w->status->value] ?? '#6b7280';
                             @endphp
                             <div class="wd-history-row">
                                 <div class="wd-history-row__left">
@@ -220,9 +220,9 @@
                                 </div>
                                 <div class="wd-history-row__right">
                                     <span class="wd-status-badge" style="color: {{ $color }}; background: {{ $color }}22; border-color: {{ $color }}44">
-                                        {{ ucfirst($w->status) }}
+                                        {{ ucfirst($w->status->value) }}
                                     </span>
-                                    @if($w->status === 'pending' && $w->created_at->diffInMinutes(now()) <= 30)
+                                    @if($w->status->value === 'pending' && $w->created_at->diffInMinutes(now()) <= 30)
                                         <button
                                             wire:click="cancelWithdrawal({{ $w->id }})"
                                             wire:confirm="Cancel this withdrawal request?"
@@ -231,7 +231,7 @@
                                         >Cancel</button>
                                     @endif
                                     @if($w->tx_hash)
-                                        <div class="wd-history-row__hash">TX: {{ Str::limit($w->tx_hash, 16) }}</div>
+                                        <div class="wd-history-row__hash">TX: {{ Illuminate\Support\Str::limit($w->tx_hash, 16) }}</div>
                                     @endif
                                 </div>
                             </div>
