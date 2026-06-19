@@ -17,6 +17,11 @@ use Livewire\Component;
 #[Title('Terminal')]
 class Terminal extends Component
 {
+
+    public function mount() {
+        Auth::user()->onboarding->markStep('viewed_terminal');
+    }    
+
     #[Computed]
     public function user()
     {

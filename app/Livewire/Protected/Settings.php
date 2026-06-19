@@ -41,9 +41,9 @@ class Settings extends Component
         'Australia/Sydney',
     ];
 
-    public function mount(): void
-    {
+    public function mount(): void {
         $user = Auth::user();
+        $user->onboarding->markStep('profile_completed');
 
         $this->name = $user->name;
         $this->email = $user->email;

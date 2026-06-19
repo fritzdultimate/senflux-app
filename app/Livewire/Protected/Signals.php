@@ -15,6 +15,10 @@ use Livewire\Component;
 #[Title('Signals')]
 class Signals extends Component
 {
+    
+    public function mount() {
+        Auth::user()->onboarding->markStep('explored_signals');
+    }
     #[Computed]
     public function user()
     {

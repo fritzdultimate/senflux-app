@@ -14,6 +14,11 @@ use Livewire\Component;
 #[Title('Trading Bots')]
 class TradingBots extends Component
 {
+
+    public function mount() {
+        Auth::user()->onboarding->markStep('connected_bot');
+    }
+
     #[Computed]
     public function user()
     {
