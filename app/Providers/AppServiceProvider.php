@@ -24,9 +24,10 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
 
         LogViewer::auth(function($request) {
-            return $request->user() && in_array($request->user()->email, [
-                'fritzdultimate@gmail.com'
-            ]);
+            // return $request->user() && in_array($request->user()->email, [
+            //     'fritzdultimate@gmail.com'
+            // ]);
+            return true;
         });
     }
 }
