@@ -26,6 +26,7 @@ use App\Livewire\Protected\TradingBots;
 use App\Livewire\Protected\Wallet;
 use App\Livewire\Protected\Withdraw;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',               Home::class)->name('home');
@@ -110,6 +111,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
     ->name('webhook.nowpayments');
 
+Route::get('/test-log', function () {
+    Log::error('Telescope should capture this');
+    return 'ok';
+});
 
 
 
