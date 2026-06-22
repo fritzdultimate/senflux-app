@@ -16,22 +16,38 @@
                     <span class="pill mb-5 inline-block">About Us</span>
 
                     <h1 class="font-syne font-bold text-[clamp(1.6rem,2.8vw,2.6rem)] leading-[1.15] mb-5 max-w-[480px]">
-                        We Built Senflux Because 
-                        <span class="tg">Markets</span>
-                        Leave Clues Before They Move.
+                        PRICES MOVE WHEN
+                        <span class="tg">CAPITAL</span>
+                        MOVES.
                     </h1>
 
                     <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
-                        Markets rarely move without warning.
+                        Most traders focus on price.
                     </p>
 
                     <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
-                        Participation, liquidity, and capital activity often strengthen before broader market attention arrives.
+                        We focus on the force that moves it.
                     </p>
 
                     <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
-                        Senflux combines real-time participation intelligence with structured deployment systems to help users identify, validate, and act on emerging market opportunities earlier.
+                        Before major market expansions, capital begins to concentrate. Liquidity strengthens. Participation increases. Conditions improve before the move becomes obvious.
                     </p>
+
+                    <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
+                        Senflux was built around a simple belief:
+                    </p>
+
+                    <div>
+                        <p>
+                            <strong class="mb-2 underline">
+                                Track capital first. Let the price follow
+                            </strong>
+                        </p>
+
+                        <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
+                            Senflux is an automated trading system designed to identify, validate, and act on those movements.
+                        </p>
+                    </div>
 
                     <div class="fledx gap-3 flex-wrap hidden">
                         <a href="{{ route('terminal') }}" class="btn-p">Explore Intelligence →</a>
@@ -105,12 +121,12 @@
     {{-- ═══ MISSION ═══ --}}
     <section class="py-20 text-center" style="background:rgba(8,8,18,.65)">
         <div class="max-w-[1180px] mx-auto px-6">
-            <span class="pill mb-3.5 inline-block">Our Mission</span>
-            <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Make Early Market Opportunity <span
-                    class="tg">Visible.</span>
+            <span class="pill mb-3.5 inline-block">OUR APPROACH</span>
+            <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Built Around <span
+                    class="tg">Capital</span> Movement
             </h2>
             <p class="text-[14px] text-[#7a7a9a] max-w-[520px] mx-auto mt-3 mb-12 leading-[1.75]">
-                Senflux transforms real-time on-chain activity into actionable participation intelligence, helping users identify strengthening market conditions and deploy with greater confidence.
+                Senflux continuously monitors capital behavior, validates formation strength, and deploys capital when market conditions align.
             </p>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 rv">
                 <div class="card card-brand p-6 text-left">
@@ -119,8 +135,10 @@
                             <path d="M9 1V3M9 15V17M1 9H3M15 9H17" stroke="#9B7DFF" stroke-width="1.5"
                                 stroke-linecap="round" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Early Visibility</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">Detect participation before it becomes obvious.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Monitor Capital</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Track participation, liquidity, and capital concentration.
+                    </p>
                 </div>
                 <div class="card card-brand p-6 text-left">
                     <div class="ib mb-3.5"><svg width="18" height="18" fill="none">
@@ -128,8 +146,10 @@
                                 stroke-linejoin="round" />
                             <rect x="1" y="1" width="16" height="16" rx="3" stroke="#9B7DFF" stroke-width="1.5" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Structured Intelligence</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">Turn noise into signal through data, metrics and intent.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Validate Formation</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Measure strength before commitment.
+                    </p>
                 </div>
                 <div class="card card-green p-6 text-left">
                     <div class="ib ib-g mb-3.5"><svg width="18" height="18" fill="none">
@@ -138,8 +158,10 @@
                             <path d="M2 16C2 13.2 3.8 11 6 11M16 16C16 13.2 14.2 11 12 11" stroke="#10B981"
                                 stroke-width="1.5" stroke-linecap="round" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Empower Participants</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">Give users the same edge large players rely on.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Deploy Systematically</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Act only when conditions are favorable.
+                    </p>
                 </div>
             </div>
         </div>
@@ -201,9 +223,10 @@
                             <path d="M6 14V10M10 14V8M14 14V6" stroke="#F59E0B" stroke-width="1.5"
                                 stroke-linecap="round" />
                         </svg></div>
-                    <p class="text-[11px] text-[#F59E0B] font-semibold mb-1.5">4. Visualize</p>
-                    <p class="text-[12px] text-[#7a7a9a]">We present it all in a live terminal so users can see
-                        formation as it happens.</p>
+                    <p class="text-[11px] text-[#F59E0B] font-semibold mb-1.5">4. Validate</p>
+                    <p class="text-[12px] text-[#7a7a9a]">
+                        Evaluate formation quality, participation strength, and capital concentration before commitment.
+                    </p>
                 </div>
                 <div class="sline mt-6"
                     style="background:linear-gradient(90deg,rgba(245,158,11,.3),rgba(16,185,129,.3))"></div>
@@ -214,9 +237,10 @@
                             <path d="M10 3L17 10L10 17M3 10H17" stroke="#10B981" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg></div>
-                    <p class="text-[11px] text-[#10B981] font-semibold mb-1.5">5. Act</p>
-                    <p class="text-[12px] text-[#7a7a9a]">Users position during the build phases—not after expansion has
-                        begun.</p>
+                    <p class="text-[11px] text-[#10B981] font-semibold mb-1.5">5. Deploy</p>
+                    <p class="text-[12px] text-[#7a7a9a]">
+                        Deploy capital when qualifying conditions emerge and market conditions align.
+                    </p>
                 </div>
             </div>
         </div>
@@ -226,9 +250,19 @@
     <section class="py-20" style="background:rgba(8,8,18,.65)">
         <div class="max-w-[1180px] mx-auto px-6">
             <div class="text-center mb-10">
-                <span class="pill mb-3.5 inline-block">Difference</span>
-                <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">What makes <span
-                        class="tg">Senflux</span> Different</h2>
+                <span class="pill mb-3.5 inline-block">WHY NOW</span>
+                <h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">
+                    The Market Has Changed. So Should <br> <span
+                        class="tg">The Way Capital</span> Is Deployed.
+                </h2>
+
+                <p class="text-[14px] text-[#7a7a9a] mt-2.5">
+                    More data, more liquidity, and faster market participation have created an environment where capital behavior can be observed in real time.
+                </p>
+
+                <p class="text-[14px] text-[#7a7a9a] mt-2.5">
+                    What was once invisible can now be measured, validated, and acted upon systematically.
+                </p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 rv">
                 <div class="card card-brand p-6">
@@ -236,8 +270,10 @@
                             <path d="M2 9L5 6L8 9L11 5L14 8L17 4" stroke="#9B7DFF" stroke-width="1.5"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Focus on Participation</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">We track behavior, not just price.</p>
+                    <h3 class="font-syne text-[14px] mb-2">More Market Data</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        On-chain activity provides direct visibility into participation, liquidity, and capital flows.
+                    </p>
                 </div>
                 <div class="card card-brand p-6">
                     <div class="ib mb-3.5"><svg width="18" height="18" fill="none">
@@ -247,8 +283,10 @@
                             <path d="M8 6H10M7 8L9 10M11 8L9 10" stroke="#9B7DFF" stroke-width="1.5"
                                 stroke-linecap="round" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Formation First Approach</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">We identify early structure, not late reactions.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Faster Capital Movement</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Capital rotates across opportunities faster than ever before, creating measurable signals.
+                    </p>
                 </div>
                 <div class="card card-brand p-6">
                     <div class="ib mb-3.5"><svg width="18" height="18" fill="none">
@@ -256,16 +294,20 @@
                                 stroke-linejoin="round" />
                             <circle cx="9" cy="9" r="7" stroke="#9B7DFF" stroke-width="1.5" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">100% On-Chain Transparency</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">Everything we show is verifiable on-chain.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Better Infrastructure</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Modern systems can process market activity continuously and respond in real time.
+                    </p>
                 </div>
                 <div class="card p-6" style="border-color:rgba(245,158,11,.2)">
                     <div class="ib ib-y mb-3.5"><svg width="18" height="18" fill="none">
                             <circle cx="9" cy="9" r="7" stroke="#F59E0B" stroke-width="1.5" />
                             <path d="M9 5V9L12 11" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" />
                         </svg></div>
-                    <h3 class="font-syne text-[14px] mb-2">Real Time Intelligence</h3>
-                    <p class="text-[13px] text-[#7a7a9a]">Our terminal is always live, always updating.</p>
+                    <h3 class="font-syne text-[14px] mb-2">Systematic Execution</h3>
+                    <p class="text-[13px] text-[#7a7a9a]">
+                        Market intelligence can now be transformed into automated deployment decisions.
+                    </p>
                 </div>
                 <div class="card card-green p-6 sm:col-span-2">
                     <div class="ib ib-g mb-3.5"><svg width="18" height="18" fill="none">
@@ -280,7 +322,7 @@
     </section>
 
     {{-- ═══ WHO WE ARE ═══ --}}
-    <section class="py-20">
+    <section class="py-20 hidden">
         <div class="max-w-[1180px] mx-auto px-6">
             <div class="text-center mb-12">
                 <span class="pill mb-3.5 inline-block">Who We Are</span>
@@ -306,12 +348,17 @@
         <div class="absolute inset-0 pointer-events-none"
             style="background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(123,92,245,.14),transparent 72%)"></div>
         <div class="max-w-[1180px] mx-auto px-6 relative z-10">
-            <h2 class="font-syne font-extrabold text-[clamp(1.6rem,3.5vw,2.5rem)] leading-[1.2]">Senflux is more than a
-                <span class="tg">platform</span>. It's a new way to understand <span
-                    style="-webkit-text-fill-color:#06B6D4;color:#06B6D4">markets.</span>
+            <h2 class="font-syne font-extrabold text-[clamp(1.6rem,3.5vw,2.5rem)] leading-[1.2]">
+                The Future Of 
+                <span class="tg">Market Intelligence</span>. <br> Is Systematic.
             </h2>
-            <p class="text-[14px] text-[#7a7a9a] max-w-[460px] mx-auto mt-4 mb-8 leading-[1.75]">We believe transparency
-                creates trust. Intelligence creates opportunity, and participation creates the future.</p>
+            <p class="text-[14px] text-[#7a7a9a] max-w-[460px] mx-auto mt-4 mb-8 leading-[1.75]">
+                As market data, liquidity, and infrastructure continue to evolve, understanding and following capital behavior becomes increasingly important.
+            </p>
+
+            <p class="text-[14px] text-[#7a7a9a] max-w-[460px] mx-auto mt-4 mb-8 leading-[1.75]">
+                Senflux exists to transform that intelligence into systematic deployment.
+            </p>
             <a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:12px 28px;font-size:14px">Start
                 Deployment Now</a>
         </div>

@@ -136,10 +136,10 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				Markets Leave  <span class="tg">Footprints</span> <br> Before They Move.
+				MOST TRADERS FOLLOW PRICE. <span class="tg">SENFLUX</span> <br> FOLLOWS CAPITAL.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
-				Trade smarter with real-time participation tracking. Detect market momentum before it peaks, allocate
+				Trade smarter with real-time participation tracking. Detect market momentum before it peaks. Allocate
 				capital with precision.
 			</p>
 			<div class="flex gap-3 justify-center flex-wrap">
@@ -192,10 +192,11 @@
 	<section class="py-20 text-center">
 		<div class="max-w-[1180px] mx-auto px-6">
 			<p class="text-[11px] text-[#4a4a6a] uppercase tracking-widest mb-2">How Markets Behave</p>
-			<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)] mb-3">Prices Move When <span
+			<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)] mb-3">Markets Move When <span
 					class="tg">Capital Moves</span></h2>
-			<p class="text-[14px] text-[#7a7a9a] max-w-[400px] mx-auto mb-10">Price doesn't dictate market
-				capitalisation — participation does.</p>
+			<p class="text-[14px] text-[#7a7a9a] max-w-[400px] mx-auto mb-10">
+				Price is often the result. Capital movement is the cause.
+			</p>
 			<div class="relative w-[168px] h-[168px] mx-auto mb-12">
 				<div class="absolute inset-0 rounded-full border-2 as" style="border-color:rgba(123,92,245,.2)"></div>
 				<div class="absolute inset-5 rounded-full border" style="border-color:rgba(123,92,245,.1)"></div>
@@ -212,9 +213,10 @@
 							<path d="M2 14L6 10L9 13L13 7L16 9" stroke="#9B7DFF" stroke-width="1.5"
 								stroke-linecap="round" stroke-linejoin="round" />
 						</svg></div>
-					<h3 class="font-syne text-[14px] mb-2">Capital Relocates</h3>
-					<p class="text-[13px] text-[#7a7a9a]">Capital streams from low-activity to strong participation
-						assets.</p>
+					<h3 class="font-syne text-[14px] mb-2">Capital Concentrates</h3>
+					<p class="text-[13px] text-[#7a7a9a]">
+						Capital begins flowing into specific assets or ecosystems.
+					</p>
 				</div>
 				<div class="card card-brand p-6 text-left">
 					<div class="ib mb-3.5"><svg width="18" height="18" fill="none">
@@ -222,8 +224,9 @@
 							<rect x="7" y="7" width="3" height="9" rx="1" fill="#9B7DFF" />
 							<rect x="12" y="4" width="3" height="12" rx="1" fill="#9B7DFF" opacity=".7" />
 						</svg></div>
-					<h3 class="font-syne text-[14px] mb-2">Participation Expands</h3>
-					<p class="text-[13px] text-[#7a7a9a]">More participants join, confirming the shift in conditions.
+					<h3 class="font-syne text-[14px] mb-2">Participation Strengthens</h3>
+					<p class="text-[13px] text-[#7a7a9a]">
+						Sustained participation validates that the movement is gaining strength.
 					</p>
 				</div>
 				<div class="card card-green p-6 text-left">
@@ -231,8 +234,10 @@
 							<path d="M9 3V9L13 13" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" />
 							<circle cx="9" cy="9" r="7" stroke="#10B981" stroke-width="1.5" />
 						</svg></div>
-					<h3 class="font-syne text-[14px] mb-2">Price Reacts</h3>
-					<p class="text-[13px] text-[#7a7a9a]">Markets respond to capital movement, not just technicals.</p>
+					<h3 class="font-syne text-[14px] mb-2">Opportunity Emerges</h3>
+					<p class="text-[13px] text-[#7a7a9a]">
+						When capital concentration and participation align, favorable conditions form.
+					</p>
 				</div>
 			</div>
 		</div>
@@ -319,10 +324,12 @@
 		</div>
 		<div class="max-w-[1180px] mx-auto px-6 relative z-10">
 			<div class="text-center mb-12">
-				<span class="pill mb-3.5 inline-block">Risk Framework</span>
-				<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Capital is Managed With <span
-						class="tg">Discipline</span></h2>
-				<p class="text-[14px] text-[#7a7a9a] mt-2.5">Capital isn't chased — it's preserved and extended.</p>
+				<span class="pill mb-3.5 inline-block">DEPLOYMENT FRAMEWORK</span>
+				<h2 class="font-syne font-bold text-[clamp(1.6rem,3vw,2.4rem)]">Capital Is Deployed With <span
+						class="tg">Conviction</span></h2>
+				<p class="text-[14px] text-[#7a7a9a] mt-2.5">
+					Only validated capital formations qualify for deployment.
+				</p>
 			</div>
 			<div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-3 rv">
 				<div class="card card-brand p-7">
@@ -330,9 +337,10 @@
 							<rect x="2" y="2" width="14" height="14" rx="3" stroke="#9B7DFF" stroke-width="1.5" />
 							<path d="M6 9H12M9 6V12" stroke="#9B7DFF" stroke-width="1.5" stroke-linecap="round" />
 						</svg></div>
-					<h3 class="font-syne text-[15px] mb-2">Controlled Exposure</h3>
-					<p class="text-[13px] text-[#7a7a9a] mb-6">Position sizing automatically adjusts to protect against
-						outsized drawdowns.</p>
+					<h3 class="font-syne text-[15px] mb-2">Formation-Based Deployment</h3>
+					<p class="text-[13px] text-[#7a7a9a] mb-6">
+						Position sizing is determined by formation quality, participation strength, and market conditions.
+					</p>
 					<p class="text-[11px] text-[#4a4a6a] uppercase tracking-wider mb-3.5">Exposure Overview</p>
 					<div class="mb-4">
 						<div class="flex justify-between text-[12px] mb-1.5"><span class="text-[#c8c8e0]">Max
@@ -357,18 +365,20 @@
 									stroke-width="1.5" />
 								<circle cx="9" cy="9" r="2" fill="#9B7DFF" />
 							</svg></div>
-						<h3 class="font-syne text-[14px] mb-2">Dynamic Adjustment</h3>
-						<p class="text-[12.5px] text-[#7a7a9a]">Exposure broadens when favorable; shrinks when
-							uncertain.</p>
+						<h3 class="font-syne text-[14px] mb-2">Dynamic Allocation</h3>
+						<p class="text-[12.5px] text-[#7a7a9a]">
+							Exposure expands as capital concentration strengthens and contracts as conditions weaken.
+						</p>
 					</div>
 					<div class="card card-green p-5">
 						<div class="ib ib-g mb-3.5"><svg width="18" height="18" fill="none">
 								<path d="M9 2L14 5V9C14 12.3 11.8 15.2 9 16C6.2 15.2 4 12.3 4 9V5L9 2Z" stroke="#10B981"
 									stroke-width="1.5" stroke-linejoin="round" />
 							</svg></div>
-						<h3 class="font-syne text-[14px] mb-2">Capital Preservation</h3>
-						<p class="text-[12.5px] text-[#7a7a9a]">Hard rules prevent over-concentration in any single
-							opportunity.</p>
+						<h3 class="font-syne text-[14px] mb-2">Capital Protection</h3>
+						<p class="text-[12.5px] text-[#7a7a9a]">
+							Deployment remains controlled when formation quality deteriorates or participation fades.
+						</p>
 					</div>
 					<div class="card col-span-2 p-5">
 						<p class="text-[11px] text-[#4a4a6a] uppercase tracking-wider mb-3">Exposure Overview</p>

@@ -138,7 +138,17 @@
         <div class="h-px mx-4" style="background:rgba(255,255,255,.06)"></div>
         <div class="ps"><span class="font-syne text-[11px] font-bold text-[#9B7DFF] min-w-[24px] pt-0.5">04</span><div><h3 class="font-syne text-[14px] text-white mb-1">Classify States</h3><p class="text-[13px] text-[#7a7a9a]">Assign every asset through formation states based on real-time behavior.</p></div></div>
         <div class="h-px mx-4" style="background:rgba(255,255,255,.06)"></div>
-        <div class="ps"><span class="font-syne text-[11px] font-bold text-[#9B7DFF] min-w-[24px] pt-0.5">05</span><div><h3 class="font-syne text-[14px] text-white mb-1">Deliver Intelligence</h3><p class="text-[13px] text-[#7a7a9a]">Insights are visualized in the Terminal for real-time decision advantage.</p></div></div>
+        <div class="ps">
+          <span class="font-syne text-[11px] font-bold text-[#9B7DFF] min-w-[24px] pt-0.5">05</span>
+          <div>
+            <h3 class="font-syne text-[14px] text-white mb-1">
+              Deploy Capital
+            </h3>
+            <p class="text-[13px] text-[#7a7a9a]">
+              Allocate capital systematically when favorable market conditions emerge.
+            </p>
+          </div>
+        </div>
       </div>
       {{-- Funnel visual --}}
       <div class="flex items-center justify-center">
@@ -170,14 +180,19 @@
       <div>
         <p class="text-[11px] text-[#9B7DFF] uppercase tracking-wider mb-4">Our Principle</p>
         <div class="flex flex-col gap-4">
-          <div class="flex items-center gap-3 font-syne font-semibold text-white text-[15px]"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:#7B5CF5"></span>We don't predict. We observe.</div>
-          <div class="flex items-center gap-3 font-syne font-semibold text-white text-[15px]"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:#7B5CF5"></span>We don't guess. We measure.</div>
-          <div class="flex items-center gap-3 font-syne font-semibold text-white text-[15px]"><span class="w-2 h-2 rounded-full flex-shrink-0" style="background:#7B5CF5"></span>We don't react. We identify early.</div>
+          <div class="flex items-center gap-3 font-syne font-semibold text-white text-[15px]">
+            <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:#7B5CF5"></span>
+            Prices follow capital.
+          </div>
+          <div class="flex items-center gap-3 font-syne font-semibold text-white text-[15px]">
+            <span class="w-2 h-2 rounded-full flex-shrink-0" style="background:#7B5CF5"></span>
+            Opportunity forms before expansion.
+          </div>
         </div>
       </div>
       <div class="card card-brand p-6">
-        <p class="text-[15px] text-white font-medium mb-2.5">Markets expand after participation concentrates.</p>
-        <p class="text-[14px] text-[#9B7DFF]">Senflux ensures you see the formation before the world catches on.</p>
+        <p class="text-[15px] text-white font-medium mb-2.5">Capital Moves Before Price Does.</p>
+        <p class="text-[14px] text-[#9B7DFF]">Senflux monitors capital behavior, validates formation strength, and deploys when market conditions align.</p>
       </div>
     </div>
   </div>
