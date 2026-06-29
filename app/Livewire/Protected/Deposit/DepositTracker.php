@@ -8,7 +8,6 @@ use App\Services\DepositService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Poll;
 use Livewire\Component;
 
@@ -37,6 +36,12 @@ class DepositTracker extends Component {
         return Deposit::find($this->depositId);
     }
 
+    /**
+     * 3 steps now, not 4 — a deposit's job ends at "confirmed, wallet
+     * credited." There's no deposit-level "active deployment" stage
+     * anymore; deployment happens at the Pack/Slot level, after the
+     * user separately buys a pack.
+     */
     #[Computed]
     public function statusSteps(): array {
         $status = DepositStatus::from($this->deposit->status->value);
@@ -44,11 +49,10 @@ class DepositTracker extends Component {
         $steps = [
             ['key' => 'waiting',    'label' => 'Awaiting Payment',    'icon' => 'clock'],
             ['key' => 'confirming', 'label' => 'Confirming On-Chain', 'icon' => 'shield-check'],
-            ['key' => 'confirmed',  'label' => 'Confirmed',            'icon' => 'check-circle'],
-            ['key' => 'active',     'label' => 'Deployment Active',   'icon' => 'bolt'],
+            ['key' => 'confirmed',  'label' => 'Wallet Credited',     'icon' => 'check-circle'],
         ];
 
-        $order = ['pending' => 0, 'waiting' => 1, 'confirming' => 2, 'confirmed' => 3, 'active' => 3];
+        $order = ['pending' => 0, 'waiting' => 0, 'confirming' => 1, 'confirmed' => 2, 'active' => 2];
         $current = $order[$status->value] ?? 0;
 
         foreach ($steps as $i => &$step) {

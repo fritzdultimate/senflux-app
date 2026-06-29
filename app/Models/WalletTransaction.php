@@ -21,16 +21,18 @@ class WalletTransaction extends Model
         'description',
         'meta',
         'created_by',
+        'locked_portion '
     ];
 
     protected function casts(): array
     {
         return [
-            'amount'         => 'decimal:8',
+            'amount' => 'decimal:8',
+            'locked_portion' => 'decimal:8',
             'balance_before' => 'decimal:8',
-            'balance_after'  => 'decimal:8',
-            'meta'           => 'array',
-            'type'           => TransactionType::class,
+            'balance_after' => 'decimal:8',
+            'meta' => 'array',
+            'type' => TransactionType::class,
         ];
     }
 

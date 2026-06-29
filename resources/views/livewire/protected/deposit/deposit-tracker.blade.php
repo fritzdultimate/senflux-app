@@ -57,7 +57,7 @@
             <div class="tracker-status-text">
                 @if($confirmed)
                     <h1 class="tracker-status-title tracker-status-title--success">Payment Confirmed</h1>
-                    <p class="tracker-status-desc">Your capital has been received. The Senflux intelligence bot is now being activated for your account.</p>
+                    <p class="tracker-status-desc">Your wallet has been credited. Deploy this capital into a Senflux Pack whenever you're ready.</p>
                 @elseif($failed)
                     <h1 class="tracker-status-title tracker-status-title--error">Payment Failed</h1>
                     <p class="tracker-status-desc">The payment could not be processed. Please try a new deposit or contact support.</p>
@@ -155,11 +155,6 @@
             <div class="tracker-detail-row">
                 <span class="tracker-detail-label">Network</span>
                 <span class="tracker-detail-value">{{ strtoupper($deposit->network ?? $deposit->crypto_currency) }}</span>
-            </div>
-
-            <div class="tracker-detail-row">
-                <span class="tracker-detail-label">Plan</span>
-                <span class="tracker-detail-value">{{ $deposit->planConfig->label }}</span>
             </div>
 
             @if($deposit->expires_at)

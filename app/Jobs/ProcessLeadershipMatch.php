@@ -23,10 +23,9 @@ class ProcessLeadershipMatch implements ShouldQueue
 
     public function __construct(public RankAdvancement $advancement) {}
 
-    public function handle(WalletService $wallet): void
-    {
+    public function handle(WalletService $wallet): void {
         $advancedUser = $this->advancement->user;
-        $sponsor      = $advancedUser->referrer;
+        $sponsor      = $advancedUser->referrer; 
 
         if (!$sponsor) return;
 

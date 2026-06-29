@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -93,8 +94,8 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasOne(Referral::class, 'referred_id');
     }
 
-    public function referredBy() {
-        return $this->hasOne(User::class, 'referrer_id');
+    public function referrer(): BelongsTo {
+        return $this->belongsTo(User::class, 'referrer_id');
     }
 
     /** Referral records where this user is the referrer */

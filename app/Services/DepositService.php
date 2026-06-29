@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Enums\DepositStatus;
+use App\Enums\TransactionType;
+use App\Enums\WalletType;
 use App\Models\ActivityLog;
 use App\Models\Deposit;
-use App\Models\PlanConfig;
 use App\Models\User;
-use App\Jobs\ProcessReferralBonus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -38,12 +38,13 @@ class DepositService
     }
 
     /**
-     * Create a new deposit and NowPayments invoice.
+     * Create a new deposit and NowPayments invoice. No Plan involved
+     * anymore — Packs replaced the subscription/plan gate entirely.
+     * Deposit amount is bounded by config, not a per-plan range.
      * Throws if the user already has a pending deposit.
      */
     public function createInvoice(
         User $user,
-        PlanConfig $plan,
         float $amountUsd,
         string $cryptoCurrency = 'sol',
     ): Deposit {
@@ -51,10 +52,15 @@ class DepositService
             throw new \RuntimeException('PENDING_EXISTS');
         }
 
-        return DB::transaction(function () use ($user, $plan, $amountUsd, $cryptoCurrency) {
+        $min = (float) config('senflux.deposit.min_amount', 50);
+
+        if ($amountUsd < $min) {
+            throw new \RuntimeException('BELOW_MINIMUM');
+        }
+
+        return DB::transaction(function () use ($user, $amountUsd, $cryptoCurrency) {
             $deposit = Deposit::create([
                 'user_id'         => $user->id,
-                'plan_config_id'  => $plan->id,
                 'amount_usd'      => $amountUsd,
                 'crypto_currency' => $cryptoCurrency,
                 'status'          => DepositStatus::PENDING->value,
@@ -65,7 +71,7 @@ class DepositService
                 priceCurrency:    'usd',
                 payCurrency:      $cryptoCurrency,
                 orderId:          "SENFLUX-{$deposit->id}",
-                orderDescription: "Senflux {$plan->label} Plan Deposit",
+                orderDescription: "Senflux wallet deposit #{$deposit->id}",
                 successUrl:       route('dashboard.deposit.track', $deposit),
                 cancelUrl:        route('dashboard.deposit.create'),
             );
@@ -93,7 +99,7 @@ class DepositService
     public function cancelPending(Deposit $deposit, User $user): void {
         abort_if($deposit->user_id !== $user->id, 403);
 
-        if (!in_array($deposit->status, [DepositStatus::PENDING->value, DepositStatus::WAITING->value])) {
+        if (!in_array($deposit->status, [DepositStatus::PENDING, DepositStatus::WAITING])) {
             throw new \RuntimeException('NOT_CANCELLABLE');
         }
 
@@ -146,20 +152,46 @@ class DepositService
         }
     }
 
+    /**
+     * A confirmed deposit now does exactly one thing: fund the user's main
+     * wallet with the amount actually paid. It no longer starts a
+     * daily-rate earning cycle and no longer triggers referral bonuses —
+     * referral commission is earned on Pack purchases now (see
+     * PackPurchaseService), not on the act of depositing.
+     *
+     * locked_balance is incremented by the same amount as balance — this
+     * is what makes "can't withdraw a fresh deposit, but can spend it on
+     * a pack" actually true. The lock is released the moment the funds
+     * are spent (WalletService::debitRespectingLock) or, for genuinely
+     * unspent deposits, would need an explicit unlock path if the
+     * business ever wants deposits to become withdrawable on their own —
+     * not part of this change, since the spec is "deposits fund packs,"
+     * not "deposits become free cash after some delay."
+     */
     public function activate(Deposit $deposit): void
     {
         if ($deposit->status->value === DepositStatus::ACTIVE->value) return;
 
         DB::transaction(function () use ($deposit) {
-            $plan = $deposit->planConfig;
+            $amount = (float) ($deposit->actually_paid_usd ?? $deposit->amount_usd);
 
             $deposit->update([
                 'status'       => DepositStatus::ACTIVE->value,
-                'daily_rate'   => $plan->daily_rate_max,
                 'activated_at' => now(),
             ]);
 
-            ProcessReferralBonus::dispatch($deposit);
+            $transaction = $this->wallet->credit(
+                user: $deposit->user,
+                walletType: WalletType::MAIN,
+                amount: $amount,
+                type: TransactionType::DEPOSIT,
+                description: "Deposit #{$deposit->id} confirmed ({$deposit->crypto_currency})",
+                referenceId: $deposit->id,
+                referenceType: Deposit::class,
+            );
+
+            $mainWallet = $deposit->user->wallets()->where('type', WalletType::MAIN->value)->first();
+            $this->wallet->lockBalance($mainWallet, $amount);
         });
     }
 
@@ -194,6 +226,10 @@ class DepositService
             ->paginate($perPage);
     }
 
+    /**
+     * Same change as activate(): funds the wallet (credit + lock) instead
+     * of starting a daily-rate earning cycle.
+     */
     public function manualActivate(
         Deposit $deposit,
         User $admin,
@@ -204,24 +240,35 @@ class DepositService
         if ($deposit->status === DepositStatus::ACTIVE) {
             throw new \RuntimeException('ALREADY_ACTIVE');
         }
-    
+
         DB::transaction(function () use ($deposit, $admin, $actuallyPaidUsd, $actuallyPaid, $reason) {
-            $plan = $deposit->planConfig;
-    
             $before = [
                 'status' => $deposit->status->value,
                 'actually_paid_usd' => $deposit->actually_paid_usd,
                 'actually_paid' => $deposit->actually_paid,
             ];
-    
+
             $deposit->update([
                 'status' => DepositStatus::ACTIVE->value,
                 'actually_paid_usd' => $actuallyPaidUsd,
                 'actually_paid' => $actuallyPaid,
-                'daily_rate' => $plan->daily_rate_max,
                 'activated_at' => now(),
             ]);
-    
+
+            $transaction = $this->wallet->credit(
+                user: $deposit->user,
+                walletType: WalletType::MAIN,
+                amount: $actuallyPaidUsd,
+                type: TransactionType::DEPOSIT,
+                description: "Deposit #{$deposit->id} manually activated by admin #{$admin->id}",
+                referenceId: $deposit->id,
+                referenceType: Deposit::class,
+                createdBy: $admin->id,
+            );
+
+            $mainWallet = $deposit->user->wallets()->where('type', WalletType::MAIN->value)->first();
+            $this->wallet->lockBalance($mainWallet, $actuallyPaidUsd);
+
             ActivityLog::record(
                 action: 'deposit.manual_activation',
                 userId: $admin->id,
@@ -239,9 +286,7 @@ class DepositService
                     'activated_by_name'=> $admin->name,
                 ],
             );
-    
-            ProcessReferralBonus::dispatch($deposit);
-    
+
             Log::info('Deposit manually activated by admin', [
                 'deposit_id' => $deposit->id,
                 'admin_id' => $admin->id,

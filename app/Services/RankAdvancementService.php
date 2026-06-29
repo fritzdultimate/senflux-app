@@ -24,12 +24,12 @@ class RankAdvancementService {
     public function checkAndAdvance(User $user): bool
     {
         $advanced = false;
-        $currentRank = RankLevel::from($user->rank);
+        $currentRank = $user->rank;
 
         while ($nextRank = $currentRank->next()) {
             if (!$this->qualifiesFor($user, $nextRank)) break;
 
-            $this->advance($user, $currentRank, $nextRank);
+            $this->advance($user, $currentRank, $nextRank); 
             $currentRank = $nextRank;
             $advanced = true;
 

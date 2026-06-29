@@ -3,7 +3,6 @@
 namespace App\Livewire\Protected\Deposit;
 
 use App\Models\Deposit;
-use App\Models\PlanConfig;
 use App\Services\DepositService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -12,12 +11,17 @@ use Livewire\Attributes\Poll;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+/**
+ * Deposits are now a standalone "fund your wallet" action — no Plan
+ * selection, no subscription gate. The only gate is "no unsettled
+ * deposit in flight." Earning happens entirely through Packs now
+ * (PackPurchase / PackSlot), bought separately with the funded balance.
+ */
 #[Layout('components.layouts.protected')]
 class CreateDeposit extends Component
 {
     use WithPagination;
 
-    public ?int   $planId         = null;
     public float  $amountUsd      = 0;
     public string $cryptoCurrency = 'sol';
 
@@ -25,36 +29,14 @@ class CreateDeposit extends Component
     public ?int   $depositId    = null;
     public string $errorMessage = '';
 
-    public function selectPlan(int $planId): void
-    {
-        $plan = PlanConfig::find($planId);
-        if (!$plan) return;
-
-        $this->planId    = $planId;
-        $this->amountUsd = (float) $plan->min_deposit;
-        $this->errorMessage = '';
-    }
-
     public function selectCurrency(string $code): void
     {
         $this->cryptoCurrency = $code;
     }
 
-    public function getSelectedPlanProperty(): ?PlanConfig
+    public function getMinDepositProperty(): float
     {
-        return $this->planId ? PlanConfig::find($this->planId) : null;
-    }
-
-    public function getEstimatedDailyProperty(): float
-    {
-        $plan = $this->selectedPlan;
-        if (!$plan || $this->amountUsd <= 0) return 0;
-        return round($this->amountUsd * (float) $plan->daily_rate_max, 2);
-    }
-
-    public function getEstimatedMonthlyProperty(): float
-    {
-        return round($this->estimatedDaily * 30, 2);
+        return (float) config('senflux.deposit.min_amount', 50);
     }
 
     /**
@@ -66,7 +48,6 @@ class CreateDeposit extends Component
         return Auth::user()
             ->deposits()
             ->whereIn('status', ['pending', 'waiting', 'confirming'])
-            ->with('planConfig')
             ->latest()
             ->first();
     }
@@ -81,22 +62,10 @@ class CreateDeposit extends Component
     }
 
     #[Computed]
-    public function activeDeposits()
-    {
-        return Auth::user()
-            ->deposits()
-            ->where('status', 'active')
-            ->with('planConfig')
-            ->latest('activated_at')
-            ->get();
-    }
-
-    #[Computed]
     public function history()
     {
         return Auth::user()
             ->deposits()
-            ->with('planConfig')
             ->latest()
             ->paginate(8, pageName: 'dep-page');
     }
@@ -105,25 +74,13 @@ class CreateDeposit extends Component
     public function refreshIfPending(): void
     {
         if (!$this->pendingDeposit) return;
-        unset($this->pendingDeposit, $this->history, $this->activeDeposits);
+        unset($this->pendingDeposit, $this->history);
     }
 
     public function submit(DepositService $depositService): void
     {
-        if (!Auth::user()->has_active_subscription) {
-            $this->errorMessage = 'An active subscription is required before depositing.';
-            return;
-        }
-
-        $plan = $this->selectedPlan;
-        if (!$plan) {
-            $this->errorMessage = 'Select a plan first.';
-            return;
-        }
-
         $this->validate([
-            'planId'         => 'required|exists:plan_configs,id',
-            'amountUsd'      => "required|numeric|min:{$plan->min_deposit}|max:{$plan->max_deposit}",
+            'amountUsd'      => "required|numeric|min:{$this->minDeposit}",
             'cryptoCurrency' => 'required|string',
         ]);
 
@@ -132,7 +89,6 @@ class CreateDeposit extends Component
         try {
             $deposit = $depositService->createInvoice(
                 user:           Auth::user(),
-                plan:           $plan,
                 amountUsd:      $this->amountUsd,
                 cryptoCurrency: $this->cryptoCurrency,
             );
@@ -143,9 +99,11 @@ class CreateDeposit extends Component
             unset($this->pendingDeposit, $this->history);
 
         } catch (\RuntimeException $e) {
-            $this->errorMessage = $e->getMessage() === 'PENDING_EXISTS'
-                ? 'You already have a pending deposit. Resolve or cancel it before starting a new one.'
-                : 'Could not create payment invoice. Please try again.';
+            $this->errorMessage = match ($e->getMessage()) {
+                'PENDING_EXISTS' => 'You already have a pending deposit. Resolve or cancel it before starting a new one.',
+                'BELOW_MINIMUM'  => "Minimum deposit is \${$this->minDeposit}.",
+                default          => 'Could not create payment invoice. Please try again.',
+            };
         } catch (\Exception $e) {
             $this->errorMessage = 'Could not create payment invoice. Please try again.';
             \Log::error('Deposit creation failed', ['error' => $e->getMessage(), 'user_id' => Auth::id()]);
@@ -163,7 +121,7 @@ class CreateDeposit extends Component
         } catch (\RuntimeException $e) {
             $this->errorMessage = match($e->getMessage()) {
                 'GRACE_PERIOD_EXPIRED' => 'This invoice can no longer be cancelled — the grace period has passed.',
-                default                => 'Could not cancel this invoice.',
+                default => 'Could not cancel this invoice.'
             };
         }
     }
@@ -185,11 +143,9 @@ class CreateDeposit extends Component
 
     public function render()
     {
-        $plans   = PlanConfig::active()->get();
         $deposit = $this->depositId ? Deposit::find($this->depositId) : null;
 
         return view('livewire.protected.deposit.create-deposit', [
-            'plans'   => $plans,
             'deposit' => $deposit,
         ]);
     }

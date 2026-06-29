@@ -72,6 +72,6 @@ class ReferralBonusService
     }
 
     private function getDirectUpline(User $user): ?User {
-        return $user->referredBy ?? null;
+        return $user->referrer;
     }
 }
