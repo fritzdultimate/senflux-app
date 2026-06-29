@@ -154,9 +154,12 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasOne(TeamVolume::class);
     }
 
-    public function activityLogs(): HasMany
-    {
+    public function activityLogs(): HasMany {
         return $this->hasMany(ActivityLog::class);
+    }
+
+    public function packSubscriptions(): HasMany {
+        return $this->hasMany(PackSubscription::class);
     }
 
     // ── Wallet shortcuts ──────────────────────────────────────────────────────

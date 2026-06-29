@@ -24,8 +24,7 @@ class WalletTransaction extends Model
         'locked_portion '
     ];
 
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'amount' => 'decimal:8',
             'locked_portion' => 'decimal:8',
@@ -38,32 +37,34 @@ class WalletTransaction extends Model
 
     // ── Relationships ─────────────────────────────────────────────────────────
 
-    public function wallet(): BelongsTo
-    {
+    public function wallet(): BelongsTo {
         return $this->belongsTo(Wallet::class);
     }
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
-    public function creator(): BelongsTo
-    {
+    public function creator(): BelongsTo {
         return $this->belongsTo(User::class, 'created_by');
     }
 
     /** Polymorphic source (Deposit, Withdrawal, RankAdvancement, etc.) */
-    public function reference(): MorphTo
-    {
+    public function reference(): MorphTo {
         return $this->morphTo('reference');
     }
 
     // ── Accessors ─────────────────────────────────────────────────────────────
 
-    public function getIsDebitAttribute(): bool
-    {
-        return in_array($this->type, [TransactionType::WITHDRAWAL, TransactionType::FEE]);
+    public function getIsDebitAttribute(): bool {
+        return in_array($this->type, [
+            TransactionType::WITHDRAWAL, 
+            TransactionType::FEE,
+            TransactionType::PACK_PURCHASE,
+            TransactionType::PACK_SLOT_FUND,
+            TransactionType::PACK_COMPOUND_RESTAKE,
+
+        ]);
     }
 
     public function getSignedAmountAttribute(): string

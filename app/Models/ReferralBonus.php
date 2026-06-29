@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReferralBonusStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,9 +12,11 @@ class ReferralBonus extends Model
         'earner_id',
         'source_user_id',
         'deposit_id',
+        'pack_subscription_id',
         'level',
         'rate',
         'amount',
+        'status',
         'wallet_transaction_id',
         'processed_at',
     ];
@@ -21,9 +24,10 @@ class ReferralBonus extends Model
     protected function casts(): array
     {
         return [
-            'level'        => 'integer',
-            'rate'         => 'decimal:4',
-            'amount'       => 'decimal:8',
+            'level' => 'integer',
+            'rate' => 'decimal:4',
+            'amount' => 'decimal:8',
+            'status' => ReferralBonusStatus::class,
             'processed_at' => 'datetime',
         ];
     }
@@ -45,6 +49,11 @@ class ReferralBonus extends Model
         return $this->belongsTo(Deposit::class);
     }
 
+    public function packSubscription(): BelongsTo
+    {
+        return $this->belongsTo(PackSubscription::class);
+    }
+
     public function walletTransaction(): BelongsTo
     {
         return $this->belongsTo(WalletTransaction::class);
@@ -60,5 +69,10 @@ class ReferralBonus extends Model
     public function scopeProcessed($query)
     {
         return $query->whereNotNull('processed_at');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', ReferralBonusStatus::PENDING->value);
     }
 }
