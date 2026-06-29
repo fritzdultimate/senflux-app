@@ -21,14 +21,20 @@ enum TransactionType: string {
 
     public function label(): string {
         return match($this) {
-            self::DEPOSIT          => 'Deposit',
-            self::WITHDRAWAL       => 'Withdrawal',
-            self::DAILY_EARNING    => 'Daily Earning',
-            self::REFERRAL_BONUS   => 'Referral Bonus',
-            self::RANK_BONUS       => 'Rank Bonus',
+            self::DEPOSIT => 'Deposit',
+            self::WITHDRAWAL => 'Withdrawal',
+            self::DAILY_EARNING => 'Daily Earning',
+            self::REFERRAL_BONUS => 'Referral Bonus',
+            self::RANK_BONUS => 'Rank Bonus',
             self::LEADERSHIP_MATCH => 'Leadership Match',
-            self::FEE              => 'Fee',
-            self::ADJUSTMENT       => 'Admin Adjustment',
+            self::FEE => 'Fee',
+            self::ADJUSTMENT => 'Admin Adjustment',
+            self::PACK_PURCHASE => 'Pack Purchase',
+            self::PACK_SLOT_FUND => 'Pack Slot Funding',
+            self::PACK_REFUND => 'Pack Refund',
+            self::PACK_CAPITAL_RETURN => 'Pack Capital Return',
+            self::PACK_COMPOUND_RESTAKE => 'Pack Compound Restake',
+            self::PACK_SLOT_EARNING => 'Pack Slot Earning'
         };
     }
 
