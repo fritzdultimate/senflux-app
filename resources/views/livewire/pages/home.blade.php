@@ -136,7 +136,7 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				MOST TRADERS FOLLOW PRICE. <span class="tg">SENFLUX</span> <br> FOLLOWS CAPITAL.
+				Markets Leave <span class="tg">Footprints</span> <br> Before They Move.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
 				Trade smarter with real-time participation tracking. Detect market momentum before it peaks. Allocate
