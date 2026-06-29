@@ -3,6 +3,7 @@
 namespace App\Livewire\Protected\Packs;
 
 use App\Models\PackTier;
+use App\Models\PackSubscription;
 use App\Services\PackPurchaseService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -12,7 +13,6 @@ use Livewire\Component;
 #[Layout('components.layouts.protected')]
 class BrowsePacks extends Component
 {
-    public ?int $confirmingTierId = null;
     public string $errorMessage = '';
 
     #[Computed]
@@ -27,21 +27,20 @@ class BrowsePacks extends Component
         return (float) (Auth::user()->mainWallet()?->balance ?? 0);
     }
 
-    public function confirmBuy(int $tierId): void
+    #[Computed]
+    public function userHasActivePack(): bool
     {
-        $this->confirmingTierId = $tierId;
-        $this->errorMessage = '';
+        return PackSubscription::where('user_id', Auth::id())
+            ->whereIn('status', ['active', 'in_renewal_window'])
+            ->exists();
     }
 
-    public function cancelConfirm(): void
+    public function buy(int $tierId, PackPurchaseService $service): void
     {
-        $this->confirmingTierId = null;
-    }
-
-    public function buy(PackPurchaseService $service): void
-    {
-        $tier = PackTier::find($this->confirmingTierId);
+        $tier = PackTier::find($tierId);
         if (!$tier) return;
+
+        $this->errorMessage = '';
 
         if ($this->walletBalance < (float) $tier->price) {
             $this->errorMessage = "Insufficient wallet balance — you need \${$tier->price} to buy {$tier->name}.";

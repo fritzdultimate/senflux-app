@@ -52,12 +52,12 @@
     {{-- ── CAPITAL ──────────────────────────────────────────────────── --}}
     <div class="sb-sect">CAPITAL</div>
 
-    <a href="{{ route('dashboard.subscribe') }}" wire:navigate
+    <a href="{{ route('dashboard.packs.index') }}" wire:navigate
        class="sb-item {{ request()->routeIs('dashboard.subscribe', 'dashboard.subscription.*') ? 'active' : '' }}">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1L13 4V8c0 3.1-2.7 5.8-5.5 6.5C4.2 13.8 2 11.1 2 8V4z" />
         </svg>
-        <span>Subscription</span>
+        <span>My Packs</span>
     </a>
 
     <a href="{{ route('dashboard.deposit.create') }}" wire:navigate
@@ -84,17 +84,17 @@
     </a>
 
     {{-- ── BOTS ─────────────────────────────────────────────────────── --}}
-    <div class="sb-sect">BOTS</div>
+    <div class="sb-sect">PACKS</div>
 
-    <a href="{{ route('dashboard.bots') }}" wire:navigate class="sb-item">
+    <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="9" height="8" rx="1.5" />
             <path d="M5.5 4V3M9.5 4V3M1 8h2M12 8h2M5.5 8.5v.5M9.5 8.5v.5" />
         </svg>
-        <span>Trading Bots</span>
+        <span>Formation Packs</span>
     </a>
 
-    <a href="{{ route('dashboard.bots.mine') }}" wire:navigate class="sb-item">
+    <a href="{{ route('dashboard.bots.mine') }}" wire:navigate class="sb-item hidden">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 5h11v8.5H2zM5 5V3.5C5 2.1 10 2.1 10 3.5V5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
         </svg>
