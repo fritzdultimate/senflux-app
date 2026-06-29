@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Livewire\Protected\Packs;
+
+use App\Models\PackTier;
+use App\Services\PackPurchaseService;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Component;
+
+#[Layout('components.layouts.protected')]
+class BrowsePacks extends Component
+{
+    public ?int $confirmingTierId = null;
+    public string $errorMessage = '';
+
+    #[Computed]
+    public function tiers()
+    {
+        return PackTier::active()->get();
+    }
+
+    #[Computed]
+    public function walletBalance(): float
+    {
+        return (float) (Auth::user()->mainWallet()?->balance ?? 0);
+    }
+
+    public function confirmBuy(int $tierId): void
+    {
+        $this->confirmingTierId = $tierId;
+        $this->errorMessage = '';
+    }
+
+    public function cancelConfirm(): void
+    {
+        $this->confirmingTierId = null;
+    }
+
+    public function buy(PackPurchaseService $service): void
+    {
+        $tier = PackTier::find($this->confirmingTierId);
+        if (!$tier) return;
+
+        if ($this->walletBalance < (float) $tier->price) {
+            $this->errorMessage = "Insufficient wallet balance — you need \${$tier->price} to buy {$tier->name}.";
+            return;
+        }
+
+        try {
+            $subscription = $service->buyPack(Auth::user(), $tier);
+        } catch (\Throwable $e) {
+            $this->errorMessage = 'Could not complete purchase. Please try again.';
+            \Log::error('Pack purchase failed', ['error' => $e->getMessage(), 'user_id' => Auth::id()]);
+            return;
+        }
+
+        $this->redirect(route('dashboard.packs.show', $subscription), navigate: true);
+    }
+
+    public function render()
+    {
+        return view('livewire.protected.packs.browse-packs');
+    }
+}

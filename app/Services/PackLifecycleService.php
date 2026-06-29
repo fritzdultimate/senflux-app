@@ -18,8 +18,12 @@ use Illuminate\Support\Facades\DB;
  * separate case, since FEE already exists and the description field
  * carries the specific reason).
  */
-class PackLifecycleService {
-    public function __construct(private WalletService $wallet) {}
+class PackLifecycleService
+{
+    public function __construct(
+        private WalletService $wallet,
+        private ReferralBonusService $referralBonus,
+    ) {}
 
     /**
      * Scheduler-called sweep: ACTIVE subscriptions whose maturity has
@@ -28,7 +32,8 @@ class PackLifecycleService {
      * this sweep happens to run, so cron timing imprecision never shifts
      * the deadline a user actually sees.
      */
-    public function openRenewalWindowsForMatured(): int {
+    public function openRenewalWindowsForMatured(): int
+    {
         $matured = PackSubscription::where('status', PackSubscriptionStatus::ACTIVE->value)
             ->where('matures_at', '<=', now())
             ->get();
@@ -50,7 +55,8 @@ class PackLifecycleService {
      * only applies to manual early exit), slots close, subscription
      * becomes EXPIRED.
      */
-    public function closeExpiredRenewalWindows(): int {
+    public function closeExpiredRenewalWindows(): int
+    {
         $expired = PackSubscription::where('status', PackSubscriptionStatus::IN_RENEWAL_WINDOW->value)
             ->where('renewal_window_ends_at', '<=', now())
             ->get();
@@ -73,7 +79,8 @@ class PackLifecycleService {
      * return as the auto-expiry sweep, just user-initiated and marked
      * CLOSED rather than EXPIRED.
      */
-    public function withdraw(PackSubscription $subscription): PackSubscription {
+    public function withdraw(PackSubscription $subscription): PackSubscription
+    {
         $this->guardInRenewalWindow($subscription);
 
         return DB::transaction(function () use ($subscription) {
@@ -95,7 +102,8 @@ class PackLifecycleService {
      * wallet.balance, it just moves from the old slot's row to the new
      * slot's row directly.
      */
-    public function continueCycle(PackSubscription $old): PackSubscription {
+    public function continueCycle(PackSubscription $old): PackSubscription
+    {
         return $this->renewInto($old, $old->packTier, compound: false);
     }
 
@@ -104,7 +112,8 @@ class PackLifecycleService {
      * already-paid-out profit back out of the wallet and stakes it
      * alongside the rolled principal in the new cycle.
      */
-    public function autoCompound(PackSubscription $old): PackSubscription {
+    public function autoCompound(PackSubscription $old): PackSubscription
+    {
         return $this->renewInto($old, $old->packTier, compound: true);
     }
 
@@ -117,7 +126,8 @@ class PackLifecycleService {
      * upgrade is exactly the kind of surprising money movement worth
      * avoiding.
      */
-    public function upgrade(PackSubscription $old, PackTier $newTier, bool $compound = false): PackSubscription {
+    public function upgrade(PackSubscription $old, PackTier $newTier, bool $compound = false): PackSubscription
+    {
         if ($newTier->price <= $old->packTier->price) {
             throw new \DomainException('Upgrade target must be a higher tier than the current pack.');
         }
@@ -131,7 +141,8 @@ class PackLifecycleService {
      * transaction so the ledger shows "capital returned" and "fee
      * charged" as two legible lines rather than one opaque net figure.
      */
-    public function earlyExit(PackSlot $slot): PackSlot {
+    public function earlyExit(PackSlot $slot): PackSlot
+    {
         if ($slot->status !== PackSlotStatus::FUNDED) {
             throw new \DomainException('Only a funded slot can be exited early.');
         }
@@ -168,24 +179,27 @@ class PackLifecycleService {
                 'was_early_exit' => true,
             ]);
 
+            $this->referralBonus->cancelPendingForSlot($slot);
+
             return $slot->fresh();
         });
     }
 
     // ---------------------------------------------------------------------
 
-    private function renewInto(PackSubscription $old, PackTier $newTier, bool $compound): PackSubscription {
+    private function renewInto(PackSubscription $old, PackTier $newTier, bool $compound): PackSubscription
+    {
         $this->guardInRenewalWindow($old);
 
         return DB::transaction(function () use ($old, $newTier, $compound) {
             $new = PackSubscription::create([
-                'user_id' => $old->user_id,
-                'pack_tier_id' => $newTier->id,
-                'status' => PackSubscriptionStatus::ACTIVE,
-                'price_paid' => 0, // renewal — no fresh access fee charged
-                'purchased_at' => now(),
-                'matures_at' => now()->addDays($newTier->duration_days),
-                'renewed_from_subscription_id' => $old->id,
+                'user_id'                       => $old->user_id,
+                'pack_tier_id'                   => $newTier->id,
+                'status'                        => PackSubscriptionStatus::ACTIVE,
+                'price_paid'                     => 0, // renewal — no fresh access fee charged
+                'purchased_at'                   => now(),
+                'matures_at'                     => now()->addDays($newTier->duration_days),
+                'renewed_from_subscription_id'   => $old->id,
             ]);
 
             $oldFundedSlots = $old->slots()->where('status', PackSlotStatus::FUNDED->value)->get();
@@ -258,7 +272,8 @@ class PackLifecycleService {
         });
     }
 
-    private function returnSlotCapital(PackSlot $slot, TransactionType $type, string $reason): void {
+    private function returnSlotCapital(PackSlot $slot, TransactionType $type, string $reason): void
+    {
         $transaction = $this->wallet->credit(
             user: $slot->subscription->user,
             walletType: WalletType::MAIN,
@@ -276,7 +291,8 @@ class PackLifecycleService {
         ]);
     }
 
-    private function guardInRenewalWindow(PackSubscription $subscription): void {
+    private function guardInRenewalWindow(PackSubscription $subscription): void
+    {
         if ($subscription->status !== PackSubscriptionStatus::IN_RENEWAL_WINDOW) {
             throw new \DomainException(
                 "This pack isn't in its renewal window (status: {$subscription->status->value})."

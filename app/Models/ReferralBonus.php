@@ -13,6 +13,7 @@ class ReferralBonus extends Model
         'source_user_id',
         'deposit_id',
         'pack_subscription_id',
+        'pack_slot_id',
         'level',
         'rate',
         'amount',
@@ -24,10 +25,10 @@ class ReferralBonus extends Model
     protected function casts(): array
     {
         return [
-            'level' => 'integer',
-            'rate' => 'decimal:4',
-            'amount' => 'decimal:8',
-            'status' => ReferralBonusStatus::class,
+            'level'        => 'integer',
+            'rate'         => 'decimal:4',
+            'amount'       => 'decimal:8',
+            'status'       => ReferralBonusStatus::class,
             'processed_at' => 'datetime',
         ];
     }
@@ -52,6 +53,11 @@ class ReferralBonus extends Model
     public function packSubscription(): BelongsTo
     {
         return $this->belongsTo(PackSubscription::class);
+    }
+
+    public function packSlot(): BelongsTo
+    {
+        return $this->belongsTo(PackSlot::class);
     }
 
     public function walletTransaction(): BelongsTo

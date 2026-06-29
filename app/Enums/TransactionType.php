@@ -17,6 +17,7 @@ enum TransactionType: string {
     case PACK_REFUND           = 'pack_refund';
     case PACK_CAPITAL_RETURN   = 'pack_capital_return';
     case PACK_COMPOUND_RESTAKE = 'pack_compound_restake';
+    case PACK_SLOT_EARNING = 'pack_slot_earning';
 
     public function label(): string {
         return match($this) {
@@ -39,7 +40,8 @@ enum TransactionType: string {
             self::RANK_BONUS,
             self::LEADERSHIP_MATCH,
             self::PACK_REFUND,
-            self::PACK_CAPITAL_RETURN
+            self::PACK_CAPITAL_RETURN,
+            self::PACK_SLOT_EARNING
         ]);
     }
 }

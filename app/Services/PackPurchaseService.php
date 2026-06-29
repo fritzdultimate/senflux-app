@@ -7,6 +7,7 @@ use App\Enums\PackSubscriptionStatus;
 use App\Enums\TransactionType;
 use App\Enums\WalletType;
 use App\Jobs\ProcessPackPurchaseReferralBonus;
+use App\Jobs\ProcessSlotFundingReferralBonus;
 use App\Models\PackSlot;
 use App\Models\PackSubscription;
 use App\Models\PackTier;
@@ -77,7 +78,8 @@ class PackPurchaseService
      * while deployed — it isn't "locked," it's gone from the wallet and
      * tracked on the slot until the slot closes.
      */
-    public function fundSlot(PackSlot $slot, float $amount): PackSlot {
+    public function fundSlot(PackSlot $slot, float $amount): PackSlot
+    {
         $subscription = $slot->subscription;
         $tier = $subscription->packTier;
 
@@ -112,6 +114,8 @@ class PackPurchaseService
                 'fund_transaction_id' => $transaction->id,
             ]);
 
+            ProcessSlotFundingReferralBonus::dispatch($slot);
+
             return $slot->fresh();
         });
     }
@@ -124,7 +128,8 @@ class PackPurchaseService
      * transaction — a refunded purchase should never quietly leave a
      * pending bonus sitting around to get confirmed later by the sweep.
      */
-    public function refund(PackSubscription $subscription): PackSubscription {
+    public function refund(PackSubscription $subscription): PackSubscription
+    {
         if (!$subscription->isEligibleForRefund()) {
             throw new \DomainException('This pack is no longer eligible for a refund.');
         }

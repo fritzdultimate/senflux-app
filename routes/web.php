@@ -15,6 +15,9 @@ use App\Livewire\Protected\Deposit\DepositTracker;
 use App\Livewire\Protected\LiveTrades;
 use App\Livewire\Protected\Markets;
 use App\Livewire\Protected\MyBots;
+use App\Livewire\Protected\Packs\BrowsePacks;
+use App\Livewire\Protected\Packs\MyPacks;
+use App\Livewire\Protected\Packs\SubscriptionDetail;
 use App\Livewire\Protected\Portfolio;
 use App\Livewire\Protected\RankRewards;
 use App\Livewire\Protected\Settings;
@@ -62,8 +65,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::get('/subscribe', Subscribe::class)
          ->name('subscribe');
 
-    Route::get('/subscription/{subscription}/track', SubscriptionTracker::class)
-        ->name('subscription.track');
+    // Route::get('/subscription/{subscription}/track', SubscriptionTracker::class)
+    //     ->name('subscription.track');
+
+    Route::get('/packs', MyPacks::class)->name('packs.index');
+    Route::get('/packs/browse', BrowsePacks::class)->name('packs.browse');
+    Route::get('/packs/{subscription}', SubscriptionDetail::class)->name('packs.show');
 
     Route::get('/withdraw', Withdraw::class)
     ->name('withdraw');
