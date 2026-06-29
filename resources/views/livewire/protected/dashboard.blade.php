@@ -15,7 +15,7 @@
             <a href="{{ route('dashboard.deposit.track', $this->pendingDeposit) }}" wire:navigate class="dash-alert">
                 <span class="dash-alert__dot"></span>
                 <span>Payment in progress —
-                    <strong>{{ $this->pendingDeposit->planConfig->label }} · ${{ number_format($this->pendingDeposit->amount_usd, 2) }}</strong>
+                    <strong>{{ $this->pendingDeposit->crypto_currency }} · ${{ number_format($this->pendingDeposit->amount_usd, 2) }}</strong>
                     · {{ $this->pendingDeposit->status->label() }}</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
             </a>

@@ -6,6 +6,7 @@ use App\Enums\DepositStatus;
 use App\Enums\RankLevel;
 use App\Enums\TransactionType;
 use App\Models\Deposit;
+use App\Models\Formation;
 use App\Models\MarketFormationStateModel;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -104,8 +105,7 @@ class Dashboard extends Component {
 
     #[Computed]
     public function formationState(): ?object {
-        return DB::table('market_formation_states')
-            ->where('is_current', true)
+        return Formation::where('is_active', true)
             ->first();
     }
 
