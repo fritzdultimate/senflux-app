@@ -1,6 +1,8 @@
 {{-- resources/views/livewire/protected/alerts.blade.php --}}
 <div>
-    @vite('resources/css/alerts.css')
+    @push('styles')
+        @vite('resources/css/alerts.css')
+    @endpush
 
     <div class="alt">
 

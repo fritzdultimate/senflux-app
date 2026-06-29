@@ -1,6 +1,8 @@
 
 <div class="tracker-page" wire:poll.8000ms="poll">
-    @vite(['resources/css/deposit.css'])
+    @push('styles')
+        @vite(['resources/css/deposit.css'])
+    @endpush
 
     @php
         $deposit = $this->deposit;

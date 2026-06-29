@@ -1,7 +1,9 @@
 {{-- resources/views/livewire/protected/portfolio.blade.php --}}
 
 <div>
-    @vite('resources/css/portfolio.css')
+    @push('styles')
+        @vite('resources/css/portfolio.css')
+    @endpush
 
     <div class="pf">
 

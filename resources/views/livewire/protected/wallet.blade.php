@@ -1,5 +1,7 @@
 {{-- resources/views/livewire/protected/wallet.blade.php --}}
-@vite('resources/css/wallet.css')
+@push('styles')
+    @vite('resources/css/wallet.css')
+@endpush
 
 <div class="wal">
 

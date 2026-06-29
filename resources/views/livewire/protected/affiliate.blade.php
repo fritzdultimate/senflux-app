@@ -1,6 +1,8 @@
 {{-- resources/views/livewire/protected/affiliate.blade.php --}}
 <div>
-    @vite('resources/css/affiliate.css')
+    @push('styles')
+        @vite('resources/css/affiliate.css')
+    @endpush
 
     <div class="aff">
 

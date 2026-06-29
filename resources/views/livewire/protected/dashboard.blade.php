@@ -2,7 +2,9 @@
 <div>
 
     {{-- resources/views/livewire/protected/dashboard.blade.php --}}
-    @vite('resources/css/dashboard.css')
+   @push('styles')
+        @vite('resources/css/dashboard.css')
+   @endpush
 
     <div class="dash" wire:poll.30000ms="refresh">
 

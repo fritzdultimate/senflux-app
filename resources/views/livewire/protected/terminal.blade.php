@@ -1,5 +1,7 @@
 {{-- resources/views/livewire/protected/terminal.blade.php --}}
-@vite('resources/css/terminal.css')
+@push('styles')
+    @vite('resources/css/terminal.css')
+@endpush
 
 <div class="term" wire:poll.6000ms="refresh">
 

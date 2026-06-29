@@ -1,6 +1,8 @@
 {{-- resources/views/livewire/protected/markets.blade.php --}}
 <div>
-    @vite('resources/css/markets.css')
+    @push('styles')
+        @vite('resources/css/markets.css')
+    @endpush
 
     <div class="mkt" wire:poll.30000ms="refresh">
 

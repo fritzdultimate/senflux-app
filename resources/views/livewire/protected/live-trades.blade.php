@@ -1,6 +1,8 @@
 {{-- resources/views/livewire/protected/live-trades.blade.php --}}
 <div>
-    @vite('resources/css/live-trades.css')
+    @push('styles')
+        @vite('resources/css/live-trades.css')
+    @endpush
 
     <div class="lt" wire:poll.8000ms="refresh">
 
