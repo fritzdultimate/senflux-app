@@ -55,8 +55,7 @@ class TradingBots extends Component
         return $this->user->deposits()->where('status', 'active')->exists();
     }
 
-    public function render()
-    {
+    public function render() {
         return view('livewire.protected.trading-bots');
     }
 }

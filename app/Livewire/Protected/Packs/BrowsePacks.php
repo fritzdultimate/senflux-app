@@ -16,8 +16,7 @@ class BrowsePacks extends Component
     public string $errorMessage = '';
 
     #[Computed]
-    public function tiers()
-    {
+    public function tiers() {
         return PackTier::active()->get();
     }
 
@@ -35,8 +34,7 @@ class BrowsePacks extends Component
             ->exists();
     }
 
-    public function buy(int $tierId, PackPurchaseService $service): void
-    {
+    public function buy(int $tierId, PackPurchaseService $service): void {
         $tier = PackTier::find($tierId);
         if (!$tier) return;
 
@@ -58,8 +56,7 @@ class BrowsePacks extends Component
         $this->redirect(route('dashboard.packs.show', $subscription), navigate: true);
     }
 
-    public function render()
-    {
+    public function render() {
         return view('livewire.protected.packs.browse-packs');
     }
 }

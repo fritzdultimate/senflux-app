@@ -18,40 +18,42 @@ use Illuminate\Support\Str;
  */
 class PackSeeder extends Seeder {
     public function run(): void {
-        $packs = [
-            [
-                'name' => 'scout',
-                'price' => 250,
-                'duration' => 7,
-                'slot' => 3,
-                'min_amount' => 100
+        $features = [
+            'scout' => [
+                'Flexible access for smaller capital allocations',
+                'Shorter participation period',
+                'Standard Formation Access',
+                'Live Formation Feed',
+                'Real-Time Deployment Tracking',
+                'Capital Intelligence Dashboard',
+                'Daily Profit Withdrawals'
             ],
-            [
-                'name' => 'vanguard',
-                'price' => 500,
-                'duration' => 14,
-                'slot' => 5,
-                'min_amount' => 500
+            'vanguard' => [ 
+                'Broader exposure across multiple formations', 
+                'Longer participation period', 
+                'Enhanced Formation Coverage', 
+                'Advanced Wallet Intelligence', 
+                'Capital Rotation Monitoring', 
+                'Formation Strength Analytics', 
+                'Daily Profit Withdrawals'
             ],
-            [
-                'name' => 'dominion',
-                'price' => 1000,
-                'duration' => 21,
-                'slot' => 10,
-                'min_amount' => 1000
+            'dominion' => [
+                'Maximum exposure to capital rotation opportunities', 
+                'Long-term formation development', 
+                'Advanced Capital Intelligence Coverage', 
+                'Full Formation Monitoring Access', 
+                'Sector Rotation Intelligence', 
+                'Multi-Wallet Cluster Analysis', 
+                'Institutional Analytics Dashboard'
             ]
         ];
 
 
-        foreach ($packs as $pack) {
-            PackTier::create([
-                'key' => $pack['name'],
-                'name' => ucfirst($pack['name']),
-                'price' => $pack['price'],
-                'duration_days' => $pack['duration'],
-                'slot_count' => $pack['slot'],
-                'min_capital_per_slot' => $pack['min_amount']
+        foreach ($features as $key => $feature) {
+            PackTier::where('key', $key)->update([
+                'features' => json_encode($feature)
             ]);
+
         }
 
         $this->command->info("Seeded packs.");
