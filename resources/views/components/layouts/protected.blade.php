@@ -13,8 +13,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-    @vite(['resources/css/dashboard-shared.css'])
-    @vite(['resources/js/nav.js'])
+    @vite([
+        'resources/css/dashboard-shared.css',
+        'resources/js/nav.js',
+    ])
+    @vite(['resources/css/app.css'])
     @stack('styles')
 </head>
 

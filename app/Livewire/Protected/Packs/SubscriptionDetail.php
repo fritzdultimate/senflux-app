@@ -128,6 +128,12 @@ class SubscriptionDetail extends Component
         $this->errorMessage = '';
     }
 
+    public function cancelUpgrade(): void
+    {
+        $this->upgradingToTierId = null;
+        $this->errorMessage = '';
+    }
+
     public function confirmUpgrade(PackLifecycleService $service): void
     {
         $newTier = PackTier::find($this->upgradingToTierId);
