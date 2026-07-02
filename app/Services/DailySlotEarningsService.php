@@ -17,12 +17,10 @@ use Illuminate\Support\Facades\DB;
  * correct behavior per the PDF ("Senflux deploys capital into qualifying
  * formations" — capital sitting unqualified isn't earning).
  */
-class DailySlotEarningsService
-{
+class DailySlotEarningsService {
     public function __construct(private WalletService $wallet) {}
 
-    public function processAllFundedSlots(): void
-    {
+    public function processAllFundedSlots(): void {
         $today = now()->toDateString();
 
         PackSlot::where('status', PackSlotStatus::FUNDED->value)
@@ -35,10 +33,9 @@ class DailySlotEarningsService
             });
     }
 
-    public function processSlotEarning(PackSlot $slot, string $date): ?SlotEarning
-    {
+    public function processSlotEarning(PackSlot $slot, string $date): ?SlotEarning {
         if (SlotEarning::where('pack_slot_id', $slot->id)->where('earned_date', $date)->exists()) {
-            return null; // already processed today — idempotent
+            return null;
         }
 
         $formation = $slot->formation;
@@ -54,9 +51,6 @@ class DailySlotEarningsService
         $earning = round($principal * $baseRate * $multiplier, 8);
 
         if ($earning <= 0) {
-            // Still record the zero-earning day for a complete history,
-            // just skip the wallet credit — crediting $0.00000000 would
-            // just be noise in the ledger.
             return SlotEarning::create([
                 'pack_slot_id' => $slot->id,
                 'user_id' => $slot->subscription->user_id,

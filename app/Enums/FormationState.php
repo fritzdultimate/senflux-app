@@ -39,19 +39,11 @@ enum FormationState: string {
             self::BUILDING  => '#a855f7',
             self::ACTIVE    => '#22c55e',
             self::MATURE    => '#f59e0b',
-            self::WEAKENING => '#ef4444',
+            self::WEAKENING => '#ef4444', 
         };
     }
 
-    /**
-     * Daily earnings multiplier applied against a slot's tier-derived
-     * baseline rate (see PackTier::baselineDailyRate()). These exact
-     * numbers are my own proposed defaults, not given anywhere in the
-     * PDF — only ACTIVE is unambiguous ("eligible for deployment").
-     * Tune freely; this is the one knob that directly controls daily
-     * payout volume, so it deserves a deliberate business decision, not
-     * just accepting my defaults.
-     */
+   
     public function earningsMultiplier(): float {
         return match($this) {
             self::IDLE      => 0.0,  // not deployable — see Formation::isDeployable()

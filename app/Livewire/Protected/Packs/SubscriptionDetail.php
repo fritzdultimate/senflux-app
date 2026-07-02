@@ -55,8 +55,7 @@ class SubscriptionDetail extends Component
         $this->fundingSlotId = null;
     }
 
-    public function fundSlot(PackPurchaseService $service): void
-    {
+    public function fundSlot(PackPurchaseService $service): void {
         $slot = PackSlot::find($this->fundingSlotId);
         if (!$slot) return;
 

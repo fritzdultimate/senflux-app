@@ -41,8 +41,7 @@ class PackTier extends Model
      * Validates a proposed per-slot capital amount against this tier's
      * bounds. Null max means no upper bound (Dominion: "$25,000 and above").
      */
-    public function isCapitalWithinBounds(float $amount): bool
-    {
+    public function isCapitalWithinBounds(float $amount): bool {
         if ($amount < (float) $this->min_capital_per_slot) {
             return false;
         }
@@ -69,8 +68,7 @@ class PackTier extends Model
      * business economics before relying on it, don't just accept the
      * default.
      */
-    public function baselineDailyRate(): float
-    {
+    public function baselineDailyRate(): float {
         if (!$this->historical_outcome_min || !$this->historical_outcome_max || !$this->duration_days) {
             return 0.0;
         }

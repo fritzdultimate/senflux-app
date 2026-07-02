@@ -2,20 +2,19 @@
 
 namespace App\Services;
 
+use App\Enums\FormationEventType;
 use App\Models\Formation;
 use App\Models\PackSlot;
 use App\Enums\PackSlotStatus;
 
-class FormationDeploymentService
-{
+class FormationDeploymentService {
     /**
      * Deploys a funded, undeployed slot into a formation. Manual (admin-
      * picked) for now — see Formation Feed admin notes for how this slots
      * into a future automated engine without this method's signature
      * needing to change.
      */
-    public function deploy(PackSlot $slot, Formation $formation): PackSlot
-    {
+    public function deploy(PackSlot $slot, Formation $formation): PackSlot {
         if ($slot->status !== PackSlotStatus::FUNDED) {
             throw new \DomainException('Only a funded slot can be deployed.');
         }
@@ -33,6 +32,13 @@ class FormationDeploymentService
             'deployed_at' => now(),
         ]);
 
+        app(FormationEventLogger::class)->log(
+            $formation,
+            FormationEventType::DEPLOYMENT_INITIATED,
+            "Deployment initiated — {$formation->token_symbol}",
+            ['slot_id' => $slot->id],
+        );
+
         return $slot->fresh();
     }
 
@@ -42,8 +48,7 @@ class FormationDeploymentService
      * until matched to a new one. Capital is untouched; only the
      * deployment link changes.
      */
-    public function undeploy(PackSlot $slot): PackSlot
-    {
+    public function undeploy(PackSlot $slot): PackSlot {
         $slot->update(['formation_id' => null, 'deployed_at' => null]);
 
         return $slot->fresh();

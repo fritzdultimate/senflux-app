@@ -42,8 +42,7 @@ class PackSlot extends Model
      * matching is done by whoever/whatever runs FormationDeploymentService
      * (admin action today, automated engine later — see ENGINE notes).
      */
-    public function deploymentStatus(): string
-    {
+    public function deploymentStatus(): string {
         if ($this->status !== PackSlotStatus::FUNDED) {
             return 'not_applicable';
         }
@@ -55,23 +54,19 @@ class PackSlot extends Model
         return Formation::acceptingDeployments()->exists() ? 'eligible_for_deployment' : 'waiting_for_qualification';
     }
 
-    public function subscription(): BelongsTo
-    {
+    public function subscription(): BelongsTo {
         return $this->belongsTo(PackSubscription::class, 'pack_subscription_id');
     }
 
-    public function fundTransaction(): BelongsTo
-    {
+    public function fundTransaction(): BelongsTo {
         return $this->belongsTo(WalletTransaction::class, 'fund_transaction_id');
     }
 
-    public function closeTransaction(): BelongsTo
-    {
+    public function closeTransaction(): BelongsTo {
         return $this->belongsTo(WalletTransaction::class, 'close_transaction_id');
     }
 
-    public function isFunded(): bool
-    {
+    public function isFunded(): bool {
         return $this->status === PackSlotStatus::FUNDED;
     }
 }

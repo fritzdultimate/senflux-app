@@ -2,25 +2,20 @@
 
 use App\Jobs\CheckRankAdvancement;
 use App\Jobs\ProcessDailyEarnings;
+use App\Jobs\SyncFormationMarketData;
 use App\Jobs\SyncNowPaymentsStatus;
-use App\Jobs\SyncTrackedAssetPrices;
+use App\Services\DailySlotEarningsService;
 use App\Services\DepositService;
-use App\Services\SubscriptionService;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
 
 Schedule::call(function () {
     app(DepositService::class)->expireStale();
 })->hourly()->name('expire-stale-deposits')->withoutOverlapping();
 
-Schedule::call(function () {
-    app(SubscriptionService::class)->expireStale();
-})->hourly()->name('expire-stale-subscriptions')->withoutOverlapping();
+// Schedule::call(function () {
+//     app(SubscriptionService::class)->expireStale();
+// })->hourly()->name('expire-stale-subscriptions')->withoutOverlapping();
 
 // Daily earnings — midnight UTC every day
 Schedule::job(ProcessDailyEarnings::class)
@@ -40,4 +35,8 @@ Schedule::job(SyncNowPaymentsStatus::class)
     ->everyFiveMinutes()
     ->withoutOverlapping();
 
-Schedule::job(new SyncTrackedAssetPrices())->everyMinute();
+// Schedule::job(new SyncTrackedAssetPrices())->everyMinute();
+
+Schedule::job(DailySlotEarningsService::class)->dailyAt('00:05');
+
+Schedule::job(SyncFormationMarketData::class)->everyFiveMinutes()->withoutOverlapping();

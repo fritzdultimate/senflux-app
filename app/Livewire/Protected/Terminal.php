@@ -1,99 +1,89 @@
 <?php
+// app/Livewire/Protected/Terminal.php
 
 namespace App\Livewire\Protected;
 
-use App\Enums\PlanType;
-use App\Models\LiveTrade;
-use App\Models\Signal;
+use App\Models\Formation;
+use App\Models\FormationEvent;
+use App\Models\PackSlot;
+use App\Services\FormationDeploymentService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Poll;
-use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.protected')]
-#[Title('Terminal')]
 class Terminal extends Component
 {
-
-    public function mount() {
-        Auth::user()->onboarding->markStep('viewed_terminal');
-    }    
+    public ?int $activeFormationId = null;
+    public bool $showAllDeployedSlots = false;
 
     #[Computed]
-    public function user()
-    {
-        return Auth::user();
+    public function formations() {
+        return Formation::active()->orderByDesc('score')->get();
     }
 
     #[Computed]
-    public function formation()
-    {
-        return DB::table('market_formation_states')
-            ->where('is_current', true)
-            ->first();
-    }
-
-    /**
-     * Unified feed — open trades, recently closed trades, and visible signals,
-     * merged into one reverse-chronological stream.
-     */
-    #[Computed]
-    public function feed()
-    {
-        $trades = LiveTrade::with('trackedAsset')
-            ->latest('opened_at')
-            ->take(15)
-            ->get()
-            ->map(fn (LiveTrade $t) => [
-                'kind'      => 'trade',
-                'timestamp' => $t->status->value === 'closed' ? $t->closed_at : $t->opened_at,
-                'data'      => $t,
-            ]);
-
-        $signals = Signal::active()
-            ->with('trackedAsset')
-            ->latest()
-            ->take(15)
-            ->get()
-            ->filter(fn (Signal $s) => $s->isVisibleTo($this->user))
-            ->map(fn (Signal $s) => [
-                'kind'      => 'signal',
-                'timestamp' => $s->created_at,
-                'data'      => $s,
-            ]);
-
-        return $trades->concat($signals)
-            ->sortByDesc('timestamp')
-            ->take(20)
-            ->values();
+    public function activityEvents() {
+        return FormationEvent::with('formation')->recent(15)->get();
     }
 
     #[Computed]
-    public function openTradeCount(): int
-    {
-        return LiveTrade::open()->count();
+    public function selectedFormation(): ?Formation {
+        if (!$this->activeFormationId) {
+            return null;
+        }
+
+        return Formation::with('events')->find($this->activeFormationId);
     }
 
     #[Computed]
-    public function activeSignalCount(): int
-    {
-        return Signal::active()
-            ->get()
-            ->filter(fn (Signal $s) => $s->isVisibleTo($this->user))
-            ->count();
+    public function selectedTimeline() {
+        return $this->selectedFormation?->events()->oldest('created_at')->get() ?? collect();
     }
 
-    #[Poll(6000)]
-    public function refresh(): void
-    {
-        unset($this->formation, $this->feed, $this->openTradeCount, $this->activeSignalCount);
+    #[Computed]
+    public function selectedDeployment(): ?array {
+        return $this->selectedFormation?->userDeploymentStatus(Auth::user());
     }
 
-    public function render()
-    {
+    public function openFormation(int $id): void {
+        $this->activeFormationId = $id;
+    }
+
+
+    public function closeFormation(): void {
+        $this->activeFormationId = null;
+        $this->showAllDeployedSlots = false;
+        unset($this->selectedFormation, $this->selectedTimeline, $this->selectedDeployment);
+    }
+
+    public function deploy(int $slotId, int $formationId, FormationDeploymentService $deploymentService): void {
+        $slot = PackSlot::whereHas('subscription', fn ($q) => $q->where('user_id', Auth::id()))
+            ->findOrFail($slotId);
+
+        $formation = Formation::findOrFail($formationId);
+
+        try {
+            $deploymentService->deploy($slot, $formation);
+            session()->flash('status', "Deployed into {$formation->token_symbol}.");
+            unset($this->selectedDeployment, $this->formations);
+        } catch (\DomainException $e) {
+            $this->addError('deployment', $e->getMessage());
+        }
+    }
+
+    #[Poll(10000)]
+    public function refresh(): void {
+        unset($this->formations, $this->activityEvents);
+    }
+
+    public function toggleDeployedSlots(): void {
+        $this->showAllDeployedSlots = !$this->showAllDeployedSlots;
+    }
+
+    public function render() {
         return view('livewire.protected.terminal');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Formation;
 use App\Models\User;
+use App\Observers\FormationObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 use Opcodes\LogViewer\Facades\LogViewer;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void {
         User::observe(UserObserver::class);
+        Formation::observe(FormationObserver::class);
 
         LogViewer::auth(function($request) {
             // return $request->user() && in_array($request->user()->email, [

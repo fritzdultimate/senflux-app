@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\FormationShareController;
 use App\Http\Controllers\Webhook\NowPaymentsWebhookController;
 use App\Livewire\Auth\CollectEmail;
 use App\Livewire\Pages\About;
@@ -157,6 +158,14 @@ Route::get('/bots', function() {
 Route::get('/notifications', function() {
     return 'settings.notifications';
 })->name('settings.notifications');
+
+Route::get('/f/{formation}', [FormationShareController::class, 'show'])->name('formations.share');
+Route::get('/f/{formation}/og.png', [FormationShareController::class, 'ogImage'])->name('formations.share.og');
+
+
+Route::get('/dev/market-data-test', function (\App\Services\MarketData\CachedMarketDataService $service) {
+    return view('dev.market-data-test', ['data' => $service->summarizeAll()]);
+});
 
 
 

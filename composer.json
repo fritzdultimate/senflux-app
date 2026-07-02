@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.4",
         "filament/filament": "*",
+        "intervention/image": "^4.1",
         "laravel/framework": "^13.8",
         "laravel/socialite": "^5.27",
         "laravel/telescope": "^5.20",
