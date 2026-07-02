@@ -25,7 +25,7 @@
             ];
             $state = $f?->state->value ?? 'idle';
             $color = $stateColors[$state] ?? '#6b7280';
-            $multiplierPct = $f ? round($f->earnings_multiplier * 100) : 50;
+            $multiplierPct = $f ? round($f->state->earningsMultiplier() * 100) : 50;
         @endphp
 
         <div class="mkt-hero" style="border-color: {{ $color }}33; background: linear-gradient(155deg, {{ $color }}14, transparent)">
