@@ -23,7 +23,7 @@
                 'active'    => 'Sustained Formation Confirmed',
                 'weakening' => 'Participation Beginning To Fade',
             ];
-            $state = $f?->state ?? 'idle';
+            $state = $f?->state->value ?? 'idle';
             $color = $stateColors[$state] ?? '#6b7280';
             $multiplierPct = $f ? round($f->earnings_multiplier * 100) : 50;
         @endphp
