@@ -1,4 +1,3 @@
-{{-- resources/views/livewire/protected/terminal.blade.php --}}
 <div wire:poll.10000="refresh">
     @push('styles')
         @vite('resources/css/terminal.css')
