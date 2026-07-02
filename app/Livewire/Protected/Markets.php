@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Protected;
 
+use App\Models\Formation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
@@ -23,16 +24,14 @@ class Markets extends Component
     #[Computed]
     public function formation()
     {
-        return DB::table('market_formation_states')
-            ->where('is_current', true)
+        return Formation::where('is_active', true)
             ->first();
     }
 
     #[Computed]
     public function formationHistory()
     {
-        return DB::table('market_formation_states')
-            ->orderByDesc('created_at')
+        return Formation::orderByDesc('created_at')
             ->limit(10)
             ->get();
     }
