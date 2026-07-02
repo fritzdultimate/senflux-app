@@ -134,7 +134,7 @@
                         @php $hColor = $stateColors[$h->state->value] ?? '#6b7280'; @endphp
                         <div class="mkt-history-row">
                             <span class="mkt-history-dot" style="background: {{ $hColor }}"></span>
-                            <span class="mkt-history-state" style="color: {{ $hColor }}">{{ ucfirst($h->state) }}</span>
+                            <span class="mkt-history-state" style="color: {{ $hColor }}">{{ ucfirst($h->state->value) }}</span>
                             <span class="mkt-history-meta">{{ round($h->state->earningsMultiplier() * 100) }}% multiplier</span>
                             <span class="mkt-history-time">{{ \Carbon\Carbon::parse($h->created_at)->diffForHumans() }}</span>
                         </div>
