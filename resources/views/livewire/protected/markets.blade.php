@@ -131,7 +131,7 @@
             @else
                 <div class="mkt-history-list">
                     @foreach($this->formationHistory as $h)
-                        @php $hColor = $stateColors[$h->state] ?? '#6b7280'; @endphp
+                        @php $hColor = $stateColors[$h->state->value] ?? '#6b7280'; @endphp
                         <div class="mkt-history-row">
                             <span class="mkt-history-dot" style="background: {{ $hColor }}"></span>
                             <span class="mkt-history-state" style="color: {{ $hColor }}">{{ ucfirst($h->state) }}</span>
