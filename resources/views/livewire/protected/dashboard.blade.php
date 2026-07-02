@@ -66,8 +66,8 @@
                         'active'    => '#22c55e',
                         'weakening' => '#ef4444',
                     ];
-                    $stateColor = $stateColors[$formation?->state ?? 'idle'] ?? '#6b7280';
-                    $multiplierPct = $formation ? round($formation->earnings_multiplier * 100) : 50;
+                    $stateColor = $stateColors[$formation?->state->value ?? 'idle'] ?? '#6b7280';
+                    $multiplierPct = $formation ? round($formation->state->earningsMultiplier() * 100) : 50;
                 @endphp
                 <div class="panel__head">
                     <div>
@@ -77,7 +77,7 @@
                     <div class="formation-dot-wrap">
                         <span class="formation-dot" style="background: {{ $stateColor }}"></span>
                         <span class="formation-dot-label" style="color: {{ $stateColor }}">
-                            {{ ucfirst($formation?->state ?? 'Unknown') }}
+                            {{ ucfirst($formation?->state->value ?? 'Unknown') }}
                         </span>
                     </div>
                 </div>
