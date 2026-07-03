@@ -22,9 +22,17 @@ class FormationForm
                     TextInput::make('token_name')->required()->maxLength(100),
                     TextInput::make('ecosystem')->default('Solana')->required(),
                     TextInput::make('mint_address')
-                    ->label('Solana Mint Address')
-                    ->helperText('Required for on-chain verification. Leave blank if this formation has no real token yet — the Terminal will not show a "Verify" link without one.')
-                    ->maxLength(64),
+                        ->label('Solana Mint Address')
+                        ->helperText('Required for on-chain verification. Leave blank if this formation has no real token yet — the Terminal will not show a "Verify" link without one.')
+                        ->maxLength(64),
+                    Select::make('sector')
+                        ->options([
+                            'memecoins' => 'Memecoins', 'ai_agents' => 'AI Agents', 'defi' => 'DeFi',
+                            'depin' => 'DePIN', 'gaming' => 'Gaming', 'rwa' => 'RWA',
+                            'nft' => 'NFT', 'infrastructure' => 'Infrastructure',
+                        ])
+                        ->native(false)
+                        ->helperText('Drives the Participation Heatmap grouping — leave blank to exclude from it.'),
                 ])->columns(3),
 
                 Section::make('Formation Status')->schema([

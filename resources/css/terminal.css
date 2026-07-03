@@ -341,3 +341,27 @@
 .onchain-block__synced { font-size: .66rem; color: #4b5563; margin-top: 6px; }
 
 .onchain-disclaimer { font-size: .72rem; color: #6b7280; line-height: 1.5; margin-top: 10px; }
+
+
+/* ************************* */
+
+/* terminal.css — add */
+.ftbl { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.ftbl th { text-align: left; padding: 10px 16px; font-size: .68rem; color: #4a4a6a; text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid rgba(255,255,255,.06); }
+.ftbl td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: middle; }
+.ftbl tbody tr:hover { background: rgba(155,125,255,.03); }
+
+.badge { font-size: .68rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; letter-spacing: .03em; white-space: nowrap; }
+
+.spark { display: flex; align-items: flex-end; gap: 2px; height: 22px; }
+.spark span { width: 4px; background: #4a4a6a; border-radius: 1px; opacity: .5; }
+
+.hx { border-radius: 10px; padding: 11px 9px; text-align: center; }
+.hx-vs { background: rgba(16,185,129,.2); border: 1px solid rgba(16,185,129,.32); }
+.hx-s  { background: rgba(123,92,245,.2); border: 1px solid rgba(123,92,245,.32); }
+.hx-m  { background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.26); }
+.hx-e  { background: rgba(6,182,212,.15); border: 1px solid rgba(6,182,212,.26); }
+.hx-w  { background: rgba(244,63,94,.14); border: 1px solid rgba(244,63,94,.22); }
+.hx-i  { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); }
+
+.fs { border-radius: 8px; padding: 10px 8px; text-align: center; }

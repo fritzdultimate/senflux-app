@@ -13,38 +13,107 @@
             </div>
         </div>
 
-        <div class="terminal-grid">
-
-            {{-- Formation cards ─────────────────────────────────── --}}
-            <div class="terminal-feed">
-                @forelse ($this->formations as $formation)
-                    @include('components.formation-card', ['formation' => $formation])
-                @empty
-                    <div class="empty-state">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-                        <p>No formations being monitored right now.</p>
+        {{-- Feed + Heatmap --}}
+        <div class="grid grid-cols-1 xl:grid-cols-[1fr_358px] gap-3.5 mb-3.5">
+            <div class="rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+                <div class="flex items-center justify-between px-5 py-3.5 border-b" style="border-color:rgba(255,255,255,.07)">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#10B981] ap block"></span>
+                        <span class="text-[12px] font-semibold text-[#c8c8e0]">LIVE FORMATION FEED</span>
                     </div>
-                @endforelse
-            </div>
+                    <span class="text-[11px] text-[#4a4a6a]">Last updated: {{ now()->diffForHumans() }}</span>
+                </div>
 
-            {{-- Activity ticker ──────────────────────────────────── --}}
-            <div class="panel panel--ticker">
-                <div class="panel__title" style="margin-bottom: 14px; font-size: .8rem">LIVE ACTIVITY</div>
-                <div class="activity-list">
-                    @forelse ($this->activityEvents as $event)
-                        <div class="activity-row activity-row--event">
-                            <span class="event-dot" style="background: {{ $event->formation->state->color() }}"></span>
-                            <div class="activity-row__body">
-                                <span class="activity-row__desc">{{ $event->message }}</span>
-                                <span class="activity-row__time">{{ $event->created_at->diffForHumans() }}</span>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="panel__sub">No activity yet.</p>
-                    @endforelse
+                <div class="overflow-x-auto">
+                    <table class="ftbl">
+                        <thead>
+                            <tr><th>Asset</th><th>Formation State</th><th>Participation (VS 24H)</th><th>Persistence Score</th><th>Velocity</th><th>Trend</th></tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($this->formations as $formation)
+                                <tr wire:click="openFormation({{ $formation->id }})" style="cursor:pointer">
+                                    <td>
+                                        <span class="font-syne font-bold text-white text-[13px]">{{ $formation->token_symbol }}</span><br>
+                                        <span class="text-[11px] text-[#4a4a6a]">{{ $formation->token_name }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge" style="background:{{ $formation->state->color() }}22;color:{{ $formation->state->color() }};border:1px solid {{ $formation->state->color() }}55">
+                                            {{ strtoupper($formation->state->label()) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span style="color:{{ $formation->state->color() }}" class="font-semibold">
+                                            {{ $formation->price_change_24h >= 0 ? '+' : '' }}{{ number_format($formation->price_change_24h ?? 0, 0) }}%
+                                        </span><br>
+                                        <span class="text-[11px] text-[#4a4a6a]">{{ $formation->participationLevel() }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-white font-bold">{{ $formation->score }}</span><span class="text-[#4a4a6a] text-[12px]">/100</span><br>
+                                        <span class="text-[11px] font-semibold" style="color:{{ $formation->state->color() }}">{{ $formation->persistenceLevel() }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="spark">
+                                            @foreach ($formation->sparklineHeights() as $i => $h)
+                                                <span style="height:{{ $h }}px; {{ $loop->last ? 'opacity:1;background:'.$formation->state->color() : '' }}"></span>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                    <td style="color:{{ $formation->state->color() }}" class="text-base">{{ $formation->trendArrow() }}</td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="6" class="text-center py-8 text-[#4a4a6a]">No formations being monitored right now.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
+            {{-- Heatmap --}}
+            <div class="rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+                <div class="flex items-center justify-between px-4 py-3.5 border-b" style="border-color:rgba(255,255,255,.07)">
+                    <span class="text-[12px] font-semibold text-[#c8c8e0]">PARTICIPATION HEATMAP</span>
+                    <span class="text-[11px] text-[#9B7DFF] rounded-md px-2 py-1" style="background:rgba(123,92,245,.1);border:1px solid rgba(123,92,245,.2)">Solana Ecosystem</span>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 p-3.5">
+                    @foreach ($this->sectorHeatmap as $sector)
+                        <div class="hx hx-{{ $sector['strength'] }}">
+                            <p class="text-[10px] font-bold text-white leading-tight">{{ $sector['label'] }}</p>
+                            <p class="text-[9px] mt-0.5" style="color:rgba(255,255,255,.55)">{{ $sector['strengthLabel'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="grid grid-cols-4 border-t" style="border-color:rgba(255,255,255,.07)">
+                    <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
+                        <p class="font-syne font-bold text-[14px] text-white">{{ number_format($this->platformStats['active_participants']) }}</p>
+                        <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">Active Participants</p>
+                    </div>
+                    <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
+                        <p class="font-syne font-bold text-[14px] text-white">{{ number_format($this->platformStats['new_deployments_24h']) }}</p>
+                        <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">New Deployments 24H</p>
+                    </div>
+                    <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
+                        <p class="font-syne font-bold text-[14px] text-white">${{ number_format($this->platformStats['capital_deployed']) }}</p>
+                        <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">Capital Deployed</p>
+                    </div>
+                    <div class="p-3 text-center">
+                        <p class="font-syne font-bold text-[14px] text-white">{{ $this->platformStats['avg_formation_score'] }}/100</p>
+                        <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">Avg Formation Score</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Formation States Explained — reuses your real enum, not a copy of the guest mock --}}
+        <div class="rounded-2xl p-5" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+            <p class="text-[12px] font-semibold text-[#c8c8e0] uppercase tracking-wider mb-4">Formation States Explained</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
+                @foreach (\App\Enums\FormationState::cases() as $state)
+                    <div class="fs" style="background:{{ $state->color() }}14;border:1px solid {{ $state->color() }}33">
+                        <p class="text-[10px] font-bold uppercase tracking-wide leading-tight" style="color:{{ $state->color() }}">{{ $state->label() }}</p>
+                        <p class="text-[10px] text-[rgba(255,255,255,.4)] mt-1 leading-tight">{{ $state->description() }}</p>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 

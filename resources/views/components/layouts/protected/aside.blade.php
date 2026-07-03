@@ -18,7 +18,7 @@
         <span>Dashboard</span>
     </a>
 
-    <a href="{{ route('dashboard.markets') }}" wire:navigate class="sb-item">
+    <a href="{{ route('dashboard.markets') }}" wire:navigate class="sb-item hidden">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 11L5 7.5L7.5 9.5L10.5 5.5L13 7.5" />
         </svg>

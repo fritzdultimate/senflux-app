@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Filament\Resources\FormationWatchlists\Tables;
+
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class FormationWatchlistsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('token_symbol')->weight('bold'),
+                TextColumn::make('mint_address')->limit(20)->copyable(),
+                TextColumn::make('sector'),
+                IconColumn::make('is_active')->boolean(),
+                TextColumn::make('formation.state')->badge()->label('Status')
+                    ->formatStateUsing(fn ($state) => $state?->label() ?? 'Not yet detected')
+                    ->color(fn ($state) => $state ? 'success' : 'gray'),
+            ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                ActionGroup::make([
+                    EditAction::make(), 
+                    DeleteAction::make()
+                ])
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+}

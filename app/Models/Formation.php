@@ -103,4 +103,50 @@ class Formation extends Model
                 ->where('created_at', '<=', now()->subHours(20))
                 ->exists();
     }
+
+    public function liquiditySnapshots(): HasMany {
+        return $this->hasMany(FormationLiquiditySnapshot::class);
+    }
+
+    public function sparklineHeights(int $points = 5): array {
+        $snapshots = $this->liquiditySnapshots()->latest('created_at')->limit($points)->get()->reverse()->values();
+
+        if ($snapshots->count() < 2) {
+            return array_fill(0, $points, 8);
+        }
+
+        $values = $snapshots->pluck('liquidity_usd')->map(fn ($v) => (float) $v);
+        $min = $values->min();
+        $range = max($values->max() - $min, 0.01);
+
+        return $values->map(fn ($v) => 4 + (int) round((($v - $min) / $range) * 18))->toArray();
+    }
+
+    public function persistenceLevel(): string {
+        return match (true) {
+            $this->score >= 65 => 'STRONG',
+            $this->score >= 40 => 'MODERATE',
+            default => 'WEAK',
+        };
+    }
+
+    public function participationLevel(): string {
+        $change = abs((float) ($this->price_change_24h ?? 0));
+
+        return match (true) {
+            $change >= 50 => 'High',
+            $change >= 15 => 'Moderate',
+            default => 'Low',
+        };
+    }
+
+    public function trendArrow(): string {
+        $change = (float) ($this->price_change_24h ?? 0);
+
+        return match (true) {
+            $change > 5 => '↗',
+            $change < -5 => '↓',
+            default => '→',
+        };
+    }
 }

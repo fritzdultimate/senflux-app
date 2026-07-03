@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Formation;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Image;
 // use Intervention\Image\Laravel\Facades\Image;
 
 class FormationShareController extends Controller {
