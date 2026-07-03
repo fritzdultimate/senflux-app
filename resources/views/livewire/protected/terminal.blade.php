@@ -57,7 +57,9 @@
                                     </td>
                                     <td>
                                         <span class="text-white font-bold">{{ $formation->score }}</span><span class="text-[#4a4a6a] text-[12px]">/100</span><br>
-                                        <span class="text-[11px] font-semibold" style="color:{{ $formation->state->color() }}">{{ $formation->persistenceLevel() }}</span>
+                                        <span class="text-[11px] font-semibold" style="color:{{ $formation->state->color() }}">
+                                            {{ $formation->persistenceLevel() }}
+                                        </span>
                                     </td>
                                     <td>
                                         <div class="spark">

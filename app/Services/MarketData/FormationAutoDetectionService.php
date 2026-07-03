@@ -39,6 +39,8 @@ class FormationAutoDetectionService {
                     continue;
                 }
 
+                dd($data);
+
                 if ($item->formation_id === null) {
                     if ($this->tryDetect($item, $data)) {
                         $created++;
