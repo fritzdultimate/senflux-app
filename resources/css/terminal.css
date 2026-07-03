@@ -386,7 +386,7 @@
     /* Break the feed panel out of whatever horizontal padding .dash applies,
        so the table gets the full screen width instead of fighting for room
        inside a padded container. */
-    .terminal-feed-panel, .heatmap-panel, .formation-explained, .modal-panel {
+    .terminal-feed-panel, .heatmap-panel, .formation-explained {
         margin-left: -16px;
         margin-right: -16px;
         border-radius: 0;
@@ -419,6 +419,26 @@
     .dash {
         padding-left: 12px;
         padding-right: 12px;
+    }
+}
+
+/* terminal.css */
+
+@media (max-width: 640px) {
+    .modal-overlay {
+        padding: 0;
+        align-items: flex-end; /* slide-up sheet feel, common mobile pattern */
+    }
+
+    .modal-panel {
+        max-width: 100%;
+        width: 100%;
+        border-radius: 18px 18px 0 0;
+        padding: 20px 16px;
+        max-height: 92dvh; /* dvh accounts for mobile browser chrome correctly, vh doesn't */
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
     }
 }
 
