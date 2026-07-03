@@ -70,15 +70,23 @@ class FormationAutoDetectionService {
             'state' => $this->stateFromScore($score),
             'score' => $score,
             'confidence' => $score >= 60 ? 'High' : ($score >= 35 ? 'Moderate' : 'Low'),
-            'capital_concentration' => 50, 'wallet_quality' => 50, 'participation_growth' => 50, // neutral placeholders until Birdeye
+            'capital_concentration' => 50, 
+            'wallet_quality' => 50, 
+            'participation_growth' => 50, // neutral placeholders until Birdeye
             'liquidity_migration' => 50,
             'detected_at' => now(), 'state_changed_at' => now(),
             'is_active' => true, 
             'auto_managed' => true,
             'mint_address' => $item->mint_address,
-            'dex' => $data['dex'], 'pair_address' => $data['pair_address'], 'pair_url' => $data['pair_url'],
-            'price_usd' => $data['price_usd'], 'liquidity_usd' => $data['liquidity_usd'], 'volume_24h' => $data['volume_24h'],
-            'buys_24h' => $data['buys_24h'], 'sells_24h' => $data['sells_24h'], 'price_change_24h' => $data['price_change_24h'],
+            'dex' => $data['dex'], 
+            'pair_address' => $data['pair_address'], 
+            'pair_url' => $data['pair_url'],
+            'price_usd' => $data['price_usd'], 
+            'liquidity_usd' => $data['liquidity_usd'], 
+            'volume_24h' => $data['volume_24h'],
+            'buys_24h' => $data['buys_24h'], 
+            'sells_24h' => $data['sells_24h'], 
+            'price_change_24h' => $data['price_change_24h'],
             'market_data_synced_at' => now(),
         ]);
 

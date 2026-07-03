@@ -20,6 +20,7 @@ class FormationTradeActivitySyncService {
         // dd($signatures);
 
         foreach ($signatures as $sig) {
+            dd($this->rpc->fetchTransactionDetail($sig['signature']));
             $created = FormationTradeActivity::firstOrCreate(
                 ['tx_signature' => $sig['signature']],
                 [
@@ -49,5 +50,27 @@ class FormationTradeActivitySyncService {
         });
 
         return $total;
+    }
+
+    public function syncSenfluxWallet(string $walletAddress, Formation $formation): int {
+        $signatures = $this->rpc->fetchRecentSignatures($walletAddress, 15);
+        $new = 0;
+
+        foreach ($signatures as $sig) {
+            $created = FormationTradeActivity::firstOrCreate(
+                ['tx_signature' => $sig['signature']],
+                [
+                    'formation_id' => $formation->id,
+                    'slot' => $sig['slot'] ?? null,
+                    'block_time' => isset($sig['blockTime']) ? \Carbon\Carbon::createFromTimestamp($sig['blockTime']) : null,
+                    'source' => TradeActivitySource::SENFLUX->value,
+                    'failed' => (bool) ($sig['err'] ?? false),
+                ],
+            );
+
+            if ($created->wasRecentlyCreated) $new++;
+        }
+
+        return $new;
     }
 }

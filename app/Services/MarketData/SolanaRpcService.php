@@ -40,4 +40,14 @@ class SolanaRpcService {
 
         return $response->json('result') ?? [];
     }
+
+    public function fetchTransactionDetail(string $signature): ?array {
+        $response = Http::timeout(10)->post(self::RPC_URL, [
+            'jsonrpc' => '2.0', 'id' => 1,
+            'method' => 'getTransaction',
+            'params' => [$signature, ['encoding' => 'jsonParsed', 'maxSupportedTransactionVersion' => 0]],
+        ]);
+
+        return $response->successful() ? $response->json('result') : null;
+    }
 }
