@@ -158,4 +158,14 @@ class Formation extends Model
             default => '→',
         };
     }
+
+    public function trendDirection(): string {
+        $change = (float) ($this->price_change_24h ?? 0);
+
+        return match (true) {
+            $change > 5 => 'up',
+            $change < -5 => 'down',
+            default => 'flat',
+        };
+    }
 }
