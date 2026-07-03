@@ -70,7 +70,7 @@
             </div>
 
             {{-- Heatmap --}}
-            <div class="rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+            <div class="heatmap-panel rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
                 <div class="flex items-center justify-between px-4 py-3.5 border-b" style="border-color:rgba(255,255,255,.07)">
                     <span class="text-[12px] font-semibold text-[#c8c8e0]">PARTICIPATION HEATMAP</span>
                     <span class="text-[11px] text-[#9B7DFF] rounded-md px-2 py-1" style="background:rgba(123,92,245,.1);border:1px solid rgba(123,92,245,.2)">Solana Ecosystem</span>
