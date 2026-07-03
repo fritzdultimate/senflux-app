@@ -63,4 +63,8 @@ return [
         'key' => env('BIRDEYE_API_KEY')
     ],
 
+    'helius' => [
+        'key' => env('HELIUS_API_KEY')
+    ],
+
 ];
