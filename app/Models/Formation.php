@@ -15,6 +15,7 @@ class Formation extends Model
         'detected_at', 'state_changed_at', 'is_active', 'notes', 'set_by',
         'mint_address', 'dex', 'pair_address', 'pair_url', 'price_usd', 'liquidity_usd',
         'volume_24h', 'buys_24h', 'sells_24h', 'price_change_24h', 'market_data_synced_at',
+        'sector', 'auto_managed'
     ];
 
     protected function casts(): array {

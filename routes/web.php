@@ -172,3 +172,4 @@ Route::get('/dev/market-data-test', function (\App\Services\MarketData\CachedMar
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/onboarding.php';
+require __DIR__ . '/cronjob.php';
