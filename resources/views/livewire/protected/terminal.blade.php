@@ -84,6 +84,16 @@
                 </div>
                 <div class="grid grid-cols-4 border-t" style="border-color:rgba(255,255,255,.07)">
                     <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
+                        @php $totalWallets = \App\Models\Formation::active()->sum('active_wallets'); @endphp
+                        <p class="font-syne font-bold text-[14px] text-white">
+                            {{ $totalWallets > 0 ? number_format($totalWallets) : '—' }}
+                        </p>
+                        <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">Active Wallets</p>
+                        @if ($totalWallets === 0)
+                            <p class="text-[8px] text-[#4a4a6a] mt-0.5">Pending Birdeye</p>
+                        @endif
+                    </div>
+                    <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
                         <p class="font-syne font-bold text-[14px] text-white">{{ number_format($this->platformStats['active_participants']) }}</p>
                         <p class="text-[9.5px] text-[#4a4a6a] mt-0.5">Active Participants</p>
                     </div>

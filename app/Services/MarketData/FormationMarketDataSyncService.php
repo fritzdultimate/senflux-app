@@ -30,8 +30,7 @@ class FormationMarketDataSyncService
         return $synced;
     }
 
-    public function syncOne(Formation $formation): bool
-    {
+    public function syncOne(Formation $formation): bool {
         $data = $this->dexScreener->summarize($formation->mint_address);
 
         if (!$data) {
@@ -63,6 +62,11 @@ class FormationMarketDataSyncService
 
         if ($score !== null) {
             $formation->update(['liquidity_migration' => $score]);
+        }
+
+        $holderCount = app(BirdeyeService::class)->fetchHolderCount($formation->mint_address);
+        if ($holderCount !== null) {
+            $formation->update(['active_wallets' => $holderCount, 'wallet_data_synced_at' => now()]);
         }
 
         return true;

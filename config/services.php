@@ -59,4 +59,8 @@ return [
         'sandbox'    => env('NOWPAYMENTS_SANDBOX', true),
     ],
 
+    'birdeye' => [
+        'key' => env('BIRDEYE_API_KEY')
+    ],
+
 ];
