@@ -32,6 +32,14 @@ class Formation extends Model
         ];
     }
 
+    public function tradeActivities(): HasMany {
+        return $this->hasMany(FormationTradeActivity::class);
+    }
+
+    public function recentTradeActivities(int $limit = 8) {
+        return $this->tradeActivities()->latest('block_time')->limit($limit)->get();
+    }
+
     public function isVerifiable(): bool {
         return $this->mint_address !== null && $this->pair_url !== null;
     }

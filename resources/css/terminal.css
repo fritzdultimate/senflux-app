@@ -365,3 +365,16 @@
 .hx-i  { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); }
 
 .fs { border-radius: 8px; padding: 10px 8px; text-align: center; }
+
+
+.trade-list { display: flex; flex-direction: column; gap: 6px; }
+.trade-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; border-radius: 8px;
+    background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.05);
+    font-size: .76rem; transition: background .15s;
+}
+.trade-row:hover { background: rgba(155,125,255,.05); }
+.trade-row__sig { font-family: monospace; color: #9ca3af; }
+.trade-row__time { color: #6b7280; }
+.trade-row__verify { color: #22c55e; font-weight: 600; }

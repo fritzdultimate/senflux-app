@@ -141,6 +141,27 @@
                     </p>
                 @endif
 
+                @php $trades = $this->selectedFormation->recentTradeActivities(); @endphp
+                @if ($trades->isNotEmpty())
+                    <div class="modal-section">
+                        <div class="modal-section__title">ON-CHAIN TRADE VERIFICATION</div>
+                        <p class="onchain-disclaimer" style="margin-bottom: 12px;">
+                            Below are real, publicly verifiable Solana transactions on {{ $this->selectedFormation->token_symbol }}'s
+                            liquidity pool — anyone can confirm these directly on Solscan. These are general market activity, not
+                            trades executed by Senflux.
+                        </p>
+                        <div class="trade-list">
+                            @foreach ($trades as $trade)
+                                <a href="{{ $trade->explorerUrl() }}" target="_blank" rel="noopener" class="trade-row">
+                                    <span class="trade-row__sig">{{ Str::limit($trade->tx_signature, 20) }}</span>
+                                    <span class="trade-row__time">{{ $trade->block_time?->diffForHumans() ?? '—' }}</span>
+                                    <span class="trade-row__verify">Verify ↗</span>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <div class="modal-section">
                     <div class="modal-section__title">TIMELINE</div>
                     <div class="timeline">
