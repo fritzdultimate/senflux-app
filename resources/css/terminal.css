@@ -378,3 +378,28 @@
 .trade-row__sig { font-family: monospace; color: #9ca3af; }
 .trade-row__time { color: #6b7280; }
 .trade-row__verify { color: #22c55e; font-weight: 600; }
+
+/* terminal.css */
+
+@media (max-width: 640px) {
+    /* Break the feed panel out of whatever horizontal padding .dash applies,
+       so the table gets the full screen width instead of fighting for room
+       inside a padded container. */
+    .terminal-feed-panel {
+        margin-left: -16px;
+        margin-right: -16px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    .ftbl th,
+    .ftbl td {
+        padding: 10px 12px; /* was 12px 16px — tighter on mobile */
+        font-size: .76rem;
+    }
+
+    /* Hide lower-priority columns rather than cramming all 6 into a narrow screen */
+    .ftbl th:nth-child(5),
+    .ftbl td:nth-child(5) { display: none; } /* Velocity sparkline */
+}

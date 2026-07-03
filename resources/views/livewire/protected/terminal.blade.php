@@ -15,7 +15,8 @@
 
         {{-- Feed + Heatmap --}}
         <div class="grid grid-cols-1 xl:grid-cols-[1fr_358px] gap-3.5 mb-3.5">
-            <div class="rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+
+            <div class="terminal-feed-panel rounded-2xl overflow-hidden" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
                 <div class="flex items-center justify-between px-5 py-3.5 border-b" style="border-color:rgba(255,255,255,.07)">
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-[#10B981] ap block"></span>
@@ -82,6 +83,7 @@
                         </div>
                     @endforeach
                 </div>
+
                 <div class="grid grid-cols-4 border-t" style="border-color:rgba(255,255,255,.07)">
                     <div class="p-3 text-center border-r" style="border-color:rgba(255,255,255,.07)">
                         @php $totalWallets = \App\Models\Formation::active()->sum('active_wallets'); @endphp
@@ -113,7 +115,7 @@
             </div>
         </div>
 
-        {{-- Formation States Explained — reuses your real enum, not a copy of the guest mock --}}
+        
         <div class="rounded-2xl p-5" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
             <p class="text-[12px] font-semibold text-[#c8c8e0] uppercase tracking-wider mb-4">Formation States Explained</p>
             <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
