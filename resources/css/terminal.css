@@ -405,17 +405,12 @@
 }
 
 @media (max-width: 640px) {
-    .terminal-grid > div:last-child .grid-cols-3 {
+    .heatmap-panel .grid-cols-3 {
         grid-template-columns: repeat(2, 1fr) !important;
     }
 
-    .hx {
-        padding: 9px 6px;
-    }
-
-    .hx p:first-child {
-        font-size: 9px;
-    }
+    .hx { padding: 9px 6px; }
+    .hx p:first-child { font-size: 9px; }
 }
 
 /* terminal.css */
