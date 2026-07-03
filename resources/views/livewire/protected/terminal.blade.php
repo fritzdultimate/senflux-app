@@ -28,7 +28,14 @@
                 <div class="overflow-x-auto">
                     <table class="ftbl">
                         <thead>
-                            <tr><th>Asset</th><th>Formation State</th><th>Participation (VS 24H)</th><th>Persistence Score</th><th>Velocity</th><th>Trend</th></tr>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Formation State</th>
+                                <th>Participation (VS 24H)</th>
+                                <th>Persistence Score</th>
+                                <th>Velocity</th>
+                                <th>Trend</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @forelse ($this->formations as $formation)
@@ -59,7 +66,9 @@
                                             @endforeach
                                         </div>
                                     </td>
-                                    <td style="color:{{ $formation->state->color() }}" class="text-base">{{ $formation->trendArrow() }}</td>
+                                    <td style="color:{{ $formation->state->color() }}" class="text-base">
+                                        {{ $formation->trendArrow() }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr><td colspan="6" class="text-center py-8 text-[#4a4a6a]">No formations being monitored right now.</td></tr>
@@ -157,7 +166,13 @@
                                 <a href="{{ $trade->explorerUrl() }}" target="_blank" rel="noopener" class="trade-row">
                                     <span class="trade-row__sig">{{ Str::limit($trade->tx_signature, 20) }}</span>
                                     <span class="trade-row__time">{{ $trade->block_time?->diffForHumans() ?? '—' }}</span>
-                                    <span class="trade-row__verify">Verify ↗</span>
+                                    <span class="trade-row__verify">
+                                        Verify
+                                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M7 17L17 7"/>
+                                            <path d="M8 7h9v9"/>
+                                        </svg>
+                                    </span>
                                 </a>
                             @endforeach
                         </div>
