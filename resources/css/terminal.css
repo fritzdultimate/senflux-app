@@ -403,3 +403,25 @@
     .ftbl th:nth-child(5),
     .ftbl td:nth-child(5) { display: none; } /* Velocity sparkline */
 }
+
+@media (max-width: 640px) {
+    .terminal-grid > div:last-child .grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .hx {
+        padding: 9px 6px;
+    }
+
+    .hx p:first-child {
+        font-size: 9px;
+    }
+}
+
+/* terminal.css */
+@media (max-width: 640px) {
+    .dash {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
