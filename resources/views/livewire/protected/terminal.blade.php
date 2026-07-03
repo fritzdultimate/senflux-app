@@ -142,7 +142,7 @@
         </div>
 
         
-        <div class="rounded-2xl p-5" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
+        <div class="formation-explained rounded-2xl p-5" style="background:rgba(8,8,18,.94);border:1px solid rgba(255,255,255,.07)">
             <p class="text-[12px] font-semibold text-[#c8c8e0] uppercase tracking-wider mb-4">Formation States Explained</p>
             <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
                 @foreach (\App\Enums\FormationState::cases() as $state)
