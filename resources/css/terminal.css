@@ -386,7 +386,7 @@
     /* Break the feed panel out of whatever horizontal padding .dash applies,
        so the table gets the full screen width instead of fighting for room
        inside a padded container. */
-    .terminal-feed-panel {
+    .terminal-feed-panel, .heatmap-panel {
         margin-left: -16px;
         margin-right: -16px;
         border-radius: 0;
