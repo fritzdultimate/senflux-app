@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Formation;
 use App\Models\FormationLiquiditySnapshot;
 use App\Services\MarketData\FormationAutoDetectionService;
-use Illuminate\Http\Request;
 
 class  RunFormationAutoDetectionController extends Controller {
     public function run(FormationAutoDetectionService $service) {
