@@ -33,7 +33,7 @@ class FormationScoringService {
     private function liquidityHealthScore(float $liquidityUsd): int {
         if ($liquidityUsd <= 0) return 0;
 
-        $score = (log10($liquidityUsd) - 3) * 20; // $1k≈0, $100k≈50, $10M≈100
+        $score = (log10($liquidityUsd) - 3) * 25; // $1k≈0, $100k≈50, $10M≈100
 
         return (int) max(0, min(100, round($score)));
     }
@@ -47,7 +47,7 @@ class FormationScoringService {
         return (int) max(0, min(100, round($ratio * 40))); // ratio of 2.5x liquidity in daily volume = 100
     }
 
-    /** Buy-heavy vs sell-heavy, 50 = perfectly balanced. */
+    /** Later I will use buy and sell volume instead of count. */
     private function buySellPressureScore(int $buys, int $sells): int {
         $total = $buys + $sells;
         if ($total === 0) return 50;

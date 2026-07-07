@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\VerifyCronSecret;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->preventRequestForgery(except: [
             'webhook/nowpayments',
+        ]);
+
+        $middleware->alias([
+            'cron.secret' => VerifyCronSecret::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

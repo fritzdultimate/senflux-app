@@ -13,8 +13,7 @@ class FormationMarketDataSyncService
         private LiquidityMigrationScorer $migrationScorer,
     ) {}
 
-    public function syncAll(): int
-    {
+    public function syncAll(): int {
         $synced = 0;
 
         Formation::active()

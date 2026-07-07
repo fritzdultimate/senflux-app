@@ -67,4 +67,8 @@ return [
         'key' => env('HELIUS_API_KEY')
     ],
 
+    'cron' => [
+        'secret' => env('CRON_SECRET'),
+    ],
+
 ];

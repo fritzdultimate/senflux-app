@@ -1,5 +1,4 @@
 <?php
-// app/Services/MarketData/FormationAutoDetectionService.php
 
 namespace App\Services\MarketData;
 
@@ -8,7 +7,6 @@ use App\Enums\FormationState;
 use App\Models\Formation;
 use App\Models\FormationWatchlistItem;
 use App\Services\FormationEventLogger;
-use Illuminate\Support\Facades\Log;
 
 class FormationAutoDetectionService {
     /** Minimum real liquidity before we consider a token "detected" at all — filters out dead/rug pools. */
@@ -38,8 +36,6 @@ class FormationAutoDetectionService {
                 if (!$data) {
                     continue;
                 }
-
-                // dd($data);
 
                 if ($item->formation_id === null) {
                     if ($this->tryDetect($item, $data)) {
@@ -76,7 +72,8 @@ class FormationAutoDetectionService {
             'wallet_quality' => 50, 
             'participation_growth' => 50, // neutral placeholders until Birdeye
             'liquidity_migration' => 50,
-            'detected_at' => now(), 'state_changed_at' => now(),
+            'detected_at' => now(), 
+            'state_changed_at' => now(),
             'is_active' => true, 
             'auto_managed' => true,
             'mint_address' => $item->mint_address,

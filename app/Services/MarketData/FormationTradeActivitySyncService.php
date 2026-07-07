@@ -64,8 +64,7 @@ class FormationTradeActivitySyncService
         return $new;
     }
 
-    public function syncAll(): int
-    {
+    public function syncAll(): int {
         $total = 0;
 
         Formation::active()->whereNotNull('pair_address')->chunkById(50, function ($formations) use (&$total) {
