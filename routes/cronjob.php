@@ -11,4 +11,6 @@ Route::prefix('cron')->name('cron.')->group(function () {
     Route::get('/formation/trade-activity/sync', [SyncFormationTradeActivityController::class, 'run'])->name('formations.trade-activity.sync');
 
     Route::get('/formations/snapshot', [RunFormationAutoDetectionController::class, 'snapshot']);
+
+    Route::get('/formations/snapshot/prune', [RunFormationAutoDetectionController::class, 'pruneSnapshot']);
 });
