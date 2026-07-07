@@ -14,7 +14,7 @@ class  RunFormationAutoDetectionController extends Controller {
         \Log::info("Detected {$result['created']} new, updated {$result['updated']} — " . now());
     }
 
-    public function snapshot(Request $request) {
+    public function snapshot() {
         Formation::query()->chunk(200, function ($formations) {
             foreach ($formations as $formation) {
                 FormationLiquiditySnapshot::create([
