@@ -169,12 +169,12 @@ class FormationAutoDetectionService {
         // dd($birdeyeData['active_wallets']);
         $formation->update([
             'active_wallets' => $birdeyeData['active_wallets'],
-            'holders' => $birdeyeData['holders'] ?? $formation->holders,
-            'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,
-            'unique_wallets_24h_change_pct' => $birdeyeData['unique_wallets_24h_change_pct'] ?? null,
-            'volume_buy_24h_usd' => $birdeyeData['volume_buy_24h_usd'] ?? null,
-            'volume_sell_24h_usd' => $birdeyeData['volume_sell_24h_usd'] ?? null,
-            'birdeye_synced_at' => $birdeyeData ? now() : null,
+            // 'holders' => $birdeyeData['holders'] ?? $formation->holders,
+            // 'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,
+            // 'unique_wallets_24h_change_pct' => $birdeyeData['unique_wallets_24h_change_pct'] ?? null,
+            // 'volume_buy_24h_usd' => $birdeyeData['volume_buy_24h_usd'] ?? null,
+            // 'volume_sell_24h_usd' => $birdeyeData['volume_sell_24h_usd'] ?? null,
+            // 'birdeye_synced_at' => $birdeyeData ? now() : null,
         ]);
 
         // dd($birdEye);
