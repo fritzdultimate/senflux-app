@@ -3,21 +3,67 @@
 namespace App\Models;
 
 use App\Enums\FormationState;
+use App\Services\MarketData\FormationReasoningService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Formation extends Model
-{
-    protected $fillable = [
-        'token_name', 'token_symbol', 'ecosystem', 'state', 'score', 'confidence',
-        'capital_concentration', 'liquidity_migration', 'participation_growth', 'wallet_quality',
-        'detected_at', 'state_changed_at', 'is_active', 'notes', 'set_by',
-        'mint_address', 'dex', 'pair_address', 'pair_url', 'price_usd', 'liquidity_usd',
-        'volume_24h', 'buys_24h', 'sells_24h', 'price_change_24h', 'market_data_synced_at',
-        'sector', 'auto_managed', 'previous_score'
-    ];
+class Formation extends Model {
+    // protected $fillable = [
+    //     'token_name', 
+    //     'token_symbol', 
+    //     'ecosystem', 
+    //     'state', 
+    //     'score', 
+    //     'confidence',
+    //     'capital_concentration', 
+    //     'liquidity_migration', 
+    //     'participation_growth', 
+    //     'wallet_quality',
+    //     'detected_at', 
+    //     'state_changed_at', 
+    //     'is_active', 
+    //     'notes', 
+    //     'set_by',
+    //     'mint_address', 
+    //     'dex', 
+    //     'pair_address', 
+    //     'pair_url', 
+    //     'price_usd', 
+    //     'liquidity_usd',
+    //     'volume_24h', 
+    //     'buys_24h', 
+    //     'sells_24h', 
+    //     'price_change_24h', 
+    //     'market_data_synced_at',
+    //     'sector', 
+    //     'auto_managed', 
+    //     'previous_score',
+        
+    //     'price_change_5m',
+    //     'price_change_1h',
+    //     'price_change_6h',
+    //     'volume_5m',
+    //     'volume_1h',
+    //     'volume_6h',
+    //     'buys_5m',
+    //     'sells_5m',
+    //     'buys_1h',
+    //     'sells_1h',
+    //     'buys_6h',
+    //     'sells_6h',
+    //     'fdv',
+    //     'market_cap',
+    //     'image_url',
+    //     'header',
+    //     'open_graph',
+    //     'unique_buyers_24h',
+    //     'unique_sellers_24h',
+    //     'active_wallets'
+    // ];
 
+    
+    protected $guarded = [];
     protected function casts(): array {
         return [
             'state' => FormationState::class,
@@ -31,6 +77,10 @@ class Formation extends Model
             'market_data_synced_at' => 'datetime',
         ];
     }
+
+    public function scoreReason(): string { return app(FormationReasoningService::class)->score($this); }
+    public function confidenceReason(): string { return app(FormationReasoningService::class)->confidence($this); }
+    public function metricReason(string $key): string { return app(FormationReasoningService::class)->metric($key, $this->{$key}, $this); }
 
     public function tradeActivities(): HasMany {
         return $this->hasMany(FormationTradeActivity::class);

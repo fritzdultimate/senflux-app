@@ -62,6 +62,8 @@ class DexScreenerService
             return null;
         }
 
+        // dd($pair);
+
         return [
             'symbol' => $pair['baseToken']['symbol'] ?? null,
             'name' => $pair['baseToken']['name'] ?? null,
@@ -75,6 +77,28 @@ class DexScreenerService
             'pair_address' => $pair['pairAddress'] ?? null,
             'pair_url' => $pair['url'] ?? null,
             'fetched_at' => now()->toDateTimeString(),
+
+            'price_change_5m' => $pair['priceChange']['m5'] ?? null,
+            'price_change_1h' => $pair['priceChange']['h1'] ?? null,
+            'price_change_6h' => $pair['priceChange']['h6'] ?? null,
+
+            'volume_5m' => $pair['volume']['m5'] ?? null,
+            'volume_1h' => $pair['volume']['h1'] ?? null,
+            'volume_6h' => $pair['volume']['h6'] ?? null,
+
+            'buys_5m'  => $pair['txns']['m5']['buys']  ?? null,
+            'sells_5m' => $pair['txns']['m5']['sells'] ?? null,
+            'buys_1h'  => $pair['txns']['h1']['buys']  ?? null,
+            'sells_1h' => $pair['txns']['h1']['sells'] ?? null,
+            'buys_6h'  => $pair['txns']['h6']['buys']  ?? null,
+            'sells_6h' => $pair['txns']['h6']['sells'] ?? null,
+
+            'fdv'        => $pair['fdv'] ?? null,
+            'market_cap' => $pair['marketCap'] ?? null,
+
+            'image_url' => $pair['info']['imageUrl'] ?? null,
+            'header' => $pair['info']['header'] ?? null,
+            'open_graph' => $pair['info']['openGraph'] ?? null,
         ];
     }
 }

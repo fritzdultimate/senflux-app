@@ -34,4 +34,65 @@ class BirdeyeService {
 
         return $response->json('data.holder');
     }
+
+    public function traderStats(string $mintAddress): ?array {
+        if (!$this->isConfigured()) {
+            return null;
+        }
+
+        $response = Http::withHeaders([
+            'X-API-KEY' => config('services.birdeye.key'),
+            'x-chain'   => 'solana',
+        ])->get(self::BASE_URL . '/defi/v3/token/trade-data/single', [
+            'address' => $mintAddress,
+        ]);
+
+        if (!$response->ok()) {
+            // dd('not successful');
+            return null;
+        }
+
+        $d = $response->json('data') ?? [];
+
+        if (empty($d)) {
+            return null;
+        }
+
+        // dd($data);
+
+        // return [
+        //     'unique_buyers_24h'  => $data['uniqueWallet24hBuy'] ?? null,
+        //     'unique_sellers_24h' => $data['uniqueWallet24hSell'] ?? null,
+            
+        // ];
+
+        return [
+            'active_wallets'     => $d['unique_wallet_24h'] ?? null,
+            'holders'              => $d['holder']              ?? null,
+            'markets'              => $d['market']               ?? null,
+
+            'unique_wallets_5m'    => $d['unique_wallet_5m']      ?? null,
+            'unique_wallets_1h'    => $d['unique_wallet_1h']      ?? null,
+            'unique_wallets_4h'    => $d['unique_wallet_4h']      ?? null,
+            'unique_wallets_24h'   => $d['unique_wallet_24h']     ?? null,
+
+            'unique_wallets_24h_change_pct' => $d['unique_wallet_24h_change_percent'] ?? null,
+
+            'volume_buy_24h_usd'   => $d['volume_buy_24h_usd']   ?? null,
+            'volume_sell_24h_usd'  => $d['volume_sell_24h_usd']  ?? null,
+
+            'trade_24h'            => $d['trade_24h']            ?? null,
+            'trade_24h_change_pct' => $d['trade_24h_change_percent'] ?? null,
+
+            'price_change_5m_pct'  => $d['price_change_5m_percent']  ?? null,
+            'price_change_1h_pct'  => $d['price_change_1h_percent']  ?? null,
+            'price_change_4h_pct'  => $d['price_change_4h_percent']  ?? null,
+            'price_change_8h_pct'  => $d['price_change_8h_percent']  ?? null,
+            'price_change_24h_pct' => $d['price_change_24h_percent'] ?? null,
+
+            'last_trade_at'        => isset($d['last_trade_unix_time'])
+                ? \Carbon\Carbon::createFromTimestamp($d['last_trade_unix_time'])
+                : null,
+        ];
+    }
 }

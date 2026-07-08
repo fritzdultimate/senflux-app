@@ -87,6 +87,24 @@ class FormationAutoDetectionService {
             'sells_24h' => $data['sells_24h'], 
             'price_change_24h' => $data['price_change_24h'],
             'market_data_synced_at' => now(),
+
+            'price_change_5m' => $data['price_change_5m'],
+            'price_change_1h' => $data['price_change_1h'],
+            'price_change_6h' => $data['price_change_6h'],
+            'volume_5m' => $data['volume_5m'],
+            'volume_1h' => $data['volume_1h'],
+            'volume_6h' => $data['volume_6h'],
+            'buys_5m' => $data['buys_5m'],
+            'sells_5m' => $data['sells_5m'],
+            'buys_1h' => $data['buys_1h'],
+            'sells_1h' => $data['sells_1h'],
+            'buys_6h' => $data['buys_6h'],
+            'sells_6h' => $data['sells_6h'],
+            'fdv' => $data['fdv'],
+            'market_cap' => $data['market_cap'],
+            'image_url' => $data['image_url'],
+            'header' => $data['header'],
+            'open_graph' => $data['open_graph'],
         ]);
 
         $item->update(['formation_id' => $formation->id]);
@@ -126,8 +144,41 @@ class FormationAutoDetectionService {
             'sells_24h' => $data['sells_24h'], 
             'price_change_24h' => $data['price_change_24h'],
             'market_data_synced_at' => now(),
+
+            'price_change_5m' => $data['price_change_5m'],
+            'price_change_1h' => $data['price_change_1h'],
+            'price_change_6h' => $data['price_change_6h'],
+            'volume_5m' => $data['volume_5m'],
+            'volume_1h' => $data['volume_1h'],
+            'volume_6h' => $data['volume_6h'],
+            'buys_5m' => $data['buys_5m'],
+            'sells_5m' => $data['sells_5m'],
+            'buys_1h' => $data['buys_1h'],
+            'sells_1h' => $data['sells_1h'],
+            'buys_6h' => $data['buys_6h'],
+            'sells_6h' => $data['sells_6h'],
+            'fdv' => $data['fdv'],
+            'market_cap' => $data['market_cap'],
+            'image_url' => $data['image_url'],
+            'header' => $data['header'],
+            'open_graph' => $data['open_graph'],
         ]);
-        // observer logs STATE_CHANGED automatically if state actually changed.
+
+       // update birdeye value 
+        $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
+        $formation->update([
+            // 'unique_buyers_24h' => $birdeyeData['unique_buyers_24h'],
+            // 'unique_sellers_24h' => $birdeyeData['unique_sellers_24h'],
+            'active_wallets' => $birdeyeData['active_wallets'],
+            'holders' => $birdeyeData['holders'] ?? $formation->holders,
+            'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,
+            'unique_wallets_24h_change_pct' => $birdeyeData['unique_wallets_24h_change_pct'] ?? null,
+            'volume_buy_24h_usd' => $birdeyeData['volume_buy_24h_usd'] ?? null,
+            'volume_sell_24h_usd' => $birdeyeData['volume_sell_24h_usd'] ?? null,
+            'birdeye_synced_at' => $birdeyeData ? now() : null,
+        ]);
+
+        // dd($birdEye);
 
         if ($newState === FormationState::WEAKENING && $formation->getOriginal('state') !== FormationState::WEAKENING->value) {
             $this->eventLogger->log($formation, FormationEventType::EXPOSURE_REDUCED, "Exposure reduction initiated — {$formation->token_symbol}");
