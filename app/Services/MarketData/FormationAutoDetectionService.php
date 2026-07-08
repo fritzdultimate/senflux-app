@@ -166,6 +166,7 @@ class FormationAutoDetectionService {
 
        // update birdeye value 
         $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
+        dd($birdeyeData);
         $formation->update([
             // 'unique_buyers_24h' => $birdeyeData['unique_buyers_24h'],
             // 'unique_sellers_24h' => $birdeyeData['unique_sellers_24h'],
