@@ -86,7 +86,7 @@
                 <div><span>Buys / Sells</span><strong class="split"><span style="color:#10B981">{{ $formation->buys_24h ?? 0 }}</span> / <span style="color:#EF4444">{{ $formation->sells_24h ?? 0 }}</span></strong></div>
 
                 <!-- remove later -->
-                <div class="hidden">
+                <!-- <div class="hidden">
                     <span>Buyers / Sellers</span>
                     <strong class="split">
                         @if ($formation->unique_buyers_24h !== null)
@@ -95,7 +95,7 @@
                             <span style="opacity:.5">Pending Birdeye</span>
                         @endif
                     </strong>
-                </div>
+                </div> -->
 
                 <div>
                     <span>Unique Wallets (24h)</span>
