@@ -56,6 +56,8 @@ class BirdeyeService {
 
             $d = $response->json('data') ?? [];
 
+            dd($d);
+
             if (empty($d)) {
                 return null;
             }
