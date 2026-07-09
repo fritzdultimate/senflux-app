@@ -50,11 +50,10 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
-                dd('not successful');
-                return null;
+                return $this->defaultTraderStats();
             }
 
-            $d = $response->json('data') ?? [];
+            $d = $response->json('data') ?? $this->defaultTraderStats();
 
             // if (empty($d)) {
             //     return null;
@@ -93,8 +92,6 @@ class BirdeyeService {
                 'mint' => $mintAddress,
                 'error' => $e->getMessage()
             ]);
-
-            dd($e->getMessage());
 
             return $this->defaultTraderStats();
         }
