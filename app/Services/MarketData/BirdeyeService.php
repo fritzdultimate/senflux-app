@@ -56,11 +56,9 @@ class BirdeyeService {
 
             $d = $response->json('data') ?? [];
 
-            dd($d);
-
-            if (empty($d)) {
-                return null;
-            }
+            // if (empty($d)) {
+            //     return null;
+            // }
 
             return [
                 'active_wallets' => $d['unique_wallet_24h'] ?? null,
