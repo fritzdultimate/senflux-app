@@ -94,6 +94,8 @@ class BirdeyeService {
                 'error' => $e->getMessage()
             ]);
 
+            dd($e->getMessage());
+
             return $this->defaultTraderStats();
         }
     }
