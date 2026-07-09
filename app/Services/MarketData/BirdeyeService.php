@@ -50,7 +50,7 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
-                // dd('not successful');
+                dd('not successful');
                 return null;
             }
 
