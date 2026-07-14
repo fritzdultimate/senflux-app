@@ -26,6 +26,7 @@ export default defineConfig({
             'resources/css/live-trades.css',
             'resources/css/signals.css',
             'resources/css/terminal.css',
+            'resources/css/formation-detail.css',
             'resources/css/market-insights.css',
 
             'resources/js/app.js',

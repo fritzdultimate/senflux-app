@@ -44,6 +44,11 @@
     "src": "resources/css/deposit.css",
     "isEntry": true
   },
+  "resources/css/formation-detail.css": {
+    "file": "assets/formation-detail-BNAj4TfV.css",
+    "src": "resources/css/formation-detail.css",
+    "isEntry": true
+  },
   "resources/css/live-trades.css": {
     "file": "assets/live-trades-DBVQweFV.css",
     "src": "resources/css/live-trades.css",
@@ -85,7 +90,7 @@
     "isEntry": true
   },
   "resources/css/terminal.css": {
-    "file": "assets/terminal-BI0Yr2qh.css",
+    "file": "assets/terminal-CXmEadHe.css",
     "src": "resources/css/terminal.css",
     "isEntry": true
   },
