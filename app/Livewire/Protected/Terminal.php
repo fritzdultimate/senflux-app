@@ -29,24 +29,6 @@ class Terminal extends Component
         return FormationEvent::with('formation')->recent(15)->get();
     }
 
-    #[Computed]
-    public function selectedFormation(): ?Formation {
-        if (!$this->activeFormationId) {
-            return null;
-        }
-
-        return Formation::with('events')->find($this->activeFormationId);
-    }
-
-    #[Computed]
-    public function selectedTimeline() {
-        return $this->selectedFormation?->events()->oldest('created_at')->get() ?? collect();
-    }
-
-    #[Computed]
-    public function selectedDeployment(): ?array {
-        return $this->selectedFormation?->userDeploymentStatus(Auth::user());
-    }
 
     #[Computed]
     public function sectorHeatmap(): array {
@@ -81,39 +63,9 @@ class Terminal extends Component
         ];
     }
 
-    public function openFormation(int $id): void {
-        $this->activeFormationId = $id;
-    }
-
-
-    public function closeFormation(): void {
-        $this->activeFormationId = null;
-        $this->showAllDeployedSlots = false;
-        unset($this->selectedFormation, $this->selectedTimeline, $this->selectedDeployment);
-    }
-
-    public function deploy(int $slotId, int $formationId, FormationDeploymentService $deploymentService): void {
-        $slot = PackSlot::whereHas('subscription', fn ($q) => $q->where('user_id', Auth::id()))
-            ->findOrFail($slotId);
-
-        $formation = Formation::findOrFail($formationId);
-
-        try {
-            $deploymentService->deploy($slot, $formation);
-            session()->flash('status', "Deployed into {$formation->token_symbol}.");
-            unset($this->selectedDeployment, $this->formations);
-        } catch (\DomainException $e) {
-            $this->addError('deployment', $e->getMessage());
-        }
-    }
-
     #[Poll(10000)]
     public function refresh(): void {
         unset($this->formations, $this->activityEvents);
-    }
-
-    public function toggleDeployedSlots(): void {
-        $this->showAllDeployedSlots = !$this->showAllDeployedSlots;
     }
 
     public function render() {

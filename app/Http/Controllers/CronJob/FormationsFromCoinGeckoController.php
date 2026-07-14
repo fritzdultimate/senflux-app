@@ -24,15 +24,13 @@ class FormationsFromCoinGeckoController extends Controller
 
     protected const PER_PAGE = 10;
     protected const CURSOR_TTL_MINUTES = 10;
-    protected const MAX_PAGES = 50; // ~500 coins ceiling — raise if your Solana-ecosystem list is bigger
+    protected const MAX_PAGES = 50;
 
     public function run(DexScreenerService $dexScreener) {
         if (Cache::get('coingecko_seed:done')) {
             return response()->json(['status' => 'done', 'message' => 'Seed already complete. Hit /cron/coingecko/reset to restart.']);
         }
 
-        // Prevents two overlapping requests (e.g. a slow page reload + a poll)
-        // from racing on the same cursor and double-advancing it.
         $lock = Cache::lock('coingecko_seed:lock', 25);
         if (!$lock->get()) {
             return response()->json(['status' => 'busy', 'message' => 'Another request is already processing this batch.']);
@@ -131,10 +129,6 @@ class FormationsFromCoinGeckoController extends Controller
             $results[] = ['symbol' => $coin['symbol'], 'sector' => $sector, 'mint' => $mint];
         }
 
-        // Cursor for next hit — 10 min TTL as requested. If nobody hits this
-        // route again within 10 minutes, the next request restarts at page 1
-        // rather than resuming; that's the tradeoff of a short TTL vs losing
-        // progress on a stalled process.
         Cache::put('coingecko_seed:page', $page + 1, now()->addMinutes(self::CURSOR_TTL_MINUTES));
 
         return response()->json([
