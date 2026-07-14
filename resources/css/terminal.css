@@ -480,3 +480,12 @@
 
 .onchain-block__stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; }
 .onchain-block__stats .split span { font-weight: 700; }
+
+
+@media (max-width: 480px) {
+    .onchain-block__price-row { grid-template-columns: repeat(2, 1fr); }
+    .onchain-block__timeframes { grid-template-columns: repeat(2, 1fr); }
+    .onchain-block__stats { grid-template-columns: 1fr; }
+    .trade-row { flex-wrap: wrap; gap: 4px; }
+    .trade-row__sig { word-break: break-all; }
+}

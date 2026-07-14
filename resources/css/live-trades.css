@@ -244,3 +244,9 @@
 .lt-status { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
 .lt-status--success { background: rgba(16,185,129,.12); color: #10B981; }
 .lt-status--failed { background: rgba(239,68,68,.12); color: #EF4444; }
+
+.lt-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.lt-table { min-width: 640px; }
