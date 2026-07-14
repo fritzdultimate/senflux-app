@@ -411,43 +411,67 @@
 
 /* Pagination */
 
-.ff-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.ff-table { min-width: 620px; }
+.ff-pagination { border-top: 1px solid rgba(255,255,255,.06); padding: 12px 20px; }
 
-.ff-row { cursor: pointer; transition: background .12s; }
-.ff-row:hover { background: rgba(155,125,255,.05); }
-.ff-row:active { background: rgba(155,125,255,.09); }
-
-.ff-symbol { font-family: 'Syne', sans-serif; font-weight: 700; color: #fff; font-size: .82rem; }
-.ff-name { font-size: .68rem; color: #4a4a6a; }
-.ff-sub { font-size: .68rem; color: #4a4a6a; }
-.ff-change { font-weight: 600; font-size: .82rem; }
-.ff-score { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: #fff; font-size: .88rem; }
-.ff-score-max { font-family: 'IBM Plex Mono', monospace; color: #4a4a6a; font-size: .72rem; }
-.ff-empty { text-align: center; padding: 32px 0; color: #4a4a6a; font-size: .82rem; }
-
-.ff-pagination {
-    padding: 14px 20px;
-    border-top: 1px solid rgba(255,255,255,.06);
+.ff-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-/* Style Laravel's default Tailwind pagination partial to match the terminal theme */
-.ff-pagination nav > div:first-child { display: none; } /* hides the "Showing X to Y of Z" text on mobile-cramped layouts if your view includes it — remove this line if you want it kept */
-.ff-pagination span[aria-current="page"] span,
-.ff-pagination button,
-.ff-pagination a {
+.ff-pager__info {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: .74rem !important;
-    color: #9ca3af !important;
+    font-size: .68rem;
+    color: #4a4a6a;
 }
-.ff-pagination span[aria-current="page"] span {
-    background: rgba(155,125,255,.15) !important;
-    color: #9B7DFF !important;
-    border-color: rgba(155,125,255,.3) !important;
-}
-.ff-pagination a:hover { color: #fff !important; background: rgba(255,255,255,.04) !important; }
-.ff-pagination svg { width: 14px; height: 14px; }
 
-@media (max-width: 640px) {
-    .ff-col-velocity { display: none; }
+.ff-pager__controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ff-pager__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .74rem;
+    font-weight: 600;
+    color: #9ca3af;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    transition: background .12s, color .12s, border-color .12s;
+}
+.ff-pager__btn:hover:not(.ff-pager__btn--disabled):not(.ff-pager__btn--active) {
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    border-color: rgba(255,255,255,.15);
+}
+.ff-pager__btn--active {
+    background: rgba(155,125,255,.15);
+    color: #9B7DFF;
+    border-color: rgba(155,125,255,.35);
+}
+.ff-pager__btn--disabled {
+    color: #374151;
+    border-color: rgba(255,255,255,.04);
+    cursor: default;
+}
+.ff-pager__ellipsis {
+    color: #4a4a6a;
+    font-size: .74rem;
+    padding: 0 4px;
+}
+
+@media (max-width: 480px) {
+    .ff-pager { justify-content: center; }
+    .ff-pager__info { display: none; } /* not hidden by a mismatched selector guess this time — deliberately dropped to save space on small screens */
+    .ff-pager__controls { flex-wrap: wrap; justify-content: center; }
 }
