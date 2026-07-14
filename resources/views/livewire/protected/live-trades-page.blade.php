@@ -1,7 +1,8 @@
 <div wire:poll.8000="refresh">
     @push('styles')
-        @vite('resources/css/terminal.css')
         @vite('resources/css/live-trades.css')
+        @vite('resources/css/formation-detail.css')
+        @vite('resources/css/terminal.css')
     @endpush
 
     <div class="lt-page">
