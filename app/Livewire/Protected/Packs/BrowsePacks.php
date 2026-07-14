@@ -40,6 +40,11 @@ class BrowsePacks extends Component
 
         $this->errorMessage = '';
 
+        if ($this->userHasActivePack) {
+            $this->errorMessage = 'You already have an active pack. Withdraw or let it complete before buying another.';
+            return;
+        }
+
         if ($this->walletBalance < (float) $tier->price) {
             $this->errorMessage = "Insufficient wallet balance — you need \${$tier->price} to buy {$tier->name}.";
             return;

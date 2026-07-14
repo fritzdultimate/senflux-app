@@ -10,22 +10,23 @@ class PackSlot extends Model
 {
     protected $fillable = [
         'pack_subscription_id', 'slot_number', 'status', 'formation_id', 'deployed_at',
+        'next_earning_at',
         'capital_amount', 'realized_profit', 'funded_at', 'closed_at',
         'fund_transaction_id', 'close_transaction_id',
         'early_exit_fee_charged', 'was_early_exit',
     ];
 
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
-            'status'                  => PackSlotStatus::class,
-            'capital_amount'          => 'decimal:2',
-            'realized_profit'         => 'decimal:2',
-            'deployed_at'             => 'datetime',
-            'funded_at'               => 'datetime',
-            'closed_at'               => 'datetime',
-            'early_exit_fee_charged'  => 'decimal:2',
-            'was_early_exit'          => 'boolean',
+            'status' => PackSlotStatus::class,
+            'capital_amount' => 'decimal:2',
+            'realized_profit' => 'decimal:2',
+            'deployed_at' => 'datetime',
+            'next_earning_at' => 'datetime',
+            'funded_at' => 'datetime',
+            'closed_at' => 'datetime',
+            'early_exit_fee_charged' => 'decimal:2',
+            'was_early_exit' => 'boolean',
         ];
     }
 
@@ -34,14 +35,6 @@ class PackSlot extends Model
         return $this->belongsTo(Formation::class);
     }
 
-    /**
-     * The exact three statuses the PDF describes for a slot's deployment
-     * panel — "Eligible For Deployment" / "Already Deployed" / "Waiting
-     * For Qualification." Eligibility just means "funded, no formation
-     * yet, and at least one ACTIVE formation exists with room" — actual
-     * matching is done by whoever/whatever runs FormationDeploymentService
-     * (admin action today, automated engine later — see ENGINE notes).
-     */
     public function deploymentStatus(): string {
         if ($this->status !== PackSlotStatus::FUNDED) {
             return 'not_applicable';

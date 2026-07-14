@@ -36,9 +36,20 @@ class PackPurchaseService
      * nothing pays out yet, on purpose, since this purchase is still
      * within its 3-day refund window).
      */
-    public function buyPack(User $user, PackTier $tier): PackSubscription
-    {
+    public function buyPack(User $user, PackTier $tier): PackSubscription {
         return DB::transaction(function () use ($user, $tier) {
+            $hasActive = PackSubscription::where('user_id', $user->id)
+                ->whereIn('status', [
+                    PackSubscriptionStatus::ACTIVE->value,
+                    PackSubscriptionStatus::IN_RENEWAL_WINDOW->value,
+                ])
+                ->lockForUpdate()
+                ->exists();
+
+            if ($hasActive) {
+                throw new \DomainException('You already have an active pack subscription.');
+            }
+
             $transaction = $this->wallet->debitRespectingLock(
                 user: $user,
                 walletType: WalletType::MAIN,
