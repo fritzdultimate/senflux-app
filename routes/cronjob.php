@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CronJob\DailySlotEarningsController;
 use App\Http\Controllers\CronJob\FormationsFromCoinGeckoController;
 use App\Http\Controllers\CronJob\RunFormationAutoDetectionController;
+use App\Http\Controllers\CronJob\SlotAutoDeploymentController;
 use App\Http\Controllers\CronJob\SyncFormationTradeActivityController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +20,11 @@ Route::prefix('cron')->name('cron.')->group(function () {
 
     Route::get('/coingecko', [FormationsFromCoinGeckoController::class, 'run']);
     Route::get('/coingecko/reset', [FormationsFromCoinGeckoController::class, 'reset']);
+
+
+    Route::get('/formation/slot/auto-deploy', [SlotAutoDeploymentController::class, 'deployEligible']);
+    Route::get('/formation/sweep', [SlotAutoDeploymentController::class, 'sweep']);
+
+    Route::get('/slot/daily-profit', [DailySlotEarningsController::class, 'process']);
 
 });
