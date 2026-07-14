@@ -179,9 +179,9 @@
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M12 12v3M10 14h4"/></svg>
                         <p>No active deposits yet.</p>
                         @unless($this->activePackSubscription)
-                            <a href="{{ route('dashboard.packs.index') }}" wire:navigate class="empty-state__cta">Subscribe to start →</a>
+                            <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="empty-state__cta">Subscribe to start →</a>
                         @else
-                            <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="empty-state__cta">Deploy capital →</a>
+                            <a href="{{ route('dashboard.packs.index') }}" wire:navigate class="empty-state__cta">Deploy capital →</a>
                         @endunless
                     </div>
                 @else
