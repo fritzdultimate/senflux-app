@@ -95,11 +95,6 @@
                         </tbody>
                     </table>
                 </div>
-                 @if ($this->formations->hasPages())
-                    <div class="ff-pagination">
-                        {{ $this->formations->links() }}
-                    </div>
-                @endif
                 @if ($this->formations->hasPages())
                     <div class="ff-pagination">
                         {{ $this->formations->links('vendor.pagination.senflux') }}
