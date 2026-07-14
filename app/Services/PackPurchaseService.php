@@ -139,8 +139,7 @@ class PackPurchaseService
      * transaction — a refunded purchase should never quietly leave a
      * pending bonus sitting around to get confirmed later by the sweep.
      */
-    public function refund(PackSubscription $subscription): PackSubscription
-    {
+    public function refund(PackSubscription $subscription): PackSubscription {
         if (!$subscription->isEligibleForRefund()) {
             throw new \DomainException('This pack is no longer eligible for a refund.');
         }

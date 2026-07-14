@@ -13,6 +13,7 @@ class PackSubscription extends Model {
         'purchased_at', 'matures_at', 'renewal_window_ends_at',
         'purchase_transaction_id', 'refunded_at', 'refund_transaction_id',
         'renewed_into_subscription_id', 'renewed_from_subscription_id',
+        'upgraded_from_tier_id', 'upgraded_at', 'upgrade_transaction_id',
     ];
 
     protected function casts(): array {
@@ -23,6 +24,7 @@ class PackSubscription extends Model {
             'matures_at' => 'datetime',
             'renewal_window_ends_at' => 'datetime',
             'refunded_at' => 'datetime',
+            'upgraded_at' => 'datetime',
         ];
     }
 
@@ -34,12 +36,20 @@ class PackSubscription extends Model {
         return $this->belongsTo(PackTier::class);
     }
 
+    public function upgradedFromTier(): BelongsTo {
+        return $this->belongsTo(PackTier::class, 'upgraded_from_tier_id');
+    }
+
     public function slots(): HasMany {
         return $this->hasMany(PackSlot::class)->orderBy('slot_number');
     }
 
     public function purchaseTransaction(): BelongsTo {
         return $this->belongsTo(WalletTransaction::class, 'purchase_transaction_id');
+    }
+
+    public function upgradeTransaction(): BelongsTo {
+        return $this->belongsTo(WalletTransaction::class, 'upgrade_transaction_id');
     }
 
     public function refundTransaction(): BelongsTo {
@@ -62,11 +72,6 @@ class PackSubscription extends Model {
         return $this->renewal_window_ends_at !== null && $this->renewal_window_ends_at->isPast();
     }
 
-    /**
-     * Eligible for the 3-day no-questions refund only if literally zero
-     * slots have ever been funded — the moment one slot gets capital,
-     * "I haven't used this" stops being true, even if day 1 of 3.
-     */
     public function isEligibleForRefund(): bool {
         if ($this->status !== PackSubscriptionStatus::ACTIVE) {
             return false;
@@ -77,5 +82,33 @@ class PackSubscription extends Model {
         }
 
         return $this->slots()->whereNotNull('funded_at')->doesntExist();
+    }
+
+    public function isEligibleForRealtimeUpgrade(): bool {
+        return $this->status === PackSubscriptionStatus::ACTIVE;
+    }
+ 
+    // public function estimateUpgradeCost(PackTier $newTier): float {
+    //     $totalDays = max(1, (int) $this->packTier->duration_days);
+    //     $remainingDays = max(0, (int) round(now()->diffInDays($this->matures_at, false)));
+    //     $fraction = max(1, min(1.0, $remainingDays / $totalDays));
+ 
+    //     return round(((float) $newTier->price - (float) $this->packTier->price) * $fraction, 2);
+    // }
+
+    public function estimateUpgradeCost(PackTier $newTier): float {
+        $totalDays = max(1, (int) $this->packTier->duration_days);
+        $remainingDays = $this->remainingDays();
+        $fraction = min(1.0, $remainingDays / $totalDays);
+
+        $fraction === 0 ? 1 : $fraction;
+ 
+        $unusedCredit = round((float) $this->packTier->price * $fraction, 2);
+ 
+        return max(0, round((float) $newTier->price - $unusedCredit, 2));
+    }
+ 
+    public function remainingDays(): int {
+        return max(0, (int) round(now()->diffInDays($this->matures_at, false)));
     }
 }

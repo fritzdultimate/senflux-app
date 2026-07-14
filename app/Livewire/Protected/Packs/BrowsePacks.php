@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Protected\Packs;
 
+use App\Enums\PackSubscriptionStatus;
 use App\Models\PackTier;
 use App\Models\PackSubscription;
+use App\Services\PackLifecycleService;
 use App\Services\PackPurchaseService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -11,8 +13,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[Layout('components.layouts.protected')]
-class BrowsePacks extends Component
-{
+class BrowsePacks extends Component {
     public string $errorMessage = '';
 
     #[Computed]
@@ -21,17 +22,25 @@ class BrowsePacks extends Component
     }
 
     #[Computed]
-    public function walletBalance(): float
-    {
+    public function walletBalance(): float {
         return (float) (Auth::user()->mainWallet()?->balance ?? 0);
     }
 
     #[Computed]
-    public function userHasActivePack(): bool
-    {
+    public function activeSubscription(): ?PackSubscription {
         return PackSubscription::where('user_id', Auth::id())
-            ->whereIn('status', ['active', 'in_renewal_window'])
-            ->exists();
+            ->whereIn('status', [
+                PackSubscriptionStatus::ACTIVE->value,
+                PackSubscriptionStatus::IN_RENEWAL_WINDOW->value,
+            ])
+            ->with('packTier')
+            ->latest('purchased_at')
+            ->first();
+    }
+
+    #[Computed]
+    public function userHasActivePack(): bool {
+        return $this->activeSubscription !== null;
     }
 
     public function buy(int $tierId, PackPurchaseService $service): void {
@@ -60,6 +69,30 @@ class BrowsePacks extends Component
 
         $this->redirect(route('dashboard.packs.show', $subscription), navigate: true);
     }
+
+    public function upgradeNow(int $tierId, PackLifecycleService $service): void {
+        $tier = PackTier::find($tierId);
+        if (!$tier) return;
+ 
+        $this->errorMessage = '';
+ 
+        $subscription = $this->activeSubscription;
+        if (!$subscription) {
+            $this->errorMessage = 'No active pack to upgrade.';
+            return;
+        }
+ 
+        try {
+            $upgraded = $service->upgradeNow($subscription, $tier);
+        } catch (\Throwable $e) {
+            $this->errorMessage = $e->getMessage();
+            return;
+        }
+ 
+        $this->redirect(route('dashboard.packs.show', $upgraded), navigate: true);
+    }
+
+   
 
     public function render() {
         return view('livewire.protected.packs.browse-packs');

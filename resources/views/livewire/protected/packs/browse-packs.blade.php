@@ -14,11 +14,21 @@
         </p>
     </div>
 
-    @if($this->userHasActivePack)
+    @php
+        $current = $this->activeSubscription;
+        $isRenewalWindow = $current && $current->isInRenewalWindow();
+    @endphp
+
+    @if($current)
         <a href="{{ route('dashboard.packs.index') }}" wire:navigate class="tb-active-banner">
             <span class="tb-active-banner__dot"></span>
-            You have an active pack running —
-            <strong>view your packs &rarr;</strong>
+            @if($isRenewalWindow)
+                Your {{ $current->packTier->name }} pack has matured —
+                <strong>decide what's next in My Packs &rarr;</strong>
+            @else
+                You're on {{ $current->packTier->name }} —
+                <strong>view your pack &rarr;</strong>
+            @endif
         </a>
     @endif
 
@@ -31,8 +41,16 @@
             $tierColors = ['#60a5fa', '#9B7DFF', '#fbbf24'];
         @endphp
         @foreach($this->tiers as $i => $tier)
-            @php $color = $tierColors[$i] ?? '#6b7280'; @endphp
-            <div class="tb-card" style="--accent: {{ $color }}" wire:key="tier-{{ $tier->id }}">
+            @php
+                $color = $tierColors[$i] ?? '#6b7280';
+
+                $isCurrentOrLower = $current && $tier->price <= $current->packTier->price;
+                $isUpgradeTarget = $current && !$isRenewalWindow && !$isCurrentOrLower;
+                $upgradeCost = $isUpgradeTarget ? $current->estimateUpgradeCost($tier) : null;
+                $isSameTier = $current && $tier->id === $current->pack_tier_id;
+
+            @endphp
+            <div class="tb-card {{ ($isCurrentOrLower || $isRenewalWindow) ? 'tb-card--disabled' : '' }}" style="--accent: {{ $color }}" wire:key="tier-{{ $tier->id }}">
 
                 <div class="tb-card__icon" style="background: {{ $color }}1a; border-color: {{ $color }}44">
                     <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="{{ $color }}" stroke-width="1.5">
@@ -41,6 +59,10 @@
                         <path d="M12 13v8"/>
                     </svg>
                 </div>
+
+                @if($isSameTier)
+                    <span class="tb-card__current-badge">Your current tier</span>
+                @endif
 
                 <h3 class="tb-card__name">{{ $tier->name }}</h3>
 
@@ -71,15 +93,45 @@
                     </ul>
                 @endif
 
-                <button
-                    type="button"
-                    wire:click="buy({{ $tier->id }})"
-                    wire:confirm="Buy {{ $tier->name }} for ${{ number_format($tier->price, 0) }}?"
-                    class="tb-card__cta"
-                    style="background: linear-gradient(135deg, {{ $color }}, {{ $color }}cc); border: none; cursor: pointer; width: 100%;"
-                >
-                    Buy {{ $tier->name }}
-                </button>
+                @if($isRenewalWindow)
+                    <button
+                        type="button"
+                        disabled
+                        title="Your pack has matured — manage the renewal decision from My Packs first"
+                        class="tb-card__cta tb-card__cta--disabled"
+                    >
+                        Manage in My Packs
+                    </button>
+                @elseif($isCurrentOrLower)
+                    <button
+                        type="button"
+                        disabled
+                        title="{{ $isSameTier ? 'This is your current tier' : 'Lower than your current tier — upgrade instead of downgrading' }}"
+                        class="tb-card__cta tb-card__cta--disabled"
+                    >
+                        {{ $isSameTier ? 'Current tier' : 'Not available' }}
+                    </button>
+                @elseif($isUpgradeTarget)
+                    <button
+                        type="button"
+                        wire:click="upgradeNow({{ $tier->id }})"
+                        wire:confirm="Upgrade to {{ $tier->name }} now for ${{ number_format($upgradeCost, 2) }} (credit applied for your {{ $current->remainingDays() }} unused days on {{ $current->packTier->name }})? Your pack restarts a fresh {{ $tier->duration_days }}-day cycle at the new tier, effective today. Your existing slots keep earning uninterrupted."
+                        class="tb-card__cta"
+                        style="background: linear-gradient(135deg, {{ $color }}, {{ $color }}cc); border: none; cursor: pointer; width: 100%;"
+                    >
+                        Upgrade to {{ $tier->name }} — ${{ number_format($upgradeCost, 2) }}
+                    </button>
+                @else
+                    <button
+                        type="button"
+                        wire:click="buy({{ $tier->id }})"
+                        wire:confirm="Buy {{ $tier->name }} for ${{ number_format($tier->price, 0) }}?"
+                        class="tb-card__cta"
+                        style="background: linear-gradient(135deg, {{ $color }}, {{ $color }}cc); border: none; cursor: pointer; width: 100%;"
+                    >
+                        Buy {{ $tier->name }}
+                    </button>
+                @endif
             </div>
         @endforeach
     </div>

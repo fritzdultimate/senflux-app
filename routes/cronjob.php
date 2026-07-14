@@ -5,6 +5,7 @@ use App\Http\Controllers\CronJob\FormationsFromCoinGeckoController;
 use App\Http\Controllers\CronJob\RunFormationAutoDetectionController;
 use App\Http\Controllers\CronJob\SlotAutoDeploymentController;
 use App\Http\Controllers\CronJob\SyncFormationTradeActivityController;
+use App\Services\PackLifecycleService;
 use Illuminate\Support\Facades\Route;
 
 // middleware('cron.secret')->
@@ -26,5 +27,16 @@ Route::prefix('cron')->name('cron.')->group(function () {
     Route::get('/formation/sweep', [SlotAutoDeploymentController::class, 'sweep']);
 
     Route::get('/slot/daily-profit', [DailySlotEarningsController::class, 'process']);
+
+
+    // refund expired subscription
+    Route::get('/pack-lifecycly/open-renewal-windows', function() {
+        app(PackLifecycleService::class)->openRenewalWindowsForMatured();
+    });
+
+    Route::get('/pack-lifecycly/close-expired-renewal-windows', function() {
+        app(PackLifecycleService::class)->closeExpiredRenewalWindows();
+    });
+
 
 });
