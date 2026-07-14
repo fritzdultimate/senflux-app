@@ -95,7 +95,7 @@
                 <div class="formation-stats">
                     <div class="formation-stat">
                         <span>Bot Status</span>
-                        <strong>{{ ucfirst($formation?->bot_status ?? 'Standby') }}</strong>
+                        <strong>{{ ucfirst($formation->is_active ? 'Active' : 'Standby') }}</strong>
                     </div>
                     <div class="formation-stat">
                         <span>Active Wallets</span>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="formation-stat">
                         <span>Formation Score</span>
-                        <strong>{{ $formation?->formation_score ? $formation->formation_score.'/100' : '—' }}</strong>
+                        <strong>{{ $formation?->score ? $formation->score.'/100' : '—' }}</strong>
                     </div>
                 </div>
             </div>
