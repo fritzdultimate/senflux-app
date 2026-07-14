@@ -35,7 +35,7 @@
                 @endif
 
                 {{-- Trade preview → dedicated page --}}
-                <div class="fd-panel">
+                <div class="fd-panel hidden">
                     <div class="fd-panel__head">
                         <span class="fd-panel__title">ON-CHAIN TRADE VERIFICATION</span>
                         <a href="{{ route('dashboard.trades.live', ['formation' => $f->id]) }}" wire:navigate class="fd-panel__link">
