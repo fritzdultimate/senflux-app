@@ -181,7 +181,7 @@
                         @unless($this->activePackSubscription)
                             <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="empty-state__cta">Subscribe to start →</a>
                         @else
-                            <a href="{{ route('dashboard.deposit.create') }}" wire:navigate class="empty-state__cta">Deploy capital →</a>
+                            <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="empty-state__cta">Deploy capital →</a>
                         @endunless
                     </div>
                 @else
