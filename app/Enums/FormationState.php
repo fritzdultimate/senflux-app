@@ -64,4 +64,15 @@ enum FormationState: string {
     public function acceptsNewDeployments(): bool {
         return $this === self::ACTIVE;
     }
+
+    public function priority(): int {
+        return match($this) {
+            self::ACTIVE    => 0,
+            self::BUILDING  => 1,
+            self::MATURE    => 2,
+            self::EARLY     => 3,
+            self::WEAKENING => 4,
+            self::IDLE      => 5,
+        };
+    }
 }

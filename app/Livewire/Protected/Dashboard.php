@@ -108,6 +108,8 @@ class Dashboard extends Component {
     #[Computed]
     public function formationState(): ?object {
         return Formation::where('is_active', true)
+            ->get()
+            ->sortBy(fn ($f) => [$f->state->priority(), -$f->score])
             ->first();
     }
 
