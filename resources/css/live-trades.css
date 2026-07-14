@@ -190,3 +190,57 @@
 }
 
 .lt-empty p { font-size: .78rem; margin: 0; }
+
+
+/* live-trades.css */
+.lt-page { max-width: 1180px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+
+.lt-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 700px) { .lt-stats { grid-template-columns: repeat(2, 1fr); } }
+.lt-stat {
+    background: rgba(8,8,18,.94); border: 1px solid rgba(255,255,255,.07); border-radius: 14px;
+    padding: 14px 16px;
+}
+.lt-stat span { display: block; font-size: .66rem; color: #4a4a6a; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+.lt-stat strong { font-family: 'Syne', sans-serif; font-size: 1.1rem; color: #fff; }
+.lt-stat strong.split span { font-weight: 700; }
+
+.lt-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.lt-filter-pill {
+    font-size: .74rem; font-weight: 600; color: #9ca3af;
+    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 999px; padding: 6px 14px; display: flex; align-items: center; gap: 6px;
+}
+.lt-filter-pill--active { color: #9B7DFF; border-color: rgba(155,125,255,.35); background: rgba(155,125,255,.08); }
+.lt-filter-pill button { color: inherit; opacity: .7; }
+
+.lt-disclaimer { font-size: .72rem; color: #6b7280; line-height: 1.5; margin-bottom: 14px; }
+
+.lt-table-wrap {
+    background: rgba(8,8,18,.94); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 16px; overflow: hidden;
+}
+.lt-table .mono { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: #d1d5db; }
+.lt-formation-link { color: #9B7DFF; font-weight: 700; }
+
+.lt-side { font-size: .68rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+.lt-side--buy { background: rgba(16,185,129,.15); color: #10B981; }
+.lt-side--sell { background: rgba(239,68,68,.15); color: #EF4444; }
+
+.lt-source { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.lt-source--market_pool { background: rgba(155,125,255,.12); color: #9B7DFF; }
+.lt-source--senflux { background: rgba(6,182,212,.12); color: #06b6d4; }
+
+/* new-row live pulse */
+.lt-row { animation: lt-fade-in .4s ease-out; }
+@keyframes lt-fade-in {
+    from { background: rgba(155,125,255,.12); }
+    to { background: transparent; }
+}
+
+.lt-pagination { margin-top: 16px; }
+
+.lt-row--failed { opacity: .55; }
+.lt-status { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.lt-status--success { background: rgba(16,185,129,.12); color: #10B981; }
+.lt-status--failed { background: rgba(239,68,68,.12); color: #EF4444; }
