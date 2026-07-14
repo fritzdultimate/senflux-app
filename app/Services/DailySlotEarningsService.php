@@ -10,19 +10,6 @@ use App\Models\SlotEarning;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Each FUNDED + deployed slot earns on its OWN rolling clock — never a
- * shared calendar-day cutoff. Every payout schedules the slot's next
- * eligible moment at (24h + random jitter) from now, so slots naturally
- * spread out instead of every slot in the system firing in the same
- * 5-min window forever. A cron controller can safely poll this every
- * 5 minutes (or any interval shorter than the jitter window) — it just
- * picks up whichever slots have crossed their own next_earning_at.
- *
- * Gating lives entirely on PackSlot.next_earning_at, not on SlotEarning
- * date rows, so "one payout per calendar day" no longer applies — a
- * slot's interval is always >= 24h, could be a bit more, never less.
- */
 class DailySlotEarningsService {
     public function __construct(private WalletService $wallet) {}
 
@@ -32,12 +19,17 @@ class DailySlotEarningsService {
      */
     public function processEligibleSlots(): int {
         $processed = 0;
+        $minHours = config('packs.earning_min_interval_hours', 24);
 
         PackSlot::where('status', PackSlotStatus::FUNDED->value)
             ->whereNotNull('formation_id')
-            ->where(function ($q) {
-                $q->whereNull('next_earning_at')
-                  ->orWhere('next_earning_at', '<=', now());
+            ->where(function ($q) use ($minHours) {
+                $q->where('next_earning_at', '<=', now())
+                  ->orWhere(function ($q2) use ($minHours) {
+                      $q2->whereNull('next_earning_at')
+                         ->whereNotNull('deployed_at')
+                         ->where('deployed_at', '<=', now()->subHours($minHours));
+                  });
             })
             ->with(['formation', 'subscription.packTier'])
             ->chunkById(100, function ($slots) use (&$processed) {
@@ -67,19 +59,31 @@ class DailySlotEarningsService {
         $lock = Cache::lock("slot-earning:{$slot->id}", 30);
 
         if (!$lock->get()) {
-            return null;
+            return null; // another process already handling this slot
         }
 
         try {
             $slot->refresh();
 
-            if ($slot->next_earning_at !== null && $slot->next_earning_at->isFuture()) {
-                return null;
+            if ($slot->next_earning_at !== null) {
+                if ($slot->next_earning_at->isFuture()) {
+                    return null; // beat by another worker, or no longer eligible
+                }
+            } else {
+                // Same fallback as the query above, re-checked here in
+                // case processSlotEarning() is ever called directly
+                // (outside processEligibleSlots()) with a slot that
+                // hasn't actually cleared the floor yet.
+                $minHours = config('packs.earning_min_interval_hours', 24);
+
+                if (!$slot->deployed_at || $slot->deployed_at->diffInHours(now()) < $minHours) {
+                    return null;
+                }
             }
 
             $formation = $slot->formation;
             if (!$formation) {
-                return null;
+                return null; // not deployed — no earning
             }
 
             $tier = $slot->subscription->packTier;
