@@ -44,6 +44,11 @@
     "src": "resources/css/deposit.css",
     "isEntry": true
   },
+  "resources/css/formation-card.css": {
+    "file": "assets/formation-card-Cb1Yzh57.css",
+    "src": "resources/css/formation-card.css",
+    "isEntry": true
+  },
   "resources/css/formation-detail.css": {
     "file": "assets/formation-detail-DVU8dc_e.css",
     "src": "resources/css/formation-detail.css",
