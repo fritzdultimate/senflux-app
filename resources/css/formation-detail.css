@@ -1,5 +1,9 @@
 /* formation-detail.css */
-.fd-page { max-width: 1180px; margin: 0 auto; padding: 1rem 1rem 4rem; }
+.fd-page { 
+    max-width: 1180px; 
+    margin: 0 auto; 
+    /* padding: 1rem 1rem 4rem;  */
+}
 
 .fd-topbar {
     display: flex; align-items: center; gap: 8px;
@@ -13,8 +17,15 @@
 .fd-topbar__live { display: flex; align-items: center; gap: 6px; font-size: .72rem; color: #6b7280; }
 .fd-live-dot { width: 6px; height: 6px; border-radius: 999px; background: #22c55e; animation: term-pulse 2s infinite; }
 
-.fd-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
-@media (max-width: 900px) { .fd-grid { grid-template-columns: 1fr; } }
+.fd-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 320px; 
+    gap: 20px; 
+    align-items: start; 
+}
+@media (max-width: 900px) { 
+    .fd-grid { grid-template-columns: 1fr; } 
+}
 
 .fd-panel {
     background: rgba(8,8,18,.94); border: 1px solid rgba(255,255,255,.07);
@@ -75,7 +86,10 @@
 }
 
 @media (max-width: 640px) {
-    .fd-page { padding: .75rem .75rem 3rem; overflow-x: hidden; }
+    .fd-page { 
+        /* padding: .75rem .75rem .3rem;  */
+        overflow-x: hidden; 
+    }
 
     .fd-topbar {
         flex-wrap: wrap;

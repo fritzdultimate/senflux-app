@@ -34,32 +34,6 @@
                     </p>
                 @endif
 
-                {{-- Trade preview → dedicated page --}}
-                <div class="fd-panel hidden">
-                    <div class="fd-panel__head">
-                        <span class="fd-panel__title">ON-CHAIN TRADE VERIFICATION</span>
-                        <a href="{{ route('dashboard.trades.live', ['formation' => $f->id]) }}" wire:navigate class="fd-panel__link">
-                            View all trades →
-                        </a>
-                    </div>
-                    <p class="onchain-disclaimer" style="margin-bottom: 12px;">
-                        Real, publicly verifiable Solana transactions on {{ $f->token_symbol }}'s liquidity pool —
-                        general market activity, not trades executed by Senflux.
-                    </p>
-                    @forelse ($this->recentTrades as $trade)
-                        <a href="{{ $trade->explorerUrl() }}" target="_blank" rel="noopener" class="trade-row">
-                            <span class="trade-row__sig">{{ Str::limit($trade->tx_signature, 20) }}</span>
-                            <span class="trade-row__time">{{ $trade->block_time?->diffForHumans() ?? '—' }}</span>
-                            <span class="trade-row__verify">
-                                Verify
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg>
-                            </span>
-                        </a>
-                    @empty
-                        <p class="fd-empty">No verified trade activity yet.</p>
-                    @endforelse
-                </div>
-
                 {{-- Timeline --}}
                 <div class="fd-panel">
                     <div class="fd-panel__head">
