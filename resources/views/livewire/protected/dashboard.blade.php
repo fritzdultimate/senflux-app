@@ -124,11 +124,11 @@
                         </div>
                         <span>Withdraw</span>
                     </a>
-                    <a href="{{ route('dashboard.subscribe') }}" wire:navigate class="qa {{ $this->activeSubscription ? 'qa--muted' : '' }}">
+                    <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="qa {{ $this->activePackSubscription ? 'qa--muted' : '' }}">
                         <div class="qa__icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                         </div>
-                        <span>{{ $this->activeSubscription ? 'Subscribed' : 'Subscribe' }}</span>
+                        <span>{{ $this->activePackSubscription ? 'Subscribed' : 'Subscribe' }}</span>
                     </a>
                     <a href="#" class="qa">
                         <div class="qa__icon">
@@ -178,8 +178,8 @@
                     <div class="empty-state">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M12 12v3M10 14h4"/></svg>
                         <p>No active deposits yet.</p>
-                        @unless($this->activeSubscription)
-                            <a href="{{ route('dashboard.subscribe') }}" wire:navigate class="empty-state__cta">Subscribe to start →</a>
+                        @unless($this->activePackSubscription)
+                            <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="empty-state__cta">Subscribe to start →</a>
                         @else
                             <a href="{{ route('dashboard.deposit.create') }}" wire:navigate class="empty-state__cta">Deploy capital →</a>
                         @endunless
@@ -212,27 +212,34 @@
 
             {{-- Subscription + Balances ──────────────────────────── --}}
             <div class="panel">
-                <div class="panel__title" style="margin-bottom: 12px">Subscription</div>
-                @if($this->activeSubscription)
-                    <div class="sub-block sub-block--active">
-                        <div class="sub-block__plan">{{ $this->activeSubscription->planConfig->label }} Plan</div>
-                        <div class="sub-block__expires">Expires {{ $this->activeSubscription->expires_at->diffForHumans() }}</div>
-                        <div class="sub-block__bar">
-                            @php
-                                $subTotal = $this->activeSubscription->starts_at->diffInDays($this->activeSubscription->expires_at);
-                                $subLeft  = round(now()->diffInDays($this->activeSubscription->expires_at));
-                                $subPct   = $subTotal > 0 ? min(100, round(($subLeft / $subTotal) * 100)) : 0;
-                            @endphp
-                            <div class="sub-block__bar-fill" style="width: {{ $subPct }}%"></div>
+                <div class="panel__title" style="margin-bottom: 12px">Pack</div>
+                    @if($this->activePackSubscription)
+                        <div class="sub-block sub-block--active">
+                            <div class="sub-block__plan">{{ $this->activePackSubscription->packTier->name }} Pack</div>
+                            <div class="sub-block__expires">
+                                {{ $this->activePackSubscription->isInRenewalWindow() ? 'Renewal window ends' : 'Matures' }}
+                                {{ $this->activePackSubscription->isInRenewalWindow()
+                                    ? $this->activePackSubscription->renewal_window_ends_at->diffForHumans()
+                                    : $this->activePackSubscription->matures_at->diffForHumans() }}
+                            </div>
+                            <div class="sub-block__bar">
+                                @php
+                                    $subTotal = $this->activePackSubscription->purchased_at->diffInDays($this->activePackSubscription->matures_at);
+                                    $subLeft  = max(0, round(now()->diffInDays($this->activePackSubscription->matures_at, false)));
+                                    $subPct   = $subTotal > 0 ? min(100, round(($subLeft / $subTotal) * 100)) : 0;
+                                @endphp
+                                <div class="sub-block__bar-fill" style="width: {{ $subPct }}%"></div>
+                            </div>
+                            <div class="sub-block__days">
+                                {{ $this->activePackSubscription->isInRenewalWindow() ? 'Matured — decide next step' : "{$subLeft} days remaining" }}
+                            </div>
                         </div>
-                        <div class="sub-block__days">{{ $subLeft }} days remaining</div>
-                    </div>
-                @else
-                    <div class="sub-block sub-block--inactive">
-                        <p>No active subscription.</p>
-                        <a href="{{ route('dashboard.subscribe') }}" wire:navigate class="sub-block__cta">Subscribe now →</a>
-                    </div>
-                @endif
+                    @else
+                        <div class="sub-block sub-block--inactive">
+                            <p>No active pack.</p>
+                            <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="sub-block__cta">Buy a pack →</a>
+                        </div>
+                    @endif
 
                 <div class="dv"></div>
 

@@ -3,11 +3,13 @@
 namespace App\Livewire\Protected;
 
 use App\Enums\DepositStatus;
+use App\Enums\PackSubscriptionStatus;
 use App\Enums\RankLevel;
 use App\Enums\TransactionType;
 use App\Models\Deposit;
 use App\Models\Formation;
 use App\Models\MarketFormationStateModel;
+use App\Models\PackSubscription;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -183,11 +185,23 @@ class Dashboard extends Component {
         ];
     }
 
+    #[Computed]
+    public function activePackSubscription(): ?PackSubscription {
+        return $this->user->packSubscriptions()
+            ->whereIn('status', [
+                PackSubscriptionStatus::ACTIVE->value,
+                PackSubscriptionStatus::IN_RENEWAL_WINDOW->value,
+            ])
+            ->with('packTier')
+            ->latest('purchased_at')
+            ->first();
+    }
+
     #[Poll(30000)]
     public function refresh(): void {
         // Unset cached computed properties to refresh them
         unset($this->mainBalance, $this->todayEarnings, $this->activeDeposits,
-              $this->pendingDeposit, $this->formationState, $this->recentActivity);
+              $this->pendingDeposit, $this->formationState, $this->recentActivity, $this->activePackSubscription);
     }
 
     public function render() {
