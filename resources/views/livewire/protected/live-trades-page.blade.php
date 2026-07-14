@@ -107,7 +107,10 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="lt-pagination">{{ $this->trades->links() }}</div>
+        @if ($this->trades->hasPages())
+            <div class="ff-pagination">
+                {{ $this->trades->links('vendor.pagination.senflux') }}
+            </div>
+        @endif
     </div>
 </div>
