@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CronJob\FormationsFromCoinGeckoController;
 use App\Http\Controllers\CronJob\RunFormationAutoDetectionController;
 use App\Http\Controllers\CronJob\SyncFormationTradeActivityController;
 use Illuminate\Support\Facades\Route;
@@ -13,4 +14,9 @@ Route::prefix('cron')->name('cron.')->group(function () {
     Route::get('/formations/snapshot', [RunFormationAutoDetectionController::class, 'snapshot']);
 
     Route::get('/formations/snapshot/prune', [RunFormationAutoDetectionController::class, 'pruneSnapshot']);
+
+
+    Route::get('/coingecko', [FormationsFromCoinGeckoController::class, 'run']);
+    Route::get('/coingecko/reset', [FormationsFromCoinGeckoController::class, 'reset']);
+
 });
