@@ -22,7 +22,9 @@
                         <span class="w-2 h-2 rounded-full bg-[#10B981] ap block"></span>
                         <span class="text-[12px] font-semibold text-[#c8c8e0]">LIVE FORMATION FEED</span>
                     </div>
-                    <span class="text-[11px] text-[#4a4a6a]">Last updated: {{ now()->diffForHumans() }}</span>
+                    <span class="text-[11px] text-[#4a4a6a]">
+                        {{ $this->formations->total() }} tracked · updated {{ now()->diffForHumans() }}
+                    </span>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -93,6 +95,11 @@
                         </tbody>
                     </table>
                 </div>
+                 @if ($this->formations->hasPages())
+                    <div class="ff-pagination">
+                        {{ $this->formations->links() }}
+                    </div>
+                @endif
             </div>
 
             {{-- Heatmap --}}

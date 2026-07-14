@@ -408,3 +408,46 @@
 .fc-score-block__time { font-size: 10.5px; color: #4a4a6a; margin-top: 8px; }
 
 .metric-row__why { font-size: 10.5px; line-height: 1.45; color: rgba(255,255,255,.4); margin-top: 4px; }
+
+/* Pagination */
+
+.ff-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ff-table { min-width: 620px; }
+
+.ff-row { cursor: pointer; transition: background .12s; }
+.ff-row:hover { background: rgba(155,125,255,.05); }
+.ff-row:active { background: rgba(155,125,255,.09); }
+
+.ff-symbol { font-family: 'Syne', sans-serif; font-weight: 700; color: #fff; font-size: .82rem; }
+.ff-name { font-size: .68rem; color: #4a4a6a; }
+.ff-sub { font-size: .68rem; color: #4a4a6a; }
+.ff-change { font-weight: 600; font-size: .82rem; }
+.ff-score { font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: #fff; font-size: .88rem; }
+.ff-score-max { font-family: 'IBM Plex Mono', monospace; color: #4a4a6a; font-size: .72rem; }
+.ff-empty { text-align: center; padding: 32px 0; color: #4a4a6a; font-size: .82rem; }
+
+.ff-pagination {
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* Style Laravel's default Tailwind pagination partial to match the terminal theme */
+.ff-pagination nav > div:first-child { display: none; } /* hides the "Showing X to Y of Z" text on mobile-cramped layouts if your view includes it — remove this line if you want it kept */
+.ff-pagination span[aria-current="page"] span,
+.ff-pagination button,
+.ff-pagination a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .74rem !important;
+    color: #9ca3af !important;
+}
+.ff-pagination span[aria-current="page"] span {
+    background: rgba(155,125,255,.15) !important;
+    color: #9B7DFF !important;
+    border-color: rgba(155,125,255,.3) !important;
+}
+.ff-pagination a:hover { color: #fff !important; background: rgba(255,255,255,.04) !important; }
+.ff-pagination svg { width: 14px; height: 14px; }
+
+@media (max-width: 640px) {
+    .ff-col-velocity { display: none; }
+}

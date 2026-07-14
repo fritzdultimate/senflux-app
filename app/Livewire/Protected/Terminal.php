@@ -6,22 +6,21 @@ namespace App\Livewire\Protected;
 use App\Models\Formation;
 use App\Models\FormationEvent;
 use App\Models\PackSlot;
-use App\Services\FormationDeploymentService;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Poll;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.protected')]
-class Terminal extends Component
-{
+class Terminal extends Component {
+    use WithPagination;
     public ?int $activeFormationId = null;
     public bool $showAllDeployedSlots = false;
 
     #[Computed]
     public function formations() {
-        return Formation::active()->orderByDesc('score')->get();
+        return Formation::active()->orderByDesc('score')->paginate(10);
     }
 
     #[Computed]
