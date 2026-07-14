@@ -7,7 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FormationTradeActivity extends Model {
-    protected $fillable = ['formation_id', 'tx_signature', 'slot', 'block_time', 'source', 'failed'];
+    protected $fillable = [
+        'formation_id', 
+        'tx_signature', 
+        'slot', 
+        'block_time', 
+        'source', 
+        'failed', 
+        'type', 
+        'token_amount', 
+        'trader_wallet'
+    ];
 
     protected function casts(): array {
         return [

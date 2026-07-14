@@ -27,4 +27,13 @@ enum FormationEventType: string {
             self::EXPOSURE_REDUCED      => 'Exposure reduced',
         };
     }
+
+    public function category(): string {
+        return match ($this) {
+            self::DETECTED => 'detected',
+            self::STATE_CHANGED => 'state_change',
+            self::CAPITAL_CONCENTRATION, self::WALLET_CLUSTER, self::LIQUIDITY_INCREASING => 'signal',
+            self::DEPLOYMENT_INITIATED, self::EXPOSURE_REDUCED => 'deployment',
+        };
+    }
 }

@@ -39,7 +39,7 @@
                         </thead>
                         <tbody>
                             @forelse ($this->formations as $formation)
-                                <tr wire:click="openFormation({{ $formation->id }})" style="cursor:pointer">
+                                <tr role="navigation" onclick="window.location='{{ route('dashboard.formations.detail', $formation) }}'" style="cursor:pointer" wire:navigate>
                                     <td>
                                         <span class="font-syne font-bold text-white text-[13px]">{{ $formation->token_symbol }}</span><br>
                                         <span class="text-[11px] text-[#4a4a6a]">{{ $formation->token_name }}</span>

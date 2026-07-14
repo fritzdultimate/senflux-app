@@ -13,7 +13,9 @@ use App\Livewire\Protected\Alerts;
 use App\Livewire\Protected\Dashboard;
 use App\Livewire\Protected\Deposit\CreateDeposit;
 use App\Livewire\Protected\Deposit\DepositTracker;
+use App\Livewire\Protected\FormationDetail;
 use App\Livewire\Protected\LiveTrades;
+use App\Livewire\Protected\LiveTradesPage;
 use App\Livewire\Protected\Markets;
 use App\Livewire\Protected\MyBots;
 use App\Livewire\Protected\Packs\BrowsePacks;
@@ -111,6 +113,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/terminal', Terminal::class)
         ->name('terminal');
+
+    Route::get('/terminal/formations/{formation}', FormationDetail::class)->name('formations.detail');
+    Route::get('/terminal/trades', LiveTradesPage::class)->name('trades.live');
 
     Route::get('/market-insights', \App\Livewire\Protected\MarketInsights::class)
         ->name('market-insights');
