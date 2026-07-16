@@ -28,7 +28,10 @@
     {{-- Head --}}
     <div class="fc-head">
         <div>
-            <div class="fc-symbol">${{ $formation->token_symbol }}</div>
+            <div class="fc-symbol">
+                ${{ $formation->token_symbol }}
+                <x-ui.info-tip text="Formation official symbol." />
+            </div>
             <div class="fc-name">{{ $formation->token_name }}</div>
         </div>
         <span class="fc-state" style="background:{{ $color }}1a; color:{{ $color }}; border-color:{{ $color }}40">
@@ -53,6 +56,15 @@
             </div>
         </div>
 
+        <div style="display:flex; align-items:center; gap:4px; justify-content:center; margin-top:4px;">
+            <span style="font-size:10px; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.04em;">
+                Formation Score
+            </span>
+            <x-ui.info-tip 
+                text="A 0-100 read on how healthy this formation looks right now, weighted from liquidity depth, trading volume relative to that liquidity, buy/sell pressure, and price momentum. It's Senflux's own heuristic, not an on-chain metric." 
+            />
+        </div>
+
         <div class="fc-instrument__divider"></div>
 
         <div class="fc-meter">
@@ -63,7 +75,10 @@
                 @endfor
             </div>
             <div class="fc-meter__label">{{ $formation->confidence }}</div>
-            <div class="fc-meter__sub">Formation Strength</div>
+            <div class="fc-meter__sub">
+                Formation Strength
+                <x-ui.info-tip text="How reliable this formation's signals look overall — Low, Moderate, or High. This isn't the score itself, it's how much confidence Senflux has IN that score." />
+            </div>
         </div>
     </div>
 
@@ -81,13 +96,23 @@
             'participation_growth'  => 'Participation Growth',
             'wallet_quality'        => 'Wallet Quality',
         ];
+
+        $metricTips = [
+            'capital_concentration' => 'How much NEW capital is entering this formation relative to what was already there — a rising number means fresh money is coming in, not just existing holders moving positions around.',
+            'liquidity_migration'   => 'Whether liquidity in this pool has been growing or draining over time — steady growth is a stronger signal than a single good day.',
+            'participation_growth'  => 'How many distinct wallets are engaging with this token, not just how much is being traded — broad participation is harder to fake than volume alone.',
+            'wallet_quality'        => 'A quality read on the wallets participating — down-weighted for patterns that look like bots or wash trading, so the score is harder to game.',
+        ];
     @endphp
 
     <div class="fc-metrics">
         @foreach ($metrics as $key => $label)
             <div class="fc-metric">
                 <div class="fc-metric__top">
-                    <span class="fc-metric__label">{{ $label }}</span>
+                    <span class="fc-metric__label" style="display:inline-flex; align-items:center; gap:5px;">
+                        {{ $label }}
+                        <x-ui.info-tip :text="$metricTips[$key]" position="right" />
+                    </span>
                     <span class="fc-metric__value">{{ $formation->{$key} }}<small>%</small></span>
                 </div>
                 <div class="fc-metric__track">
@@ -154,7 +179,10 @@
                     </strong>
                 </div>
                 <div>
-                    <span>Buy / Sell Volume (24h)</span>
+                    <span style="display:inline-flex; align-items:center; gap:4px;">
+                        Buy / Sell Volume (24h)
+                        <x-ui.info-tip text="Buy and sell count within 24 hours." position="right" />
+                    </span>
                     <strong class="split">
                         @if ($formation->volume_buy_24h_usd !== null)
                             <span style="color:#10B981">${{ number_format($formation->volume_buy_24h_usd) }}</span> / <span style="color:#EF4444">${{ number_format($formation->volume_sell_24h_usd) }}</span>

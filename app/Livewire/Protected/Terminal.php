@@ -68,6 +68,6 @@ class Terminal extends Component {
     }
 
     public function render() {
-        return view('livewire.protected.terminal');
+        return view('livewire.protected.terminal'); 
     }
 }

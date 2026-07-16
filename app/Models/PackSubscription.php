@@ -88,13 +88,6 @@ class PackSubscription extends Model {
         return $this->status === PackSubscriptionStatus::ACTIVE;
     }
  
-    // public function estimateUpgradeCost(PackTier $newTier): float {
-    //     $totalDays = max(1, (int) $this->packTier->duration_days);
-    //     $remainingDays = max(0, (int) round(now()->diffInDays($this->matures_at, false)));
-    //     $fraction = max(1, min(1.0, $remainingDays / $totalDays));
- 
-    //     return round(((float) $newTier->price - (float) $this->packTier->price) * $fraction, 2);
-    // }
 
     public function estimateUpgradeCost(PackTier $newTier): float {
         $totalDays = max(1, (int) $this->packTier->duration_days);

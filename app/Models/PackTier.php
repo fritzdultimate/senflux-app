@@ -17,13 +17,13 @@ class PackTier extends Model
     protected function casts(): array
     {
         return [
-            'price'                   => 'decimal:2',
-            'min_capital_per_slot'    => 'decimal:2',
-            'max_capital_per_slot'    => 'decimal:2',
-            'historical_outcome_min'  => 'decimal:2',
-            'historical_outcome_max'  => 'decimal:2',
-            'features'                => 'array',
-            'is_active'               => 'boolean',
+            'price' => 'decimal:2',
+            'min_capital_per_slot' => 'decimal:2',
+            'max_capital_per_slot' => 'decimal:2',
+            'historical_outcome_min' => 'decimal:2',
+            'historical_outcome_max' => 'decimal:2',
+            'features' => 'array',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -53,21 +53,7 @@ class PackTier extends Model
         return true;
     }
 
-    /**
-     * The base daily rate a funded slot earns BEFORE its deployed
-     * formation's state multiplier is applied. Derived from the tier's
-     * historical outcome range spread evenly across its duration — e.g.
-     * Scout's 12-20% over 30 days midpoints to a ~0.53%/day baseline,
-     * which then actually pays anywhere from 0% (idle/no formation) to
-     * ~0.53% (an ACTIVE formation) on a given day depending on what its
-     * slot is deployed into.
-     *
-     * This formula is my own proposal — the PDF gives the outcome RANGE
-     * per tier, never a day-by-day formula. This is the single number
-     * that determines real payout volume; review it against actual
-     * business economics before relying on it, don't just accept the
-     * default.
-     */
+    
     public function baselineDailyRate(): float {
         if (!$this->historical_outcome_min || !$this->historical_outcome_max || !$this->duration_days) {
             return 0.0;
