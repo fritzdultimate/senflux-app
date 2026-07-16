@@ -67,15 +67,14 @@
                 <h3 class="tb-card__name">{{ $tier->name }}</h3>
 
                 <p class="tb-card__rate" style="color: {{ $color }}">
-                    @if($tier->historical_outcome_min)
-                        {{ $tier->historical_outcome_min }}–{{ $tier->historical_outcome_max }}%<span>historical</span>
-                    @else
-                        ${{ number_format($tier->price, 0) }}<span>access fee</span>
-                    @endif
+                    ${{ number_format($tier->price, 0) }} access fee
                 </p>
 
                 <div class="tb-card__range">
-                    ${{ number_format($tier->price, 0) }} access fee · {{ $tier->duration_days }} days · {{ $tier->slot_count }} slots
+                    @if($tier->historical_outcome_min)
+                        {{ $tier->historical_outcome_min }}–{{ $tier->historical_outcome_max }}%<span>historical</span>
+                    @endif
+                     · {{ $tier->duration_days }} days · {{ $tier->slot_count }} slots
                 </div>
 
                 <div class="tb-card__range">
