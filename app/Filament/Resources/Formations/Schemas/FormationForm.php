@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Formations\Schemas;
 
 use App\Enums\FormationState;
 use App\Models\Formation;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -65,8 +66,31 @@ class FormationForm
                     TextInput::make('wallet_quality')->numeric()->suffix('%')->minValue(0)->maxValue(100)->required(),
                 ])->columns(4),
 
-                Section::make('Notes')->schema([
-                    Textarea::make('notes')->rows(2)->columnSpanFull(),
+                Section::make('Market Data (DexScreener)')
+                    ->columns(3)
+                    ->collapsed()
+                    ->schema([
+                        TextInput::make('dex')->maxLength(30),
+                        TextInput::make('pair_address')->maxLength(64),
+                        TextInput::make('pair_url')->url()->columnSpan(2),
+                        TextInput::make('price_usd')->numeric()->prefix('$'),
+                        TextInput::make('liquidity_usd')->numeric()->prefix('$'),
+                        TextInput::make('volume_24h')->numeric()->prefix('$'),
+                        TextInput::make('fdv')->numeric()->prefix('$'),
+                        TextInput::make('market_cap')->numeric()->prefix('$'),
+                        TextInput::make('price_change_24h')->numeric()->suffix('%'),
+                        TextInput::make('buys_24h')->numeric(),
+                        TextInput::make('sells_24h')->numeric(),
+                        DateTimePicker::make('market_data_synced_at')->disabled()->dehydrated(false),
+                    ]),
+
+                Section::make('Settings')
+                ->columns(2)
+                ->schema([
+                    Toggle::make('is_active')->label('Active (visible / deployable candidate)')->default(true),
+                    Toggle::make('auto_managed')->label('Auto-Managed')
+                        ->helperText('If on, the detection/scoring engine updates this formation automatically. Turn off to freeze it for manual admin control.'),
+                    Textarea::make('notes')->columnSpanFull()->rows(3),
                 ]),
             ]);
     }

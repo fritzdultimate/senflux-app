@@ -94,7 +94,7 @@ class PackSubscription extends Model {
         $remainingDays = $this->remainingDays();
         $fraction = min(1.0, $remainingDays / $totalDays);
 
-        $fraction === 0 ? 1 : $fraction;
+        $fraction = $fraction === 0.0 ? ($this->remainingDays() > 0 ? $fraction : 0.0) : $fraction;
  
         $unusedCredit = round((float) $this->packTier->price * $fraction, 2);
  

@@ -26,7 +26,10 @@ class FormationsTable
         return $table
             ->columns([
                 TextColumn::make('token_symbol')->weight('bold')->searchable(),
-                TextColumn::make('token_name')->color('gray')->searchable(),
+                TextColumn::make('token_name')
+                    ->color('gray')
+                    ->label('Name')
+                    ->searchable(),
                 TextColumn::make('state')
                     ->badge()
                     ->formatStateUsing(fn (FormationState $state) => $state->label())
@@ -45,8 +48,36 @@ class FormationsTable
                     ->color('gray'),
                 TextColumn::make('score')->suffix('/100')->sortable(),
                 TextColumn::make('confidence'),
+                TextColumn::make('liquidity_usd')
+                    ->label('Liquidity')
+                    ->money('USD')
+                    ->sortable(),
+ 
+                TextColumn::make('volume_24h')
+                    ->label('24h Vol')
+                    ->money('USD')
+                    ->sortable(),
+ 
+                TextColumn::make('price_change_24h')
+                    ->label('24h %')
+                    ->suffix('%')
+                    ->color(fn (?float $state) => $state === null ? 'gray' : ($state >= 0 ? 'success' : 'danger'))
+                    ->sortable(),
+ 
+                TextColumn::make('deployedSlots_count')
+                    ->label('Deployed Slots')
+                    ->counts('deployedSlots')
+                    ->sortable(),
                 IconColumn::make('is_active')->boolean(),
-                TextColumn::make('deployedSlots_count')->counts('deployedSlots')->label('Deployed Slots'),
+                IconColumn::make('auto_managed')
+                    ->boolean()
+                    ->label('Auto')
+                    ->toggleable(isToggledHiddenByDefault: true),
+ 
+                TextColumn::make('market_data_synced_at')
+                    ->label('Synced')
+                    ->since()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('state_changed_at')->since()->label('Last Change'),
             ])
             ->filters([
