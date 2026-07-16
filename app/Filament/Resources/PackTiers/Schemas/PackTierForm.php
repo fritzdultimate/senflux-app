@@ -48,9 +48,6 @@ class PackTierForm
  
             Section::make('Marketing Features')
                 ->schema([
-                    // features is cast to `array` on the model, so TagsInput's
-                    // JSON array of strings maps directly onto it — no
-                    // transformation needed either direction.
                     TagsInput::make('features')
                         ->label('Feature bullet points')
                         ->placeholder('Type a feature and press Enter')
