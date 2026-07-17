@@ -57,21 +57,17 @@ class Dashboard extends Component {
 
     #[Computed]
     public function totalDeposited(): float {
-        return (float) $this->user->deposits()
-            ->whereIn('status', [DepositStatus::ACTIVE->value, DepositStatus::FINISHED->value])
-            ->sum('actually_paid_usd');
+        return (float) $this->user->deployedSlots()->sum('capital_amount');
     }
 
     #[Computed]
     public function totalEarned(): float {
-        return (float) $this->user->deposits()
-            ->whereIn('status', [DepositStatus::ACTIVE->value, DepositStatus::FINISHED->value])
-            ->sum('total_earnings');
+        return (float) $this->user->totalEarnings;
     }
 
     #[Computed]
     public function todayEarnings(): float {
-        return (float) DB::table('deposit_earnings')
+        return (float) DB::table('slot_earnings')
             ->where('user_id', $this->user->id)
             ->where('earned_date', now()->toDateString())
             ->sum('amount');

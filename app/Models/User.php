@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -114,8 +115,7 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasMany(Deposit::class);
     }
 
-    public function subscriptions(): HasMany
-    {
+    public function subscriptions(): HasMany {
         return $this->hasMany(Subscription::class);
     }
 
@@ -129,9 +129,19 @@ class User extends Authenticatable implements MustVerifyEmail {
         return $this->hasMany(WalletTransaction::class);
     }
 
-    public function depositEarnings(): HasMany
-    {
-        return $this->hasMany(DepositEarning::class);
+    public function slotEarnings(): HasMany {
+        return $this->hasMany(SlotEarning::class);
+    }
+
+    public function deployedSlots(): HasManyThrough {
+        return $this->hasManyThrough(
+            PackSlot::class,
+            PackSubscription::class,
+            'user_id',
+            'pack_subscription_id',
+            'id',
+            'id'
+        )->whereNotNull('pack_slots.formation_id');
     }
 
     public function referralBonusesEarned(): HasMany
@@ -194,13 +204,11 @@ class User extends Authenticatable implements MustVerifyEmail {
             && $this->subscription_expires_at->isFuture();
     }
 
-    public function getTotalEarningsAttribute(): float
-    {
-        return (float) $this->depositEarnings()->sum('amount');
+    public function getTotalEarningsAttribute(): float {
+        return (float) $this->slotEarnings()->sum('amount');
     }
 
-    public function getTotalDepositsAttribute(): float
-    {
+    public function getTotalDepositsAttribute(): float {
         return (float) $this->deposits()
             ->whereIn('status', ['active', 'finished'])
             ->sum('actually_paid_usd');
@@ -225,6 +233,10 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     public function scopeActive($query) {
         return $query->where('is_active', true);
+    }
+
+    public function scopeWithFundedSlots($query) {
+        return $query->whereHas('slots', fn($q) => $q->where('status', 'funded'));
     }
 
     public function scopeWithActiveDeposit($query) {
