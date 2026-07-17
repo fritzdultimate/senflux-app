@@ -145,7 +145,7 @@ class Dashboard extends Component {
             $days->push(now()->subDays($i)->toDateString());
         }
 
-        $earnings = DB::table('deposit_earnings')
+        $earnings = DB::table('slot_earnings')
             ->where('user_id', $this->user->id)
             ->whereBetween('earned_date', [now()->subDays(6)->toDateString(), now()->toDateString()])
             ->selectRaw('earned_date, SUM(amount) as total')
