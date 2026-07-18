@@ -44,7 +44,7 @@ class FormationScoringService {
     private function liquidityHealthScore(float $liquidityUsd): int {
         if ($liquidityUsd <= 0) return 0;
 
-        $score = (log10($liquidityUsd) - 3) * 35;
+        $score = (log10($liquidityUsd) - 2.5) * 35;
 
         return (int) max(0, min(100, round($score)));
     }
