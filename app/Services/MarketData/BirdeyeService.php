@@ -55,6 +55,7 @@ class BirdeyeService {
                 dd('last known', $this->lastKnown($mintAddress));
                 return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
+
             $response = Http::timeout(10)->withHeaders([
                 'X-API-KEY' => config('services.birdeye.key'),
                 'x-chain'   => 'solana',
@@ -72,6 +73,8 @@ class BirdeyeService {
 
                 return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
+
+            dd('okays', $response->json('data'));
 
             $d = $response->json('data') ?? [];
 
