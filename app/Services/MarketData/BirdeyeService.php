@@ -53,7 +53,12 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
-                dd('not okay');
+                dd([
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                    'headers' => $response->headers(),
+                    'reason' => $response->reason(),
+                ]);
                 return $this->defaultTraderStats();
             }
 
