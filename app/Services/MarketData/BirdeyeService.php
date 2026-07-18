@@ -74,8 +74,6 @@ class BirdeyeService {
                 return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
 
-            dd('okays', $response->json('data'));
-
             $d = $response->json('data') ?? [];
 
             $stats = [
@@ -110,6 +108,8 @@ class BirdeyeService {
             ];
 
             $this->rememberLastKnown($mintAddress, $stats);
+
+            dd('okays', $response->json('data'));
 
             return $stats;
 
