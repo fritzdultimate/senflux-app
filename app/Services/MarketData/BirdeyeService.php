@@ -93,7 +93,7 @@ class BirdeyeService {
                     : null,
             ];
         } catch(\Throwable $e) {
-            dd('issue');
+            dd($e->getMessage());
             Log::warning('Birdeye traderStats failed', [
                 'mint' => $mintAddress,
                 'error' => $e->getMessage()
