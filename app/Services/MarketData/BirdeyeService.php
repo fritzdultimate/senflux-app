@@ -63,7 +63,7 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
-                dd($response->body());
+                // dd($response->body());
                 Log::warning('Birdeye traderStats non-ok response', [
                     'mint' => $mintAddress,
                     'status' => $response->status(),
@@ -108,12 +108,12 @@ class BirdeyeService {
 
             $this->rememberLastKnown($mintAddress, $stats);
 
-            dd('okays', $response->json('data'));
+            // dd('okays', $response->json('data'));
 
             return $stats;
 
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             Log::warning('Birdeye traderStats failed', [
                 'mint' => $mintAddress,
                 'error' => $e->getMessage(),
