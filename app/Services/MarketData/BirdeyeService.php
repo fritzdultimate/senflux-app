@@ -45,11 +45,8 @@ class BirdeyeService {
 
     public function traderStats(string $mintAddress): array {
         if (!$this->isConfigured()) {
-            dd('not configured');
             return $this->defaultTraderStats();
         }
-
-        dd('configured');
 
         
 
@@ -117,6 +114,7 @@ class BirdeyeService {
             return $stats;
 
         } catch (\Throwable $e) {
+            dd($e->getMessage());
             Log::warning('Birdeye traderStats failed', [
                 'mint' => $mintAddress,
                 'error' => $e->getMessage(),
