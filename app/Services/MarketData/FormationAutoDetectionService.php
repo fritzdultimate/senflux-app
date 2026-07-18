@@ -145,7 +145,7 @@ class FormationAutoDetectionService {
 
         $liquidityMigration = $this->migrationScorer->score($formation) ?? $formation->liquidity_migration;
 
-        dd('here bro?');
+        // dd('here bro?');
 
         $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
 
