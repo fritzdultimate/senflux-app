@@ -131,16 +131,29 @@ class BirdeyeService {
      * data instead of hitting Birdeye and tripping another 429.
      */
     private function tryClaimRateSlot(): bool {
-        return Cache::lock('birdeye:rate-gate-lock', 5)->block(2, function () {
-            $lastCall = Cache::get(self::RATE_GATE_KEY);
+        try {
+            return Cache::lock('birdeye:rate-gate-lock', 5)->block(2, function () {
+                $lastCallTimestamp = Cache::get(self::RATE_GATE_KEY); // plain int now
 
-            if ($lastCall && now()->diffInSeconds($lastCall) < self::MIN_SECONDS_BETWEEN_CALLS) {
+                if ($lastCallTimestamp !== null && (time() - $lastCallTimestamp) < self::MIN_SECONDS_BETWEEN_CALLS) {
+                    return false;
+                }
+
+                Cache::put(self::RATE_GATE_KEY, time(), now()->addMinutes(10));
+                return true;
+            });
+        } catch (\Throwable $e) {
+            Log::warning('Birdeye rate gate lock failed — falling back to unsynchronized check', [
+                'error' => $e->getMessage(),
+            ]);
+
+            $lastCallTimestamp = Cache::get(self::RATE_GATE_KEY);
+            if ($lastCallTimestamp !== null && (time() - $lastCallTimestamp) < self::MIN_SECONDS_BETWEEN_CALLS) {
                 return false;
             }
-
-            Cache::put(self::RATE_GATE_KEY, now(), now()->addMinutes(10));
+            Cache::put(self::RATE_GATE_KEY, time(), now()->addMinutes(10));
             return true;
-        });
+        }
     }
 
     private function rememberLastKnown(string $mintAddress, array $stats): void {
