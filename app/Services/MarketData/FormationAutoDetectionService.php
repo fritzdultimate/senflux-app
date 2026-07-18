@@ -145,9 +145,11 @@ class FormationAutoDetectionService {
 
         $liquidityMigration = $this->migrationScorer->score($formation) ?? $formation->liquidity_migration;
 
+        dd('here bro?');
+
         $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
 
-        dump($birdeyeData, 'merge?');
+        dd($birdeyeData, 'merge?');
 
         $data = array_merge($data, [
             'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,
