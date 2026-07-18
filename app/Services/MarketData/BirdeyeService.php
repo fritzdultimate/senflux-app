@@ -43,7 +43,7 @@ class BirdeyeService {
         try {
 
             $response = Http::withHeaders([
-                'X-API-KEY' => config('services.birdeye.key'),
+                'X-API-KEY' => '4bec880aae9b410a80c98b6e2affc86e',//config('services.birdeye.key'),
                 'x-chain'   => 'solana',
             ])->get(self::BASE_URL . '/defi/v3/token/trade-data/single', [
                 'address' => $mintAddress,
