@@ -29,13 +29,13 @@ class FormationScoringService {
         // $liquidityComponent = $liquidityMigrationScore ?? $liquidityScore;
         $liquidityComponent = $liquidityScore;
 
-        $weighted = ($liquidityComponent * 0.25)
-            + ($volumeScore * 0.25)
-            + ($pressureScore * 0.15)
-            + ($momentumScore * 0.20)
-            + ($walletScore * 0.15);
+        $weighted = ($liquidityComponent * 0.7)
+            + ($volumeScore * 0.15)
+            + ($pressureScore * 0.05)
+            + ($momentumScore * 0.05)
+            + ($walletScore * 0.05);
 
-        dd($weighted, $marketData, $liquidityScore, $liquidityComponent);
+        dd($weighted, $marketData, $momentumScore);
 
         return (int) max(0, min(100, round($weighted)));
     }
