@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
 
@@ -38,3 +39,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('formation:detect --batch=25')
     ->everyMinute()
     ->withoutOverlapping();
+
+Schedule::call(function () {
+    Log::info('Scheduler heartbeat — ' . now());
+})->everyMinute();
