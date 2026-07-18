@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Schedule;
 // Schedule::job(SyncFormationMarketData::class)->everyFiveMinutes()->withoutOverlapping();
 
 Schedule::command('formation:detect --batch=25')
-    ->everyMinute()
+    ->everyThreeMinutes()
     ->withoutOverlapping();
 
 Schedule::call(function () {
