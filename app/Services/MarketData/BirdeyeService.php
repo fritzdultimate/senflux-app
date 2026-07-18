@@ -71,7 +71,7 @@ class BirdeyeService {
                 return $this->defaultTraderStats();
             }
 
-            dd($response->json());
+            // dd($response->json());
 
             $d = $response->json('data') ?? $this->defaultTraderStats();
 
