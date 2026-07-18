@@ -10,6 +10,7 @@ enum FormationEventType: string {
     case LIQUIDITY_INCREASING = 'liquidity_increasing';
     case DEPLOYMENT_INITIATED = 'deployment_initiated';
     case EXPOSURE_REDUCED = 'exposure_reduced';
+    case MATURED = 'matured';
 
     /**
      * Default message templates. FormationEventLogger can override with
@@ -25,6 +26,7 @@ enum FormationEventType: string {
             self::LIQUIDITY_INCREASING  => 'Liquidity increasing',
             self::DEPLOYMENT_INITIATED  => 'Deployment initiated',
             self::EXPOSURE_REDUCED      => 'Exposure reduced',
+            self::MATURED => 'Reached sustained maturity',
         };
     }
 
@@ -34,6 +36,7 @@ enum FormationEventType: string {
             self::STATE_CHANGED => 'state_change',
             self::CAPITAL_CONCENTRATION, self::WALLET_CLUSTER, self::LIQUIDITY_INCREASING => 'signal',
             self::DEPLOYMENT_INITIATED, self::EXPOSURE_REDUCED => 'deployment',
+            self::MATURED => 'sustained',
         };
     }
 }
