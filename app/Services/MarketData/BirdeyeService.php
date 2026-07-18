@@ -53,6 +53,7 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
+                dd('not okay');
                 return $this->defaultTraderStats();
             }
 
@@ -92,6 +93,7 @@ class BirdeyeService {
                     ? \Carbon\Carbon::createFromTimestamp($d['last_trade_unix_time'])
                     : null,
             ];
+
         } catch(\Throwable $e) {
             dd($e->getMessage());
             Log::warning('Birdeye traderStats failed', [
