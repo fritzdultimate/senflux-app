@@ -52,8 +52,7 @@ class BirdeyeService {
 
         try {
             if (!$this->tryClaimRateSlot()) {
-                // Throttled this cycle — never block the flow, just reuse
-                // whatever we last successfully fetched for this mint.
+                dd('last known', $this->lastKnown($mintAddress));
                 return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
             $response = Http::timeout(10)->withHeaders([
