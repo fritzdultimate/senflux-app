@@ -26,13 +26,16 @@ class FormationScoringService {
 
         // liquidity_migration substitutes for part of the liquidity weight
         // once real 24h history exists — otherwise fall back to raw size.
-        $liquidityComponent = $liquidityMigrationScore ?? $liquidityScore;
+        // $liquidityComponent = $liquidityMigrationScore ?? $liquidityScore;
+        $liquidityComponent = $liquidityScore;
 
         $weighted = ($liquidityComponent * 0.25)
             + ($volumeScore * 0.25)
             + ($pressureScore * 0.15)
             + ($momentumScore * 0.20)
             + ($walletScore * 0.15);
+
+        dd($weighted, $marketData, $liquidityScore, $liquidityComponent);
 
         return (int) max(0, min(100, round($weighted)));
     }
