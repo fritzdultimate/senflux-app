@@ -48,13 +48,14 @@ class BirdeyeService {
             return $this->defaultTraderStats();
         }
 
-        if (!$this->tryClaimRateSlot()) {
-            // Throttled this cycle — never block the flow, just reuse
-            // whatever we last successfully fetched for this mint.
-            return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
-        }
+        
 
         try {
+            if (!$this->tryClaimRateSlot()) {
+                // Throttled this cycle — never block the flow, just reuse
+                // whatever we last successfully fetched for this mint.
+                return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
+            }
             $response = Http::timeout(10)->withHeaders([
                 'X-API-KEY' => config('services.birdeye.key'),
                 'x-chain'   => 'solana',
