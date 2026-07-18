@@ -177,6 +177,8 @@ class FormationAutoDetectionService {
                 : FormationState::WEAKENING;
         }
 
+        dd($data);
+
         $formation->update([
             'previous_score' => $previousScore,
             'score' => $score,
