@@ -149,7 +149,7 @@ class FormationAutoDetectionService {
 
         $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
 
-        dd($birdeyeData, 'merge?');
+        // dd($birdeyeData, 'merge?');
 
         $data = array_merge($data, [
             'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,

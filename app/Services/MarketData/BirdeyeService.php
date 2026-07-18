@@ -64,6 +64,7 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
+                dd($response->body());
                 Log::warning('Birdeye traderStats non-ok response', [
                     'mint' => $mintAddress,
                     'status' => $response->status(),
