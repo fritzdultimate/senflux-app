@@ -7,6 +7,7 @@ use App\Enums\FormationState;
 use App\Models\Formation;
 use App\Models\FormationWatchlistItem;
 use App\Services\FormationEventLogger;
+use Illuminate\Support\Facades\Cache;
 
 class FormationAutoDetectionService {
     /** Minimum real liquidity before we consider a token "detected" at all — filters out dead/rug pools. */
@@ -26,32 +27,52 @@ class FormationAutoDetectionService {
         private FormationEventLogger $eventLogger,
     ) {}
 
-    public function runCycle(): array {
+    public function runCycle(int $batchSize = 25): array {
         $created = 0;
         $updated = 0;
+        $errors = 0;
 
-        FormationWatchlistItem::active()->chunkById(50, function ($items) use (&$created, &$updated) {
-            foreach ($items as $item) {
+        $cursorKey = 'formation_detect:cursor';
+        $lastId = (int) Cache::get($cursorKey, 0);
+
+        $items = FormationWatchlistItem::active()
+            ->where('id', '>', $lastId)
+            ->orderBy('id')
+            ->limit($batchSize)
+            ->get();
+
+        // reached the end of the table — wrap back to the start next run
+        if ($items->isEmpty() && $lastId > 0) {
+            Cache::forget($cursorKey);
+            $items = FormationWatchlistItem::active()->orderBy('id')->limit($batchSize)->get();
+        }
+
+        foreach ($items as $item) {
+            try {
                 $data = $this->dexScreener->summarize($item->mint_address);
-
                 if (!$data) {
                     continue;
                 }
 
                 if ($item->formation_id === null) {
-                    if ($this->tryDetect($item, $data)) {
-                        $created++;
-                    }
-                    continue;
-                }
-
-                if ($this->updateFormation($item->formation, $data)) {
+                    if ($this->tryDetect($item, $data)) $created++;
+                } elseif ($this->updateFormation($item->formation, $data)) {
                     $updated++;
                 }
+            } catch (\Throwable $e) {
+                $errors++;
+                \Log::warning('formation:detect item failed', [
+                    'mint' => $item->mint_address,
+                    'error' => $e->getMessage(),
+                ]);
+                continue;
             }
-        });
+        }
 
-        return compact('created', 'updated');
+        $nextCursor = $items->isNotEmpty() ? $items->last()->id : 0;
+        Cache::put($cursorKey, $nextCursor, now()->addHours(2));
+
+        return compact('created', 'updated', 'errors') + ['next_cursor' => $nextCursor];
     }
 
     private function tryDetect(FormationWatchlistItem $item, array $data): bool {

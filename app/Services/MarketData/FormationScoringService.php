@@ -35,7 +35,7 @@ class FormationScoringService {
             + ($momentumScore * 0.05)
             + ($walletScore * 0.05);
 
-        dd($weighted, $marketData, $momentumScore);
+        // dd($weighted, $marketData, $momentumScore);
 
         return (int) max(0, min(100, round($weighted)));
     }
