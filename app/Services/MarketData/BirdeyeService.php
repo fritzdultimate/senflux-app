@@ -37,6 +37,7 @@ class BirdeyeService {
 
     public function traderStats(string $mintAddress): ?array {
         if (!$this->isConfigured()) {
+            dd('not_config');
             return null;
         }
 
