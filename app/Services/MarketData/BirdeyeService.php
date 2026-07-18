@@ -3,24 +3,32 @@
 
 namespace App\Services\MarketData;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class BirdeyeService {
     private const BASE_URL = 'https://public-api.birdeye.so';
 
+    /** Minimum spacing between real Birdeye API calls, system-wide. */
+    private const MIN_SECONDS_BETWEEN_CALLS = 240; // 4 minutes
+
+    /** How long a successful result stays "last known" — used as fallback while throttled. No expiry needed really, but capped so very stale data eventually ages out of use. */
+    private const LAST_KNOWN_TTL_MINUTES = 60 * 24; // 24h
+
+    private const RATE_GATE_KEY = 'birdeye:last_call_at';
+
     public function isConfigured(): bool {
         return filled(config('services.birdeye.key'));
     }
 
-    /**
-     * Returns holder count from Birdeye's token overview. Returns null
-     * (not 0) when unconfigured or on failure — a missing key should
-     * never masquerade as "zero wallets."
-     */
     public function fetchHolderCount(string $mintAddress): ?int {
         if (!$this->isConfigured()) {
             return null;
+        }
+
+        if (!$this->tryClaimRateSlot()) {
+            return $this->lastKnown($mintAddress)['holders'] ?? null;
         }
 
         $response = Http::timeout(10)
@@ -29,26 +37,25 @@ class BirdeyeService {
 
         if ($response->failed()) {
             Log::warning('Birdeye fetch failed', ['mint' => $mintAddress, 'status' => $response->status()]);
-            return null;
+            return $this->lastKnown($mintAddress)['holders'] ?? null;
         }
 
         return $response->json('data.holder');
     }
 
-    public function traderStats(string $mintAddress): ?array {
+    public function traderStats(string $mintAddress): array {
         if (!$this->isConfigured()) {
-            dd('not_config');
-            return null;
+            return $this->defaultTraderStats();
         }
 
-        // dd('configured');
+        if (!$this->tryClaimRateSlot()) {
+            // Throttled this cycle — never block the flow, just reuse
+            // whatever we last successfully fetched for this mint.
+            return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
+        }
 
         try {
-            // return \Cache::remember("birdeye:trader-stats:{$mintAddress}", now()->addMinutes(10), function () use ($mintAddress) {
-                // existing HTTP call logic
-            // });
-
-            $response = Http::withHeaders([
+            $response = Http::timeout(10)->withHeaders([
                 'X-API-KEY' => config('services.birdeye.key'),
                 'x-chain'   => 'solana',
             ])->get(self::BASE_URL . '/defi/v3/token/trade-data/single', [
@@ -56,30 +63,18 @@ class BirdeyeService {
             ]);
 
             if (!$response->ok()) {
-                dd([
+                Log::warning('Birdeye traderStats non-ok response', [
+                    'mint' => $mintAddress,
                     'status' => $response->status(),
                     'body' => $response->body(),
-                    'headers' => $response->headers(),
-                    'reason' => $response->reason(),
                 ]);
 
-                $body = $response->json();
-                if (($body['message'] ?? null) === 'Compute units usage limit exceeded') {
-                    \Log::warning('Birdeye CU quota exhausted — skipping Birdeye enrichment this cycle');
-                    \Cache::put('birdeye:quota-exhausted', true, now()->addMinutes(15));
-                }
-                return $this->defaultTraderStats();
+                return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
 
-            // dd($response->json());
+            $d = $response->json('data') ?? [];
 
-            $d = $response->json('data') ?? $this->defaultTraderStats();
-
-            // if (empty($d)) {
-            //     return null;
-            // }
-
-            return [
+            $stats = [
                 'active_wallets' => $d['unique_wallet_24h'] ?? null,
                 'holders' => $d['holder'] ?? null,
                 'markets' => $d['market'] ?? null,
@@ -106,24 +101,56 @@ class BirdeyeService {
                 'last_trade_at' => isset($d['last_trade_unix_time'])
                     ? \Carbon\Carbon::createFromTimestamp($d['last_trade_unix_time'])
                     : null,
+
+                'birdeye_synced_at' => now(),
             ];
 
-        } catch(\Throwable $e) {
-            dd($e->getMessage());
+            $this->rememberLastKnown($mintAddress, $stats);
+
+            return $stats;
+
+        } catch (\Throwable $e) {
             Log::warning('Birdeye traderStats failed', [
                 'mint' => $mintAddress,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
 
-            return $this->defaultTraderStats();
+            return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
         }
     }
 
-    private function defaultTraderStats() {
+    /**
+     * Atomically claims the right to make one real API call. Only one
+     * caller across the whole app can succeed per MIN_SECONDS_BETWEEN_CALLS
+     * window — everyone else this cycle falls back to cached/last-known
+     * data instead of hitting Birdeye and tripping another 429.
+     */
+    private function tryClaimRateSlot(): bool {
+        return Cache::lock('birdeye:rate-gate-lock', 5)->block(2, function () {
+            $lastCall = Cache::get(self::RATE_GATE_KEY);
+
+            if ($lastCall && now()->diffInSeconds($lastCall) < self::MIN_SECONDS_BETWEEN_CALLS) {
+                return false;
+            }
+
+            Cache::put(self::RATE_GATE_KEY, now(), now()->addMinutes(10));
+            return true;
+        });
+    }
+
+    private function rememberLastKnown(string $mintAddress, array $stats): void {
+        Cache::put("birdeye:last-known:{$mintAddress}", $stats, now()->addMinutes(self::LAST_KNOWN_TTL_MINUTES));
+    }
+
+    private function lastKnown(string $mintAddress): ?array {
+        return Cache::get("birdeye:last-known:{$mintAddress}");
+    }
+
+    private function defaultTraderStats(): array {
         return [
             'active_wallets' => null,
             'holders' => null,
-            'unique_wallets_24h' =>  null,
+            'unique_wallets_24h' => null,
             'unique_wallets_24h_change_pct' => null,
             'volume_buy_24h_usd' => null,
             'volume_sell_24h_usd' => null,
