@@ -52,7 +52,6 @@ class BirdeyeService {
 
         try {
             if (!$this->tryClaimRateSlot()) {
-                dd('last known', $this->lastKnown($mintAddress));
                 return $this->lastKnown($mintAddress) ?? $this->defaultTraderStats();
             }
 
