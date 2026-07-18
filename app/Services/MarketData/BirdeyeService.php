@@ -44,9 +44,12 @@ class BirdeyeService {
         // dd('configured');
 
         try {
+            // return \Cache::remember("birdeye:trader-stats:{$mintAddress}", now()->addMinutes(10), function () use ($mintAddress) {
+                // existing HTTP call logic
+            // });
 
             $response = Http::withHeaders([
-                'X-API-KEY' => '4bec880aae9b410a80c98b6e2affc86e',//config('services.birdeye.key'),
+                'X-API-KEY' => config('services.birdeye.key'),
                 'x-chain'   => 'solana',
             ])->get(self::BASE_URL . '/defi/v3/token/trade-data/single', [
                 'address' => $mintAddress,
@@ -59,6 +62,12 @@ class BirdeyeService {
                     'headers' => $response->headers(),
                     'reason' => $response->reason(),
                 ]);
+
+                $body = $response->json();
+                if (($body['message'] ?? null) === 'Compute units usage limit exceeded') {
+                    \Log::warning('Birdeye CU quota exhausted — skipping Birdeye enrichment this cycle');
+                    \Cache::put('birdeye:quota-exhausted', true, now()->addMinutes(15));
+                }
                 return $this->defaultTraderStats();
             }
 
