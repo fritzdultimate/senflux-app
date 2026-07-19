@@ -19,6 +19,12 @@ return [
      */
     'min_deployment_score' => 40,
 
+    'min_deployment_score_by_tier' => [
+        'scout'    => 40,
+        'vanguard' => 50,
+        'dominion' => 60,
+    ],
+
     /*
      * Soft concentration cap — auto-deployment won't push a slot into a
      * formation whose deployment_summary()['total_capital'] already
@@ -40,4 +46,6 @@ return [
      * slot's real interval is anywhere from 24h to 24h + this value.
      */
     'earning_jitter_max_minutes' => 180,
+
+    'max_exposure_ratio' => 0.15,
 ];

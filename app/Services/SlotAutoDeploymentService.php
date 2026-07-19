@@ -29,12 +29,15 @@ class SlotAutoDeploymentService {
      */
     public function deployEligibleSlots(): int {
         $deployedCount = 0;
+        $deployedByTier = [];
 
         $slots = PackSlot::where('status', PackSlotStatus::FUNDED->value)
             ->whereNull('formation_id')
             ->whereHas('subscription', fn ($q) => $q->where('status', PackSubscriptionStatus::ACTIVE->value))
             ->with('subscription.packTier')
-            ->get();
+            ->get()
+            ->sortByDesc(fn ($slot) => $slot->subscription->packTier->sort_order)
+            ->values();
 
         if ($slots->isEmpty()) {
             return 0;
@@ -57,15 +60,29 @@ class SlotAutoDeploymentService {
             $committedThisPass[$formation->id] = ($committedThisPass[$formation->id] ?? 0)
                 + (float) $slot->capital_amount;
 
+            $tierName = $slot->subscription->packTier->name;
+            $deployedByTier[$tierName] = ($deployedByTier[$tierName] ?? 0) + 1;
+
             $deployedCount++;
+        }
+
+        if ($deployedCount > 0) {
+            \Log::info('SlotAutoDeploymentService: pass complete', [
+                'total_deployed' => $deployedCount,
+                'by_tier' => $deployedByTier,
+            ]);
         }
 
         return $deployedCount;
     }
 
     private function pickFormationFor(PackSlot $slot, array $committedThisPass): ?Formation {
-        $minScore = config('packs.min_deployment_score', 40);
+        $tierKey = $slot->subscription->packTier->key;
+
+        $minScore = config("packs.min_deployment_score_by_tier.{$tierKey}") ?? config('packs.min_deployment_score', 40);
         $capPerFormation = config('packs.max_capital_per_formation');
+
+        $maxExposureRatio = config('packs.max_exposure_ratio', 0.15);
 
         $candidates = Formation::acceptingDeployments()
             ->where('score', '>=', $minScore)
@@ -73,17 +90,22 @@ class SlotAutoDeploymentService {
             ->get();
 
         foreach ($candidates as $formation) {
-            if ($capPerFormation === null) {
-                return $formation;
-            }
-
             $existingCapital = (float) $formation->deploymentSummary()['total_capital'];
             $pendingCapital = $committedThisPass[$formation->id] ?? 0.0;
             $projected = $existingCapital + $pendingCapital + (float) $slot->capital_amount;
 
-            if ($projected <= $capPerFormation) {
-                return $formation;
+            if ($capPerFormation !== null && $projected > $capPerFormation) {
+                continue;
             }
+
+            if ((float) $formation->liquidity_usd > 0) {
+                $exposureRatio = $projected / (float) $formation->liquidity_usd;
+                if ($exposureRatio > $maxExposureRatio) {
+                    continue;
+                }
+            }
+
+            return $formation;
         }
 
         return null;
