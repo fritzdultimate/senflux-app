@@ -44,7 +44,7 @@ class BirdeyeSyncService {
 
                 $synced++;
                 $formationId = $formation->id;
-                $formation->token_name;
+                $formationName = $formation->token_name;
             } catch (\Throwable $e) {
                 $errors++;
                 Log::warning('BirdeyeSyncService: formation sync failed', [
