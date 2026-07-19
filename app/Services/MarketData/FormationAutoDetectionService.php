@@ -142,7 +142,8 @@ class FormationAutoDetectionService {
         $f = Formation::oldest()->take(10)->get();
 
         foreach($f as $it) {
-            dump($it->token_symbol);
+            $birdeyeData = app(BirdeyeService::class)->traderStats($f->mint_address);
+            dump($birdeyeData);
         }
         dd($f);
 
