@@ -139,6 +139,10 @@ class FormationAutoDetectionService {
             return false;
         }
 
+        $f = Formation::oldest()->take(10)->get();
+
+        dd($f);
+
         $previousLiquidity = (float) $formation->liquidity_usd;
         $previousScore = (int) $formation->score;
         $previousState = $formation->state;
@@ -227,6 +231,12 @@ class FormationAutoDetectionService {
             'header' => $data['header'],
             'open_graph' => $data['open_graph'],
         ]);
+
+        if($previousState !== $computedState) {
+            $formation->update([
+                'state_changed_at' => now()
+            ]);
+        }
 
         if ($computedState === FormationState::WEAKENING && $previousState !== FormationState::WEAKENING) {
             $this->eventLogger->log($formation, FormationEventType::EXPOSURE_REDUCED, "Exposure reduction initiated — {$formation->token_symbol}");
