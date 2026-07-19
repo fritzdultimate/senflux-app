@@ -144,7 +144,7 @@ class FormationAutoDetectionService {
         foreach($f as $it) {
             dump($it->token_symbol);
         }
-        dd($it->token_symbol);
+        dd($f);
 
         $previousLiquidity = (float) $formation->liquidity_usd;
         $previousScore = (int) $formation->score;
