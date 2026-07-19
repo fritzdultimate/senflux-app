@@ -153,22 +153,7 @@ class FormationAutoDetectionService {
 
         $liquidityMigration = $this->migrationScorer->score($formation) ?? $formation->liquidity_migration;
 
-        // dd('here bro?');
-
-        $birdeyeData = app(BirdeyeService::class)->traderStats($formation->mint_address);
-
-        // dd($birdeyeData, 'merge?');
-
-        $data = array_merge($data, [
-            'unique_wallets_24h' => $birdeyeData['unique_wallets_24h'] ?? null,
-            'unique_wallets_24h_change_pct' => $birdeyeData['unique_wallets_24h_change_pct'] ?? null,
-            'volume_buy_24h_usd' => $birdeyeData['volume_buy_24h_usd'] ?? null,
-            'volume_sell_24h_usd' => $birdeyeData['volume_sell_24h_usd'] ?? null,
-        ]);
-
         $score = $this->scorer->score($data, $liquidityMigration);
-        $walletQuality = $this->scorer->walletParticipationScore($data);
-        $capitalConcentration = $this->scorer->capitalConcentrationScore($birdeyeData);
 
         $computedState = $this->stateFromScore($score);
 
@@ -198,15 +183,10 @@ class FormationAutoDetectionService {
             'state' => $computedState,
             'confidence' => $score >= 60 ? 'High' : ($score >= 35 ? 'Moderate' : 'Low'),
             'liquidity_migration' => $liquidityMigration,
-            'capital_concentration' => $capitalConcentration,
-            'wallet_quality' => $walletQuality,
-            'active_wallets' => $birdeyeData['active_wallets'] ?? $formation->active_wallets,
-            'holders' => $birdeyeData['holders'] ?? $formation->holders,
             'unique_wallets_24h' => $data['unique_wallets_24h'],
             'unique_wallets_24h_change_pct' => $data['unique_wallets_24h_change_pct'],
             'volume_buy_24h_usd' => $data['volume_buy_24h_usd'],
             'volume_sell_24h_usd' => $data['volume_sell_24h_usd'],
-            'birdeye_synced_at' => $birdeyeData ? now() : null,
             'dex' => $data['dex'],
             'pair_address' => $data['pair_address'],
             'pair_url' => $data['pair_url'],

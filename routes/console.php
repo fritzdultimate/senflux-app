@@ -71,3 +71,7 @@ Schedule::command('pack-lifecycle:open-renewal-windows')
 Schedule::command('pack-lifecycle:close-expired-renewal-windows')
     ->everyFifteenMinutes()
     ->withoutOverlapping();
+
+Schedule::command('birdeye:sync --batch=1')
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
