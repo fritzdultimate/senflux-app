@@ -180,19 +180,23 @@ class PackLifecycleService
 
     // ---------------------------------------------------------------------
 
-    private function renewInto(PackSubscription $old, PackTier $newTier, bool $compound): PackSubscription {
+    private function renewInto(PackSubscription $old, PackTier $newTier, bool $compound, bool $upgrade = false): PackSubscription {
         $this->guardInRenewalWindow($old);
 
-        return DB::transaction(function () use ($old, $newTier, $compound) {
-            $transaction = $this->wallet->debitRespectingLock(
-                user: $old->user,
-                walletType: WalletType::MAIN,
-                amount: (float) $newTier->price,
-                type: TransactionType::PACK_RENEWAL,
-                description: "Renewed {$old->packTier->name} pack",
-                referenceType: PackTier::class,
-                referenceId: $newTier->id,
-            );
+        return DB::transaction(function () use ($old, $newTier, $compound, $upgrade) {
+            if(!$upgrade) {
+                $transaction = $this->wallet->debitRespectingLock(
+                    user: $old->user,
+                    walletType: WalletType::MAIN,
+                    amount: (float) $newTier->price,
+                    type: TransactionType::PACK_RENEWAL,
+                    description: "Renewed {$old->packTier->name} pack",
+                    referenceType: PackTier::class,
+                    referenceId: $newTier->id,
+                );
+            } elseif($upgrade) {
+                
+            }
 
             $new = PackSubscription::create([
                 'user_id' => $old->user_id,

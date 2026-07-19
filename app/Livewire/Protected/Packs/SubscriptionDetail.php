@@ -118,8 +118,7 @@ class SubscriptionDetail extends Component
         }
     }
 
-    public function startUpgrade(int $tierId): void
-    {
+    public function startUpgrade(int $tierId): void {
         $this->upgradingToTierId = $tierId;
         $this->errorMessage = '';
     }
@@ -130,8 +129,7 @@ class SubscriptionDetail extends Component
         $this->errorMessage = '';
     }
 
-    public function confirmUpgrade(PackLifecycleService $service): void
-    {
+    public function confirmUpgrade(PackLifecycleService $service): void {
         $newTier = PackTier::find($this->upgradingToTierId);
         if (!$newTier) return;
 
