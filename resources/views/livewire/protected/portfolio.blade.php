@@ -33,52 +33,49 @@
         </div>
 
         {{-- ── Earnings chart ───────────────────────────────────────────────── --}}
-        <div class="pf-panel">
-            <div class="pf-panel__head">
-                <div>
-                    <p class="pf-panel__title">Earnings Over Time</p>
-                    <p class="pf-panel__sub">Cumulative growth</p>
-                </div>
-                <div class="pf-range-toggle">
-                    @foreach(['7' => '7D', '30' => '30D', '90' => '90D', 'all' => 'All'] as $val => $lbl)
-                        <button
-                            wire:click="setRange('{{ $val }}')"
-                            type="button"
-                            class="pf-range-btn {{ $range === $val ? 'pf-range-btn--active' : '' }}"
-                        >{{ $lbl }}</button>
-                    @endforeach
-                </div>
-            </div>
+        @php
+            $chart = $this->cumulativeChart;
+            $maxCum = max(array_column($chart, 'cumulative')) ?: 1;
+            $currentTotal = end($chart)['cumulative'] ?? 0;
 
-            @php
-                $chart = $this->cumulativeChart;
-                $maxCum = max(array_column($chart, 'cumulative')) ?: 1;
-            @endphp
+            $points = collect($chart)->values();
+            $n = max($points->count() - 1, 1);
 
-            <div class="pf-chart">
-                <svg viewBox="0 0 600 160" preserveAspectRatio="none" class="pf-chart__svg">
-                    @php
-                        $points = collect($chart)->values();
-                        $n = max($points->count() - 1, 1);
-                        $path = $points->map(function ($p, $i) use ($n, $maxCum) {
-                            $x = round(($i / $n) * 600, 1);
-                            $y = round(160 - (($p['cumulative'] / $maxCum) * 150) - 5, 1);
-                            return "$x,$y";
-                        })->implode(' ');
-                        $fillPath = "0,160 $path 600,160";
-                    @endphp
-                    <polyline points="{{ $fillPath }}" fill="rgba(155,125,255,.08)" stroke="none" />
-                    <polyline points="{{ $path }}" fill="none" stroke="#9B7DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
+            $coords = $points->map(function ($p, $i) use ($n, $maxCum) {
+                $x = round(($i / $n) * 600, 1);
+                $y = round(160 - (($p['cumulative'] / $maxCum) * 150) - 5, 1);
+                return ['x' => $x, 'y' => $y, 'label' => $p['label'], 'date' => $p['date'], 'cumulative' => $p['cumulative']];
+            });
 
-            <div class="pf-chart-labels">
-                @foreach($chart as $i => $point)
-                    @if($i === 0 || $i === count($chart) - 1 || $i === intdiv(count($chart), 2))
-                        <span style="left: {{ count($chart) > 1 ? round(($i / (count($chart) - 1)) * 100, 1) : 0 }}%">{{ $point['label'] }}</span>
-                    @endif
+            $path = $coords->map(fn ($c) => "{$c['x']},{$c['y']}")->implode(' ');
+            $fillPath = "0,160 $path 600,160";
+
+            // Distinct label indices only — prevents duplicate labels on short ranges.
+            $labelIndices = collect([0, intdiv($points->count(), 2), $points->count() - 1])->unique()->values();
+        @endphp
+
+        <div class="pf-chart-value">${{ number_format($currentTotal, 2) }} <span>total earned in range</span></div>
+
+        <div class="pf-chart">
+            <span class="pf-chart__axis pf-chart__axis--top">${{ number_format($maxCum, 2) }}</span>
+            <span class="pf-chart__axis pf-chart__axis--bottom">$0</span>
+
+            <svg viewBox="0 0 600 160" preserveAspectRatio="none" class="pf-chart__svg">
+                <polyline points="{{ $fillPath }}" fill="rgba(155,125,255,.08)" stroke="none" />
+                <polyline points="{{ $path }}" fill="none" stroke="#9B7DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+                @foreach($coords as $c)
+                    <circle cx="{{ $c['x'] }}" cy="{{ $c['y'] }}" r="3" fill="#9B7DFF" class="pf-chart__dot">
+                        <title>{{ \Carbon\Carbon::parse($c['date'])->format('M j, Y') }} — ${{ number_format($c['cumulative'], 2) }}</title>
+                    </circle>
                 @endforeach
-            </div>
+            </svg>
+        </div>
+
+        <div class="pf-chart-labels">
+            @foreach($labelIndices as $i)
+                <span style="left: {{ $points->count() > 1 ? round(($i / ($points->count() - 1)) * 100, 1) : 0 }}%">{{ $chart[$i]['label'] }}</span>
+            @endforeach
         </div>
 
         {{-- ── Pack breakdown ───────────────────────────────────────────────── --}}
@@ -103,7 +100,7 @@
                                     </span>
                                 </div>
                                 <span class="pf-deposit-row__meta">
-                                    {{ number_format($sub['daily_rate'] * 100, 2) }}%/day · {{ $sub['days_active'] }} days active · {{ $sub['slots_funded'] }}/{{ $sub['slots_total'] }} slots funded
+                                    {{ number_format($sub['daily_rate'] * 100, 2) }}%/day · {{ round($sub['days_active']) }} days active · {{ $sub['slots_funded'] }}/{{ $sub['slots_total'] }} slots funded
                                 </span>
                             </div>
                             <div class="pf-deposit-row__stats">
@@ -127,18 +124,25 @@
                             <div class="pf-deposit-detail">
 
                                 {{-- Slots grid --}}
-                                <div class="pf-slots-grid" style="display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.9rem;">
+                                <div class="pf-slots-grid">
                                     @foreach($sub['slots'] as $slot)
-                                        <div class="pf-slot-chip pf-slot-chip--{{ $slot['status'] }}" style="padding:.4rem .7rem; border-radius:8px; font-size:.75rem;">
-                                            <strong>Slot {{ $slot['slot_number'] }}</strong> · {{ $slot['status_label'] }}
-                                            @if($slot['formation_symbol'])
-                                                · {{ $slot['formation_symbol'] }}
-                                            @endif
+                                        <div class="pf-slot-chip pf-slot-chip--{{ $slot['status'] }}">
+                                            <div class="pf-slot-chip__head">
+                                                <span class="pf-slot-chip__num">Slot {{ $slot['slot_number'] }}</span>
+                                                <span class="pf-slot-chip__status">{{ $slot['status_label'] }}</span>
+                                            </div>
                                             @if($slot['status'] !== 'empty')
-                                                <br>${{ number_format($slot['capital_amount'], 2) }}
-                                                @if($slot['realized_profit'] != 0)
-                                                    (+${{ number_format($slot['realized_profit'], 2) }})
-                                                @endif
+                                                <div class="pf-slot-chip__body">
+                                                    <span class="pf-slot-chip__amount">${{ number_format($slot['capital_amount'], 2) }}</span>
+                                                    @if($slot['realized_profit'] != 0)
+                                                        <span class="pf-slot-chip__profit">+${{ number_format($slot['realized_profit'], 2) }}</span>
+                                                    @endif
+                                                    @if($slot['formation_symbol'])
+                                                        <span class="pf-slot-chip__formation">{{ $slot['formation_symbol'] }}</span>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div class="pf-slot-chip__body pf-slot-chip__body--empty">Not yet deployed</div>
                                             @endif
                                         </div>
                                     @endforeach
