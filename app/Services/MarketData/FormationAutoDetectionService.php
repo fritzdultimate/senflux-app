@@ -141,7 +141,9 @@ class FormationAutoDetectionService {
 
         $f = Formation::oldest()->take(10)->get();
 
-        dd($f);
+        foreach($f as $it) {
+            dd($it->token_symbol);
+        }
 
         $previousLiquidity = (float) $formation->liquidity_usd;
         $previousScore = (int) $formation->score;
