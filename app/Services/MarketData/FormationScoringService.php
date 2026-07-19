@@ -2,20 +2,7 @@
 
 namespace App\Services\MarketData;
 
-/**
- * Converts raw DexScreener + Birdeye signals into a 0-100 Formation Score.
- * Weighting (25/25/15/20/15) is our own proposal, not a market-standard
- * formula — same caveat as before, this is a heuristic to tune over time.
- *
- * Recalibrated — across 137 live formations the best score ever seen was
- * 68, because liquidityHealthScore was scaled against a $10M ceiling that
- * almost nothing realistically reaches. Scales below are tightened to
- * actual Solana pool sizes so strong formations can reach the top of the
- * band. NOTE: this recalibration will cause a one-time upward jump in
- * scores for existing formations on the first run after deploy — consider
- * whether you want to reset `previous_score` for all formations in a
- * migration so it doesn't register as a false "huge improvement" event.
- */
+
 class FormationScoringService {
     public function score(array $marketData, ?float $liquidityMigrationScore = null): int {
         $liquidityScore = $this->liquidityHealthScore((float) $marketData['liquidity_usd']);
@@ -24,8 +11,6 @@ class FormationScoringService {
         $momentumScore = $this->priceMomentumScore($marketData);
         $walletScore = $this->walletParticipationScore($marketData);
 
-        // liquidity_migration substitutes for part of the liquidity weight
-        // once real 24h history exists — otherwise fall back to raw size.
         // $liquidityComponent = $liquidityMigrationScore ?? $liquidityScore;
         $liquidityComponent = $liquidityScore;
 
@@ -65,13 +50,7 @@ class FormationScoringService {
         return (int) round(($buys / $total) * 100);
     }
 
-    /**
-     * Multi-timeframe price scoring (5m/1h/6h/24h — DexScreener doesn't
-     * expose 15m). A single 24h number hides whether a move is a steady
-     * climb or a 5-minute pump about to dump, so this blends a
-     * longer-weighted trend score with a volatility penalty, plus a hard
-     * override for sharp drops on any single timeframe.
-     */
+
     private function priceMomentumScore(array $marketData): int {
         $changes = [
             '5m'  => (float) ($marketData['price_change_5m'] ?? 0),
@@ -112,13 +91,7 @@ class FormationScoringService {
         return (int) max(0, min(100, round($trendScore - $volatilityPenalty)));
     }
 
-    /**
-     * Real participation signal from Birdeye, replacing the flat 50
-     * placeholder. Falls back to neutral 50 when Birdeye hasn't synced for
-     * this token yet (new formations, or an API failure this cycle).
-     * Public because FormationAutoDetectionService also stores this value
-     * directly on the `wallet_quality` column.
-     */
+ 
     public function walletParticipationScore(array $marketData): int {
         if (!array_key_exists('unique_wallets_24h', $marketData) || $marketData['unique_wallets_24h'] === null) {
             return 50;
@@ -134,14 +107,7 @@ class FormationScoringService {
         return (int) round(($walletGrowthScore * 0.6) + ($buyPressureScore * 0.4));
     }
 
-    /**
-     * PROXY ONLY — traderStats() doesn't expose real top-holder ownership
-     * %, which is what "concentration" actually means. This approximates
-     * "spread" via active-wallets-vs-holders ratio: a token where almost
-     * nobody who holds it is actually trading it reads as more
-     * whale-controlled/stagnant than one with broad daily turnover. Swap
-     * this for a real holder-distribution endpoint when you add one.
-     */
+
     public function capitalConcentrationScore(?array $birdeyeData): int {
         if (!$birdeyeData || empty($birdeyeData['holders']) || empty($birdeyeData['active_wallets'])) {
             return 50;
