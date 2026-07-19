@@ -144,6 +144,7 @@ class FormationAutoDetectionService {
         foreach($f as $it) {
             $birdeyeData = app(BirdeyeService::class)->traderStats($it->mint_address);
             dump($birdeyeData, $it->token_symbol);
+            sleep(2);
         }
         dd($f);
 
