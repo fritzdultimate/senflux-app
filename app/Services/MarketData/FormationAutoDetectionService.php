@@ -139,14 +139,14 @@ class FormationAutoDetectionService {
             return false;
         }
 
-        $f = Formation::oldest()->take(3)->get();
+        // $f = Formation::oldest()->take(3)->get();
 
-        foreach($f as $it) {
-            $birdeyeData = app(BirdeyeService::class)->traderStats($it->mint_address);
-            dump($birdeyeData, $it->token_symbol);
-            sleep(2);
-        }
-        dd($f);
+        // foreach($f as $it) {
+        //     $birdeyeData = app(BirdeyeService::class)->traderStats($it->mint_address);
+        //     dump($birdeyeData, $it->token_symbol);
+        //     sleep(2);
+        // }
+        // dd($f);
 
         $previousLiquidity = (float) $formation->liquidity_usd;
         $previousScore = (int) $formation->score;
