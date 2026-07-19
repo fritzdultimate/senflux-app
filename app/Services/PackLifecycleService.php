@@ -126,7 +126,7 @@ class PackLifecycleService
             throw new \DomainException('Upgrade target must be a higher tier than the current pack.');
         }
 
-        return $this->renewInto($old, $newTier, $compound);
+        return $this->renewInto($old, $newTier, $compound, true);
     }
 
     /**
@@ -184,6 +184,7 @@ class PackLifecycleService
         $this->guardInRenewalWindow($old);
 
         return DB::transaction(function () use ($old, $newTier, $compound, $upgrade) {
+            $transaction = null;
             if(!$upgrade) {
                 $transaction = $this->wallet->debitRespectingLock(
                     user: $old->user,
@@ -195,7 +196,17 @@ class PackLifecycleService
                     referenceId: $newTier->id,
                 );
             } elseif($upgrade) {
-                
+                $cost = $old->estimateUpgradeCost($newTier);
+
+                $transaction = $this->wallet->debitRespectingLock(
+                    user: $old->user,
+                    walletType: WalletType::MAIN,
+                    amount: $cost,
+                    type: TransactionType::PACK_UPGRADE_FEE,
+                    description: "Real-time upgrade — {$old->packTier->name} → {$newTier->name}",
+                    referenceType: PackSubscription::class,
+                    referenceId: $newTier->id,
+                );
             }
 
             $new = PackSubscription::create([

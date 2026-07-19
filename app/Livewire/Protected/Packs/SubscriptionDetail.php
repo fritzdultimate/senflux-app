@@ -134,7 +134,7 @@ class SubscriptionDetail extends Component
         if (!$newTier) return;
 
         try {
-            $new = $service->upgrade($this->subscription, $newTier, $this->upgradeCompound);
+            $new = $service->upgradeNow($this->subscription, $newTier);
             $this->redirect(route('dashboard.packs.show', $new), navigate: true);
         } catch (\Throwable $e) {
             $this->errorMessage = $e->getMessage();
