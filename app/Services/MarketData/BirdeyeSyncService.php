@@ -14,6 +14,8 @@ class BirdeyeSyncService {
     public function syncNext(int $batchSize = 1): array {
         $synced = 0;
         $errors = 0;
+        $formationId = null;
+        $formationName = null;
 
         $formations = Formation::query()
             ->whereNotNull('mint_address')
@@ -41,6 +43,8 @@ class BirdeyeSyncService {
                 ]);
 
                 $synced++;
+                $formationId = $formation->id;
+                $formation->token_name;
             } catch (\Throwable $e) {
                 $errors++;
                 Log::warning('BirdeyeSyncService: formation sync failed', [
@@ -51,6 +55,6 @@ class BirdeyeSyncService {
             }
         }
 
-        return compact('synced', 'errors');
+        return compact('synced', 'errors', 'formationName', 'formationId');
     }
 }
