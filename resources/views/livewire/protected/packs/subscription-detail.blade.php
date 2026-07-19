@@ -65,7 +65,8 @@
         </div>
 
         {{-- ── Hero stat strip ──────────────────────────────────────────── --}}
-        <div class="mb-6 flex divide-x divide-white/[0.06] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+
+        <div class="mb-6 grid grid-cols-2 divide-x divide-y divide-white/[0.06] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] sm:grid-cols-4 sm:divide-y-0">
             <x-ui.hero-stat icon="banknotes" label="Capital Deployed" :value="'$' . number_format($capitalDeployed, 2)" />
             <x-ui.hero-stat icon="trending" label="Total Earned" :value="'+$' . number_format($totalEarned, 2)" tone="positive" />
             <x-ui.hero-stat icon="grid" label="Slots Funded" :value="$fundedSlots->count() . '/' . $this->subscription->slots->count()" />

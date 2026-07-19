@@ -22,12 +22,12 @@
     $iconPath = $icons[$icon] ?? $icons['default'];
 @endphp
 
-<div class="group relative flex-1 border-white/[0.06] px-5 py-5 transition-colors first:pl-6 last:pr-6 [&:not(:last-child)]:border-r">
+<div class="group relative px-4 py-4 transition-colors sm:flex-1 sm:px-5 sm:py-5 sm:first:pl-6 sm:last:pr-6">
     <div class="mb-3 flex h-8 w-8 items-center justify-center rounded-lg {{ $iconBg[$tone] ?? $iconBg['default'] }}">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $iconPath !!}</svg>
     </div>
     <p class="text-[10px] font-bold uppercase tracking-[0.1em] text-[#565B6E]">{{ $label }}</p>
-    <p class="mt-1.5 font-['IBM_Plex_Mono'] text-2xl font-semibold tabular-nums {{ $tones[$tone] ?? $tones['default'] }}">
+    <p class="mt-1.5 truncate font-['IBM_Plex_Mono'] text-xl font-semibold tabular-nums sm:text-2xl {{ $tones[$tone] ?? $tones['default'] }}">
         {{ $value }}@if($suffix)<span class="ml-1.5 text-xs font-medium text-[#565B6E]">{{ $suffix }}</span>@endif
     </p>
 </div>
