@@ -1,15 +1,4 @@
-{{-- resources/views/livewire/protected/packs/subscription-detail.blade.php --}}
-{{--
-    IMPORTANT — this page now runs purely on Tailwind's CDN build + arbitrary
-    value syntax (bg-[#0D0F16], font-['Sora']) — NO custom @theme tokens
-    anywhere. This is deliberate: CDN mode can't read tailwind.config.js or
-    an @theme block, so every component in this redesign was rewritten to
-    use literal hex values and bracket font-family syntax, which CDN's JIT
-    engine parses directly from the class string with zero config needed.
 
-    Move this <link> to your main layout's <head> if it isn't already
-    loading these fonts somewhere global.
---}}
 @push('styles')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,7 +160,9 @@
         {{-- ── Slot ledger ───────────────────────────────────────────────── --}}
         <x-ui.panel eyebrow="Allocation" title="Slots">
             <x-slot:actions>
-                <span class="font-['IBM_Plex_Mono'] text-xs tabular-nums text-[#565B6E]">{{ $fundedSlots->count() }}/{{ $this->subscription->slots->count() }} funded</span>
+                <span class="font-['IBM_Plex_Mono'] text-xs tabular-nums text-[#565B6E]">
+                    {{ $fundedSlots->count() }}/{{ $this->subscription->slots->count() }} funded
+                </span>
             </x-slot:actions>
 
             <div class="-mx-6 -my-6 divide-y divide-white/[0.06]">

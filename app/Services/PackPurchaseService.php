@@ -61,13 +61,13 @@ class PackPurchaseService
             );
 
             $subscription = PackSubscription::create([
-                'user_id'                 => $user->id,
-                'pack_tier_id'             => $tier->id,
-                'status'                  => PackSubscriptionStatus::ACTIVE,
-                'price_paid'               => $tier->price,
-                'purchased_at'             => now(),
-                'matures_at'               => now()->addDays($tier->duration_days),
-                'purchase_transaction_id'  => $transaction->id,
+                'user_id' => $user->id,
+                'pack_tier_id' => $tier->id,
+                'status' => PackSubscriptionStatus::ACTIVE,
+                'price_paid' => $tier->price,
+                'purchased_at' => now(),
+                'matures_at' => now()->addDays($tier->duration_days),
+                'purchase_transaction_id' => $transaction->id,
             ]);
 
             for ($i = 1; $i <= $tier->slot_count; $i++) {

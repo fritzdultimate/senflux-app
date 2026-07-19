@@ -13,10 +13,11 @@ enum TransactionType: string {
     case ADJUSTMENT = 'adjustment';
     case PACK_UPGRADE_FEE = 'pack_upgrade_fee';
 
-    case PACK_PURCHASE         = 'pack_purchase';
-    case PACK_SLOT_FUND        = 'pack_slot_fund';
-    case PACK_REFUND           = 'pack_refund';
-    case PACK_CAPITAL_RETURN   = 'pack_capital_return';
+    case PACK_PURCHASE = 'pack_purchase';
+    case PACK_RENEWAL = 'pack_renewal';
+    case PACK_SLOT_FUND = 'pack_slot_fund';
+    case PACK_REFUND = 'pack_refund';
+    case PACK_CAPITAL_RETURN = 'pack_capital_return';
     case PACK_COMPOUND_RESTAKE = 'pack_compound_restake';
     case PACK_SLOT_EARNING = 'pack_slot_earning';
 
@@ -36,7 +37,8 @@ enum TransactionType: string {
             self::PACK_CAPITAL_RETURN => 'Pack Capital Return',
             self::PACK_COMPOUND_RESTAKE => 'Pack Compound Restake',
             self::PACK_SLOT_EARNING => 'Pack Slot Earning',
-            self::PACK_UPGRADE_FEE => 'Pack Upgrade Fee'
+            self::PACK_UPGRADE_FEE => 'Pack Upgrade Fee',
+            self::PACK_RENEWAL => 'Pack Renewal',
         };
     }
 

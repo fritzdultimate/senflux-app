@@ -184,14 +184,25 @@ class PackLifecycleService
         $this->guardInRenewalWindow($old);
 
         return DB::transaction(function () use ($old, $newTier, $compound) {
+            $transaction = $this->wallet->debitRespectingLock(
+                user: $old->user,
+                walletType: WalletType::MAIN,
+                amount: (float) $newTier->price,
+                type: TransactionType::PACK_RENEWAL,
+                description: "Renewed {$old->packTier->name} pack",
+                referenceType: PackTier::class,
+                referenceId: $newTier->id,
+            );
+
             $new = PackSubscription::create([
                 'user_id' => $old->user_id,
                 'pack_tier_id' => $newTier->id,
                 'status' => PackSubscriptionStatus::ACTIVE,
-                'price_paid' => 0, // renewal — no fresh access fee charged
+                'price_paid' => $newTier->price,
                 'purchased_at' => now(),
                 'matures_at' => now()->addDays($newTier->duration_days),
                 'renewed_from_subscription_id' => $old->id,
+                'purchase_transaction_id' => $transaction->id,
             ]);
 
             $oldFundedSlots = $old->slots()->where('status', PackSlotStatus::FUNDED->value)->get();

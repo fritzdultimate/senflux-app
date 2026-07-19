@@ -27,14 +27,12 @@ class SubscriptionDetail extends Component
     public string $errorMessage = '';
     public string $successMessage = '';
 
-    public function mount(PackSubscription $subscription): void
-    {
+    public function mount(PackSubscription $subscription): void {
         abort_if($subscription->user_id !== Auth::id(), 403);
         $this->subscriptionId = $subscription->id;
     }
 
-    public function getSubscriptionProperty(): PackSubscription
-    {
+    public function getSubscriptionProperty(): PackSubscription {
         return PackSubscription::with(['packTier', 'slots'])->find($this->subscriptionId);
     }
 
@@ -101,8 +99,7 @@ class SubscriptionDetail extends Component
         }
     }
 
-    public function continueCycle(PackLifecycleService $service): void
-    {
+    public function continueCycle(PackLifecycleService $service): void {
         try {
             $new = $service->continueCycle($this->subscription);
             $this->redirect(route('dashboard.packs.show', $new), navigate: true);
