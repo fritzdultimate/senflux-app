@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Protected;
 
-use App\Enums\DepositStatus;
-use App\Models\Deposit;
-use App\Models\DepositEarning;
+use App\Enums\PackSlotStatus;
+use App\Enums\PackSubscriptionStatus;
+use App\Models\PackSubscription;
+use App\Models\SlotEarning;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -20,7 +20,7 @@ class Portfolio extends Component
     #[Url]
     public string $range = '30'; // days: 7, 30, 90, 'all'
 
-    public ?int $selectedDepositId = null;
+    public ?int $selectedSubscriptionId = null;
 
     #[Computed]
     public function user()
@@ -29,25 +29,30 @@ class Portfolio extends Component
     }
 
     #[Computed]
-    public function allDeposits()
+    public function allSubscriptions()
     {
-        return $this->user->deposits()
-            ->whereIn('status', [DepositStatus::ACTIVE->value, DepositStatus::FINISHED->value])
-            ->with('planConfig')
-            ->latest('activated_at')
+        // Excludes REFUNDED — refunded subscriptions never actually
+        // deployed capital, so they shouldn't count toward the portfolio.
+        return $this->user->packSubscriptions()
+            ->where('status', '!=', PackSubscriptionStatus::REFUNDED)
+            ->with(['packTier', 'slots.formation'])
+            ->latest('purchased_at')
             ->get();
     }
 
     #[Computed]
     public function totalPrincipal(): float
     {
-        return (float) $this->allDeposits->sum(fn($d) => $d->actually_paid_usd ?? $d->amount_usd);
+        return (float) $this->allSubscriptions
+            ->flatMap->slots
+            ->where('status', '!=', PackSlotStatus::EMPTY)
+            ->sum('capital_amount');
     }
 
     #[Computed]
     public function totalEarned(): float
     {
-        return (float) $this->allDeposits->sum('total_earnings');
+        return (float) SlotEarning::where('user_id', $this->user->id)->sum('amount');
     }
 
     #[Computed]
@@ -65,9 +70,18 @@ class Portfolio extends Component
     }
 
     #[Computed]
-    public function activeCount(): int
+    public function activeSubscriptionsCount(): int
     {
-        return $this->allDeposits->where('status', DepositStatus::ACTIVE)->count();
+        return $this->allSubscriptions->where('status', PackSubscriptionStatus::ACTIVE)->count();
+    }
+
+    #[Computed]
+    public function activeSlotsCount(): int
+    {
+        return $this->allSubscriptions
+            ->flatMap->slots
+            ->where('status', PackSlotStatus::FUNDED)
+            ->count();
     }
 
     #[Computed]
@@ -77,7 +91,7 @@ class Portfolio extends Component
             '7'   => 7,
             '30'  => 30,
             '90'  => 90,
-            'all' => (int) ($this->allDeposits->min('activated_at')?->diffInDays(now()) ?? 30),
+            'all' => (int) ($this->allSubscriptions->min('purchased_at')?->diffInDays(now()) ?? 30),
             default => 30,
         };
     }
@@ -88,7 +102,7 @@ class Portfolio extends Component
         $days = max(1, min($this->rangeDays, 365));
         $start = now()->subDays($days - 1)->startOfDay();
 
-        $rows = DepositEarning::where('user_id', $this->user->id)
+        $rows = SlotEarning::where('user_id', $this->user->id)
             ->where('earned_date', '>=', $start->toDateString())
             ->selectRaw('earned_date, SUM(amount) as total')
             ->groupBy('earned_date')
@@ -118,41 +132,62 @@ class Portfolio extends Component
     }
 
     #[Computed]
-    public function depositBreakdown(): array
+    public function packBreakdown(): array
     {
-        return $this->allDeposits->map(function (Deposit $d) {
-            $principal = (float) ($d->actually_paid_usd ?? $d->amount_usd);
-            $earned    = (float) $d->total_earnings;
+        return $this->allSubscriptions->map(function (PackSubscription $sub) {
+            $fundedSlots = $sub->slots->where('status', '!=', PackSlotStatus::EMPTY);
+            $principal   = (float) $fundedSlots->sum('capital_amount');
+            $earned      = (float) SlotEarning::where('user_id', $this->user->id)
+                ->whereIn('pack_slot_id', $sub->slots->pluck('id'))
+                ->sum('amount');
 
             return [
-                'id'        => $d->id,
-                'plan'      => $d->planConfig->label,
-                'status'    => $d->status,
-                'principal' => $principal,
-                'earned'    => $earned,
-                'roi_pct'   => $principal > 0 ? round(($earned / $principal) * 100, 2) : 0,
-                'daily_rate'=> (float) $d->daily_rate,
-                'activated' => $d->activated_at,
-                'days_active' => $d->activated_at?->diffInDays(now()) ?? 0,
+                'id'            => $sub->id,
+                'tier'          => $sub->packTier->name,
+                'status'        => $sub->status->value,
+                'status_label'  => $sub->status->label(),
+                'principal'     => $principal,
+                'earned'        => $earned,
+                'roi_pct'       => $principal > 0 ? round(($earned / $principal) * 100, 2) : 0,
+                'daily_rate'    => $sub->packTier->baselineDailyRate(),
+                'purchased_at'  => $sub->purchased_at,
+                'matures_at'    => $sub->matures_at,
+                'days_active'   => $sub->purchased_at?->diffInDays(now()) ?? 0,
+                'slots_funded'  => $fundedSlots->count(),
+                'slots_total'   => $sub->slots->count(),
+                'slots'         => $sub->slots->map(fn ($slot) => [
+                    'slot_number'     => $slot->slot_number,
+                    'status'          => $slot->status->value,
+                    'status_label'    => $slot->status->label(),
+                    'capital_amount'  => (float) $slot->capital_amount,
+                    'realized_profit' => (float) $slot->realized_profit,
+                    'formation_symbol'=> $slot->formation?->token_symbol,
+                ])->toArray(),
             ];
         })->toArray();
     }
 
     #[Computed]
-    public function selectedDepositEarnings()
+    public function selectedSubscriptionEarnings()
     {
-        if (!$this->selectedDepositId) return collect();
+        if (!$this->selectedSubscriptionId) {
+            return collect();
+        }
 
-        return DepositEarning::where('deposit_id', $this->selectedDepositId)
+        $slotIds = optional(
+            $this->allSubscriptions->firstWhere('id', $this->selectedSubscriptionId)
+        )->slots->pluck('id') ?? collect();
+
+        return SlotEarning::whereIn('pack_slot_id', $slotIds)
             ->where('user_id', $this->user->id)
             ->latest('earned_date')
             ->take(30)
             ->get();
     }
 
-    public function selectDeposit(?int $id): void
+    public function selectSubscription(?int $id): void
     {
-        $this->selectedDepositId = $this->selectedDepositId === $id ? null : $id;
+        $this->selectedSubscriptionId = $this->selectedSubscriptionId === $id ? null : $id;
     }
 
     public function setRange(string $range): void

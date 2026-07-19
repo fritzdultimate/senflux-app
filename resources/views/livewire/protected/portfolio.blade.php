@@ -12,7 +12,7 @@
             <div class="pf-stat pf-stat--main">
                 <p class="pf-stat__label">Portfolio Value</p>
                 <p class="pf-stat__value">${{ number_format($this->portfolioValue, 2) }}</p>
-                <p class="pf-stat__sub">Principal + earnings</p>
+                <p class="pf-stat__sub">Deployed capital + earnings</p>
             </div>
             <div class="pf-stat">
                 <p class="pf-stat__label">Total Earned</p>
@@ -27,8 +27,8 @@
                 <p class="pf-stat__value">${{ number_format($this->totalPrincipal, 2) }}</p>
             </div>
             <div class="pf-stat">
-                <p class="pf-stat__label">Active Deposits</p>
-                <p class="pf-stat__value">{{ $this->activeCount }}</p>
+                <p class="pf-stat__label">Active Slots</p>
+                <p class="pf-stat__value">{{ $this->activeSlotsCount }}</p>
             </div>
         </div>
 
@@ -81,66 +81,88 @@
             </div>
         </div>
 
-        {{-- ── Deposit breakdown ────────────────────────────────────────────── --}}
+        {{-- ── Pack breakdown ───────────────────────────────────────────────── --}}
         <div class="pf-panel">
-            <p class="pf-panel__title" style="margin-bottom: .9rem">Deposit Breakdown</p>
+            <p class="pf-panel__title" style="margin-bottom: .9rem">Pack Breakdown</p>
 
-            @if(empty($this->depositBreakdown))
+            @if(empty($this->packBreakdown))
                 <div class="pf-empty">
                     <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M12 12v3M10 14h4"/></svg>
-                    <p>No deposits yet.</p>
-                    <a href="{{ route('dashboard.deposit.create') }}" wire:navigate class="pf-empty__cta">Deploy capital →</a>
+                    <p>No packs yet.</p>
+                    <a href="{{ route('dashboard.packs.browse') }}" wire:navigate class="pf-empty__cta">Browse packs →</a>
                 </div>
             @else
                 <div class="pf-deposit-list">
-                    @foreach($this->depositBreakdown as $d)
-                        <div class="pf-deposit-row" wire:click="selectDeposit({{ $d['id'] }})">
+                    @foreach($this->packBreakdown as $sub)
+                        <div class="pf-deposit-row" wire:click="selectSubscription({{ $sub['id'] }})">
                             <div class="pf-deposit-row__main">
                                 <div class="pf-deposit-row__head">
-                                    <span class="pf-deposit-row__plan">{{ $d['plan'] }}</span>
-                                    <span class="pf-status-badge pf-status-badge--{{ $d['status'] }}">
-                                        {{ ucfirst($d['status']) }}
+                                    <span class="pf-deposit-row__plan">{{ $sub['tier'] }}</span>
+                                    <span class="pf-status-badge pf-status-badge--{{ $sub['status'] }}">
+                                        {{ $sub['status_label'] }}
                                     </span>
                                 </div>
                                 <span class="pf-deposit-row__meta">
-                                    {{ number_format($d['daily_rate'] * 100, 2) }}%/day · {{ $d['days_active'] }} days active
+                                    {{ number_format($sub['daily_rate'] * 100, 2) }}%/day · {{ $sub['days_active'] }} days active · {{ $sub['slots_funded'] }}/{{ $sub['slots_total'] }} slots funded
                                 </span>
                             </div>
                             <div class="pf-deposit-row__stats">
                                 <div class="pf-deposit-row__col">
                                     <span class="pf-deposit-row__col-label">Principal</span>
-                                    <span class="pf-deposit-row__col-val">${{ number_format($d['principal'], 2) }}</span>
+                                    <span class="pf-deposit-row__col-val">${{ number_format($sub['principal'], 2) }}</span>
                                 </div>
                                 <div class="pf-deposit-row__col">
                                     <span class="pf-deposit-row__col-label">Earned</span>
-                                    <span class="pf-deposit-row__col-val pf-deposit-row__col-val--green">+${{ number_format($d['earned'], 2) }}</span>
+                                    <span class="pf-deposit-row__col-val pf-deposit-row__col-val--green">+${{ number_format($sub['earned'], 2) }}</span>
                                 </div>
                                 <div class="pf-deposit-row__col">
                                     <span class="pf-deposit-row__col-label">ROI</span>
-                                    <span class="pf-deposit-row__col-val pf-deposit-row__col-val--green">+{{ $d['roi_pct'] }}%</span>
+                                    <span class="pf-deposit-row__col-val pf-deposit-row__col-val--green">+{{ $sub['roi_pct'] }}%</span>
                                 </div>
                             </div>
-                            <svg class="pf-deposit-row__chevron {{ $selectedDepositId === $d['id'] ? 'pf-deposit-row__chevron--open' : '' }}" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                            <svg class="pf-deposit-row__chevron {{ $selectedSubscriptionId === $sub['id'] ? 'pf-deposit-row__chevron--open' : '' }}" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                         </div>
 
-                        @if($selectedDepositId === $d['id'])
+                        @if($selectedSubscriptionId === $sub['id'])
                             <div class="pf-deposit-detail">
-                                @if($this->selectedDepositEarnings->isEmpty())
-                                    <p class="pf-deposit-detail__empty">No earnings recorded yet for this deposit.</p>
+
+                                {{-- Slots grid --}}
+                                <div class="pf-slots-grid" style="display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.9rem;">
+                                    @foreach($sub['slots'] as $slot)
+                                        <div class="pf-slot-chip pf-slot-chip--{{ $slot['status'] }}" style="padding:.4rem .7rem; border-radius:8px; font-size:.75rem;">
+                                            <strong>Slot {{ $slot['slot_number'] }}</strong> · {{ $slot['status_label'] }}
+                                            @if($slot['formation_symbol'])
+                                                · {{ $slot['formation_symbol'] }}
+                                            @endif
+                                            @if($slot['status'] !== 'empty')
+                                                <br>${{ number_format($slot['capital_amount'], 2) }}
+                                                @if($slot['realized_profit'] != 0)
+                                                    (+${{ number_format($slot['realized_profit'], 2) }})
+                                                @endif
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                {{-- Earnings table --}}
+                                @if($this->selectedSubscriptionEarnings->isEmpty())
+                                    <p class="pf-deposit-detail__empty">No earnings recorded yet for this pack.</p>
                                 @else
                                     <table class="pf-detail-table">
                                         <thead>
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Rate</th>
+                                                <th>Formation</th>
                                                 <th class="pf-table__right">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($this->selectedDepositEarnings as $e)
+                                            @foreach($this->selectedSubscriptionEarnings as $e)
                                                 <tr>
                                                     <td>{{ $e->earned_date->format('M j, Y') }}</td>
-                                                    <td class="pf-table__muted">{{ number_format($e->rate_applied * 100, 2) }}%</td>
+                                                    <td class="pf-table__muted">{{ number_format($e->base_rate_applied * 100, 2) }}%</td>
+                                                    <td class="pf-table__muted">{{ $e->formation?->token_symbol ?? '—' }}</td>
                                                     <td class="pf-table__right pf-table__green">+${{ number_format($e->amount, 4) }}</td>
                                                 </tr>
                                             @endforeach
