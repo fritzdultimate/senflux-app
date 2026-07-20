@@ -51,7 +51,6 @@
         </div>
 
         <div class="lt-disclaimer">
-            "Market Pool" trades are general on-chain activity on a token's liquidity pool — publicly verifiable, not executed by Senflux.
             "Senflux" trades are actions taken by the platform on behalf of deployed capital.
         </div>
 
