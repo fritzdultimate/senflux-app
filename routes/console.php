@@ -75,3 +75,5 @@ Schedule::command('pack-lifecycle:close-expired-renewal-windows')
 Schedule::command('birdeye:sync --batch=1')
     ->everyFiveMinutes()
     ->withoutOverlapping();
+
+Schedule::command('telescope:prune --hours=48')->daily();
