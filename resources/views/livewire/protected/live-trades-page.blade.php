@@ -36,8 +36,8 @@
                 </span>
             @endif
             <button wire:click="filterBySource(null)" class="lt-filter-pill {{ !$source ? 'lt-filter-pill--active' : '' }}">All Sources</button>
-            <button wire:click="filterBySource('market_pool')" class="lt-filter-pill {{ $source === 'market_pool' ? 'lt-filter-pill--active' : '' }}">Market Pool</button>
-            <button wire:click="filterBySource('senflux')" class="lt-filter-pill {{ $source === 'senflux' ? 'lt-filter-pill--active' : '' }}">Senflux</button>
+            <!-- <button wire:click="filterBySource('market_pool')" class="lt-filter-pill {{ $source === 'market_pool' ? 'lt-filter-pill--active' : '' }}">Market Pool</button> -->
+            <!-- <button wire:click="filterBySource('senflux')" class="lt-filter-pill {{ $source === 'senflux' ? 'lt-filter-pill--active' : '' }}">Senflux</button> -->
 
             <span style="width:1px;background:rgba(255,255,255,.08);align-self:stretch;"></span>
 

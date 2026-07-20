@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Protected;
 
+use App\Enums\TradeActivitySource;
 use App\Models\Formation;
 use App\Models\FormationTradeActivity;
 use Livewire\Attributes\Computed;
@@ -37,6 +38,8 @@ class LiveTradesPage extends Component {
     #[Computed]
     public function trades() {
         return FormationTradeActivity::with('formation')
+            ->where('token_amount', '>', 0)
+            ->where('source', TradeActivitySource::SENFLUX)
             ->when($this->formationId, fn ($q) => $q->where('formation_id', $this->formationId))
             ->when($this->source, fn ($q) => $q->where('source', $this->source))
             ->when($this->type, fn ($q) => $q->where('type', $this->type))

@@ -30,6 +30,8 @@ class FormationTradeActivitySyncService
             ->values()
             ->all();
 
+        // dump($newSignatures);
+
         if (empty($newSignatures)) {
             return 0;
         }
@@ -38,24 +40,29 @@ class FormationTradeActivitySyncService
             ? collect($this->helius->parseTransactions($newSignatures))->keyBy('signature')
             : collect();
 
+
         foreach ($signatures as $sig) {
             if (!in_array($sig['signature'], $newSignatures, true)) {
                 continue;
             }
 
-            $parsed = $parsedBatch->get($sig['signature']);
-            $swap = $parsed ? $this->helius->extractSwapInfo($parsed) : null;
+            $tx = $this->rpc->fetchTransactionDetail($sig['signature']);
+            $ext = $this->rpc->extractSwapInfo($tx, $formation->mint_address);
+            // dd($tx, $ext);
+
+            // $parsed = $parsedBatch->get($sig['signature']);
+            // $swap = $parsed ? $this->helius->extractSwapInfo($parsed) : null;
 
             FormationTradeActivity::create([
                 'formation_id' => $formation->id,
                 'tx_signature' => $sig['signature'],
                 'slot' => $sig['slot'] ?? null,
                 'block_time' => isset($sig['blockTime']) ? \Carbon\Carbon::createFromTimestamp($sig['blockTime']) : null,
-                'source' => TradeActivitySource::MARKET_POOL->value,
+                'source' => TradeActivitySource::SENFLUX->value,
                 'failed' => (bool) ($sig['err'] ?? false),
-                'type' => $swap['type'] ?? null,
-                'token_amount' => $swap['token_amount'] ?? null,
-                'trader_wallet' => $swap['wallet'] ?? null,
+                'type' => $ext['type'] ?? null,
+                'token_amount' => $ext['token_amount'] ?? null,
+                'trader_wallet' => $ext['wallet'] ?? null,
             ]);
 
             $new++;
