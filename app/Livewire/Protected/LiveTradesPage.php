@@ -51,6 +51,8 @@ class LiveTradesPage extends Component {
     #[Computed]
     public function stats(): array {
         $base = FormationTradeActivity::query()
+            ->where('token_amount', '>', 0)
+            ->where('source', TradeActivitySource::SENFLUX)
             ->when($this->formationId, fn ($q) => $q->where('formation_id', $this->formationId))
             ->where('block_time', '>=', now()->subDay());
 
