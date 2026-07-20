@@ -71,7 +71,7 @@ class FormationTradeActivitySyncService {
         return $new;
     }
 
-    public function syncAll(int $limit = 5): int {
+    public function syncAll(int $limit = 2): int {
         $total = 0;
         $lastId = Cache::get(self::CURSOR_CACHE_KEY, 0);
 
