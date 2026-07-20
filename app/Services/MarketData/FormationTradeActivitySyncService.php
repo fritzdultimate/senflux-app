@@ -20,7 +20,7 @@ class FormationTradeActivitySyncService {
             return 0;
         }
 
-        $signatures = $this->rpc->fetchRecentSignatures($formation->pair_address, 35);
+        $signatures = $this->rpc->fetchRecentSignatures($formation->pair_address, 5);
         $new = 0;
 
         // Only fetch signatures not already stored — avoids re-parsing
