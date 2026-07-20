@@ -30,15 +30,14 @@ class FormationTradeActivitySyncService
             ->values()
             ->all();
 
-        // dump($newSignatures);
 
         if (empty($newSignatures)) {
             return 0;
         }
 
-        $parsedBatch = $this->helius->isConfigured()
-            ? collect($this->helius->parseTransactions($newSignatures))->keyBy('signature')
-            : collect();
+        // $parsedBatch = $this->helius->isConfigured()
+        //     ? collect($this->helius->parseTransactions($newSignatures))->keyBy('signature')
+        //     : collect();
 
 
         foreach ($signatures as $sig) {
@@ -48,7 +47,6 @@ class FormationTradeActivitySyncService
 
             $tx = $this->rpc->fetchTransactionDetail($sig['signature']);
             $ext = $this->rpc->extractSwapInfo($tx, $formation->mint_address);
-            // dd($tx, $ext);
 
             // $parsed = $parsedBatch->get($sig['signature']);
             // $swap = $parsed ? $this->helius->extractSwapInfo($parsed) : null;

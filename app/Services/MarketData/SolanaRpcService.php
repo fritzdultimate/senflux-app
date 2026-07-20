@@ -130,7 +130,7 @@ class SolanaRpcService {
         $lost = collect($deltas)->filter(fn ($v) => $v < 0);
 
         if ($gained->isEmpty() || $lost->isEmpty()) {
-            dump('here 1', $deltas, $feePayer);
+            // dump('here 1', $deltas, $feePayer);
             return null;
         }
 
@@ -141,7 +141,7 @@ class SolanaRpcService {
         $lost = collect($deltas)->filter(fn ($v) => $v < 0);
 
         if ($gained->isEmpty() || $lost->isEmpty()) {
-            dump('here 2');
+            // dump('here 2');
             return null;
         }
 
@@ -150,7 +150,7 @@ class SolanaRpcService {
 
         // Only classify if the tracked mint is actually one side of this trade
         if ($gainedMint !== $trackedMint && $lostMint !== $trackedMint) {
-            dump('here 3');
+            // dump('here 3');
             // dd('swap debug', [
             //     'feePayer' => $feePayer,
             //     'trackedMint' => $trackedMint,
