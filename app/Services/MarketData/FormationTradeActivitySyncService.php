@@ -5,9 +5,11 @@ namespace App\Services\MarketData;
 use App\Enums\TradeActivitySource;
 use App\Models\Formation;
 use App\Models\FormationTradeActivity;
+use Illuminate\Support\Facades\Cache;
 
-class FormationTradeActivitySyncService
-{
+class FormationTradeActivitySyncService {
+
+    private const CURSOR_CACHE_KEY = 'formation_trade_sync:last_id';
     public function __construct(
         private SolanaRpcService $rpc,
         private HeliusService $helius,
@@ -69,14 +71,40 @@ class FormationTradeActivitySyncService
         return $new;
     }
 
-    public function syncAll(): int {
+    public function syncAll(int $limit = 5): int {
         $total = 0;
+        $lastId = Cache::get(self::CURSOR_CACHE_KEY, 0);
 
-        Formation::active()->whereNotNull('pair_address')->chunkById(50, function ($formations) use (&$total) {
-            foreach ($formations as $formation) {
-                $total += $this->syncOne($formation);
-            }
-        });
+        $formations = Formation::active()
+            ->whereNotNull('pair_address')
+            ->where('id', '>', $lastId)
+            ->orderBy('id')
+            ->limit($limit)
+            ->get();
+
+        if ($formations->count() < $limit) {
+            $remaining = $limit - $formations->count();
+
+            $wrapped = Formation::active()
+                ->whereNotNull('pair_address')
+                ->where('id', '<=', $lastId)
+                ->orderBy('id')
+                ->limit($remaining)
+                ->get();
+
+            $formations = $formations->concat($wrapped);
+        }
+
+        if ($formations->isEmpty()) {
+            Cache::forget(self::CURSOR_CACHE_KEY);
+            return 0;
+        }
+
+        foreach ($formations as $formation) {
+            $total += $this->syncOne($formation);
+        }
+
+        Cache::put(self::CURSOR_CACHE_KEY, $formations->last()->id, now()->addDays(7));
 
         return $total;
     }
