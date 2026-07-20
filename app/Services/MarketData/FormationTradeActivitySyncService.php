@@ -106,7 +106,7 @@ class FormationTradeActivitySyncService {
 
         Cache::put(self::CURSOR_CACHE_KEY, $formations->last()->id, now()->addDays(7));
 
-        dd($lastId);
+        // dd($lastId);
 
         return $total;
     }
