@@ -56,7 +56,7 @@
             </div>
 
             {{-- Formation state ──────────────────────────────────── --}}
-            <div class="panel panel--formation">
+            <div class="panel panel--formation hidden">
                 @php
                     $formation = $this->formationState;
                     $stateColors = [

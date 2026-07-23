@@ -25,30 +25,6 @@
         <span>Markets</span>
     </a>
 
-    <a href="{{ route('dashboard.trades.live') }}" wire:navigate class="sb-item">
-        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 11.5L5 8L7.5 10L11 5L13.5 7M11.5 5h2v2" />
-        </svg>
-        <span>Live Trades</span>
-        <span class="sb-badge sb-badge-live">LIVE</span>
-    </a>
-
-    <a href="{{ route('dashboard.signals') }}" wire:navigate class="sb-item hidden">
-        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 8.5h11M7.5 4L11 8.5L7.5 13M2 4v9" />
-        </svg>
-        <span>Signals</span>
-        <span class="sb-badge sb-badge-pro">PRO</span>
-    </a>
-
-    <a href="{{ route('dashboard.terminal') }}" wire:navigate class="sb-item">
-        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 3h11v9H2zM4 6l2 2-2 2M7.5 10h3" />
-        </svg>
-        <span>Terminal</span>
-        <span class="sb-badge sb-badge-new">NEW</span>
-    </a>
-
     {{-- ── CAPITAL ──────────────────────────────────────────────────── --}}
     <div class="sb-sect">CAPITAL</div>
 
@@ -94,11 +70,28 @@
         <span>Formation Packs</span>
     </a>
 
-    <a href="{{ route('dashboard.bots.mine') }}" wire:navigate class="sb-item hidden">
+    <a href="{{ route('dashboard.trades.live') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M2 5h11v8.5H2zM5 5V3.5C5 2.1 10 2.1 10 3.5V5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+            <path d="M2 11.5L5 8L7.5 10L11 5L13.5 7M11.5 5h2v2" />
         </svg>
-        <span>My Bots</span>
+        <span>Live Trades</span>
+        <span class="sb-badge sb-badge-live">LIVE</span>
+    </a>
+
+    <a href="{{ route('dashboard.signals') }}" wire:navigate class="sb-item hidden">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8.5h11M7.5 4L11 8.5L7.5 13M2 4v9" />
+        </svg>
+        <span>Signals</span>
+        <span class="sb-badge sb-badge-pro">PRO</span>
+    </a>
+
+    <a href="{{ route('dashboard.terminal') }}" wire:navigate class="sb-item">
+        <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h11v9H2zM4 6l2 2-2 2M7.5 10h3" />
+        </svg>
+        <span>Terminal</span>
+        <span class="sb-badge sb-badge-new">NEW</span>
     </a>
 
     {{-- ── NETWORK ──────────────────────────────────────────────────── --}}
