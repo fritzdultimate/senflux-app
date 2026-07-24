@@ -99,7 +99,7 @@
 
             {{-- Sidebar --}}
             <div class="fd-side">
-                <div class="fd-panel">
+                <div class="fd-panel hidden">
                     <div class="fd-panel__head"><span class="fd-panel__title">DEPLOYMENT</span></div>
                     @php
                         $deployment = $this->deployment;
