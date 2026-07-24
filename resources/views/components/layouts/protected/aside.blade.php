@@ -78,7 +78,7 @@
         <span class="sb-badge sb-badge-live">LIVE</span>
     </a>
 
-    <a href="{{ route('dashboard.signals') }}" wire:navigate class="sb-item hidden">
+    <a href="{{ route('dashboard.signals') }}" wire:navigate class="sb-item hidden!">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 8.5h11M7.5 4L11 8.5L7.5 13M2 4v9" />
         </svg>
@@ -86,7 +86,7 @@
         <span class="sb-badge sb-badge-pro">PRO</span>
     </a>
 
-    <a href="{{ route('dashboard.terminal') }}" wire:navigate class="sb-item hidden">
+    <a href="{{ route('dashboard.terminal') }}" wire:navigate class="sb-item hidden!">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 3h11v9H2zM4 6l2 2-2 2M7.5 10h3" />
         </svg>
