@@ -740,8 +740,9 @@
 		<div class="max-w-[1180px] mx-auto px-6 relative z-10">
 			<h2 class="font-syne font-extrabold text-[clamp(1.8rem,4vw,3rem)]">Capital Doesn't Wait. <span class="tg">It
 					Moves.</span></h2>
-			<p class="text-[15px] text-[#7a7a9a] mt-4 mb-8 max-w-[480px] mx-auto leading-[1.75]">Deploy intelligently.
-				Track participation in real time. Let the system do what it was built to do.</p>
+			<p class="text-[15px] text-[#7a7a9a] mt-4 mb-8 max-w-[480px] mx-auto leading-[1.75]">
+				The strongest opportunities rarely announce themselves. Senflux continuously evaluates market conditions, qualifies high-conviction formations, and deploys automatically when opportunity emerges.
+			</p>
 			<a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:13px 34px;font-size:14px">Start
 				Deploying Now →</a>
 		</div>
