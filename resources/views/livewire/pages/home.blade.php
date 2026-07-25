@@ -502,7 +502,7 @@
 	</section>
 
 	{{-- ═══ LIVE FEED ═══ --}}
-	<section class="py-20" style="background:rgba(8,8,18,.78)">
+	<section class="py-20 hidden!" style="background:rgba(8,8,18,.78)">
 		<div class="max-w-[1280px] mx-auto px-6">
 			<div class="text-center mb-10">
 				<span class="pill mb-3.5 inline-block">Unlimited Transparency</span>
