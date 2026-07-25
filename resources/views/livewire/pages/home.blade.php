@@ -136,17 +136,18 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				Markets Leave <span class="tg">Footprints</span> <br> Before They Move.
+				Capital Moves <span class="tg">Before</span> <br> Markets Do.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
-				Trade smarter with real-time participation tracking. Detect market momentum before it peaks. Allocate
-				capital with precision.
+				{{ env('APP_NAME') }} identifies strengthening market formations through AI-powered capital intelligence and deploys automatically when qualifying conditions emerge.
 			</p>
 			<div class="flex gap-3 justify-center flex-wrap">
-				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">Start Deploying
-					→</a>
-				<a href="{{ route('how-it-works') }}" class="btn-o" style="padding:11px 26px;font-size:14px">How the
-					System Works</a>
+				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">
+					Explore the Platform →
+				</a>
+				<a href="#" class="btn-o" style="padding:11px 26px;font-size:14px">
+					Watch Overview
+				</a>
 			</div>
 
 			{{-- Glowing orb --}}
