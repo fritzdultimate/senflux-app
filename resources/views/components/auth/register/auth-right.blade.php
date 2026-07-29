@@ -35,7 +35,7 @@
                 </span>
             </div>
 
-            <p class="text-[13.5px] text-[#6b6b8a]">Join 50,000+ participants tracking market formation</p>
+            <p class="text-[13.5px] text-[#6b6b8a] hidden">Join 50,000+ participants tracking market formation</p>
         </div>
 
         {{-- ── Social buttons ── --}}
