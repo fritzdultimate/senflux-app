@@ -145,7 +145,7 @@
 				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">
 					Explore the Platform →
 				</a>
-				<a href="#" class="btn-o" style="padding:11px 26px;font-size:14px">
+				<a href="https://youtu.be/nvbMhzTe3L8?si=FpAkApTXDouitRCJ" target="_blank" class="btn-o" style="padding:11px 26px;font-size:14px">
 					Watch Overview
 				</a>
 			</div>
