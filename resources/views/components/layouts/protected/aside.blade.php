@@ -74,7 +74,7 @@
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M2 11.5L5 8L7.5 10L11 5L13.5 7M11.5 5h2v2" />
         </svg>
-        <span>Intelligent Feed</span>
+        <span>Intelligence Feed</span>
         <span class="sb-badge sb-badge-live">LIVE</span>
     </a>
 
