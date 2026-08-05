@@ -488,7 +488,7 @@
     </style>
 @endpush
 
-<div class="auth-shell>
+<div class="auth-shell">
 
     {{-- Left: plan chooser --}}
     <div class="hidden lg:hidden sticky top-0 h-screen overflow-hidden">
