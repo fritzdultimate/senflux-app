@@ -491,7 +491,7 @@
 <div class="auth-shell grid min-h-screen grid-cols-1 lg:grid-cols-[420px_1fr] xl:grid-cols-[720px_1fr]">
 
     {{-- Left: plan chooser --}}
-    <div class="hidden lg:block sticky top-0 h-screen overflow-hidden">
+    <div class="hidden lg:hidden sticky top-0 h-screen overflow-hidden">
         <x-auth.register.auth-left />
     </div>
 
