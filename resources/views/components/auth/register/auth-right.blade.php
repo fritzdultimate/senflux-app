@@ -196,15 +196,6 @@
                     <a href="#" class="text-[#9B7DFF] hover:text-white transition-colors" onclick="return false">Privacy Policy</a>
                 </x-auth.checkbox-row>
 
-                <!-- <x-auth.checkbox-row
-                    id="marketing"
-                    wrapId="mktWrap"
-                    iconId="mktIcon"
-                    wire:model="marketing"
-                    error="marketing"
-                >
-                    Send me signal alerts and market updates
-                </x-auth.checkbox-row> -->
             </div>
 
             {{-- Submit --}}
