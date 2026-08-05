@@ -4,7 +4,7 @@
      style="background-image:linear-gradient(rgba(123,92,245,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(123,92,245,.025) 1px,transparent 1px);background-size:44px 44px">
  
     {{-- ═══ LEFT PANEL ═══ --}}
-    <x-auth.login.auth-left />
+    <x-auth.login.auth-left :activeWallets="$this->activeWallets" :percentageIncrease="$this->percentageIncrease" />
  
     {{-- ═══ RIGHT PANEL ═══ --}}
     <main class="flex-1 flex flex-col items-center justify-center

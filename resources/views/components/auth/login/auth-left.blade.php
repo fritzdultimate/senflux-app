@@ -89,8 +89,8 @@
                 Active Wallets
             </span>
         </div>
-        <div class="font-syne text-xl font-extrabold text-white">14,682</div>
-        <div class="text-[11px] text-emerald-400 mt-0.5">+18.3% today</div>
+        <div class="font-syne text-xl font-extrabold text-white">{{ number_format($activeWallets) }}</div>
+        <div class="text-[11px] text-emerald-400 mt-0.5">{{ $percentageIncrease }} today</div>
     </div>
 
     <div class="absolute right-5 top-[52%] z-10

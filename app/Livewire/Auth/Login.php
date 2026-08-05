@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Formation;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter as FacadesRateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -34,6 +37,41 @@ class Login extends Component {
             'email.email' => 'Enter a valid email address.',
             'password.required' => 'Password is required.',
         ];
+    }
+
+    #[Computed]
+    public function activeWallets() {
+        $currentActiveWallets = Cache::remember(
+            'active_wallets_today',
+            now()->endOfDay(), // expires at end of today
+            function () {
+                return Formation::active()
+                    ->whereIn('state', [
+                        'active',
+                        'matured',
+                    ])
+                    ->sum('active_wallets');
+            }
+        );
+
+        return $currentActiveWallets;
+    }
+
+    #[Computed]
+    public function percentageIncrease() {
+        $yesterdayActiveWallets = Cache::get('active_wallets_yesterday', 0);
+        $increase = 0;
+
+        if ($yesterdayActiveWallets > 0) {
+            $increase = (
+                ($this->activeWallets - $yesterdayActiveWallets)
+                / $yesterdayActiveWallets
+            ) * 100;
+        }
+
+        $increase = number_format($increase);
+
+        return "+{$increase}%";
     }
 
     public function updated(string $field): void {

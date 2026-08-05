@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Formation;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schedule;
 
@@ -77,3 +79,11 @@ Schedule::command('birdeye:sync --batch=1')
     ->withoutOverlapping();
 
 Schedule::command('telescope:prune --hours=48')->daily();
+
+Schedule::call(function () {
+    $today = Formation::active()
+        ->whereIn('state', ['active', 'matured'])
+        ->sum('active_wallets');
+
+    Cache::put('active_wallets_yesterday', $today, now()->addDays(2));
+})->dailyAt('00:00');
