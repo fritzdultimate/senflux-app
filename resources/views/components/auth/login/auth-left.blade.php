@@ -62,7 +62,6 @@
             @foreach([
                 'Whale cluster & wallet cohesion intelligence',
                 'Automated bots + 73% win rate signals',
-                '18% APY staking & affiliate rewards',
             ] as $feat)
                 <div class="flex items-center gap-2.5">
                     <div class="w-7 h-7 rounded-[7px] shrink-0 flex items-center justify-center
