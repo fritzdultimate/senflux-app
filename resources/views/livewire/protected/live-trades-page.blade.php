@@ -12,7 +12,7 @@
                 Terminal
             </a>
             <span class="fd-topbar__sep">/</span>
-            <span class="fd-topbar__current">Intelligence Feed{{ $this->formation ? ' · ' . $this->formation->token_symbol : '' }}</span>
+            <span class="fd-topbar__current">Capital Deployment Log{{ $this->formation ? ' · ' . $this->formation->token_symbol : '' }}</span>
             <span class="fd-topbar__spacer"></span>
             <span class="fd-topbar__live"><span class="fd-live-dot"></span> Live tape</span>
         </div>
