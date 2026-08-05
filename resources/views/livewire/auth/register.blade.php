@@ -487,6 +487,7 @@
         }
     </style>
 @endpush
+<!-- <div class="auth-shell grid min-h-screen grid-cols-1 lg:grid-cols-[420px_1fr] xl:grid-cols-[720px_1fr]"> -->
 
 <div class="auth-shell">
 
