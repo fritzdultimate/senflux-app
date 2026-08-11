@@ -1,7 +1,7 @@
 {{-- resources/views/components/auth/login-left.blade.php --}}
 {{-- Left panel for login — hero copy, floating cards, ticker --}}
 
-<aside class="hidden lg:flex flex-col w-[52%] shrink-0 relative overflow-hidden
+<aside class="hidden lg:hidden flex-col w-[52%] shrink-0 relative overflow-hidden
               bg-[#080811] border-r border-white/[.07]
               justify-between px-12 py-9">
 

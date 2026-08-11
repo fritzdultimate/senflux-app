@@ -139,7 +139,7 @@
 				Capital Moves <span class="tg">Before</span> <br> Markets Do.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
-				{{ env('APP_NAME') }} identifies strengthening market formations through AI-powered capital intelligence and deploys automatically when qualifying conditions emerge.
+				{{ env('APP_NAME') }} identifies strengthening market formations across the Solana network through AI-powered capital intelligence, validating qualifying conditions and automatically deploying when opportunities emerge.
 			</p>
 			<div class="flex gap-3 justify-center flex-wrap">
 				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">
