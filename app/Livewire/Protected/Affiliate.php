@@ -54,8 +54,7 @@ class Affiliate extends Component
     }
 
     #[Computed]
-    public function totalNetworkSize(): int
-    {
+    public function totalNetworkSize(): int {
         return DB::table('referrals')->where('referrer_id', $this->user->id)->count()
             + $this->levelBreakdown()->sum('count') - $this->directReferralsCount();
     }
@@ -76,14 +75,38 @@ class Affiliate extends Component
     }
 
     #[Computed]
-    public function levelBreakdown()
-    {
-        // Count of network members + bonus earned, grouped by level (1-8)
-        $counts = DB::table('referrals')
-            ->select('level', DB::raw('count(*) as count'))
-            ->where('referrer_id', $this->user->id)
-            ->groupBy('level')
-            ->pluck('count', 'level');
+    public function levelBreakdown() {
+        $referrals = DB::table('referrals')
+            ->select('referrer_id', 'referred_id')
+            ->get();
+        
+        $tree = [];
+
+        foreach ($referrals as $referral) {
+            $tree[$referral->referrer_id][] = $referral->referred_id;
+        }
+
+        $counts = [];
+
+        $currentLevelUsers = [$this->user->id];
+
+        for ($level = 1; $level <= 8; $level++) {
+            $nextLevelUsers = [];
+
+            foreach ($currentLevelUsers as $userId) {
+                foreach ($tree[$userId] ?? [] as $referredId) {
+                    $nextLevelUsers[] = $referredId;
+                }
+            }
+
+            $counts[$level] = count($nextLevelUsers);
+
+            $currentLevelUsers = $nextLevelUsers;
+
+            if (empty($currentLevelUsers)) {
+                break;
+            }
+        }
 
         $earnings = ReferralBonus::where('earner_id', $this->user->id)
             ->selectRaw('level, SUM(amount) as total')
@@ -99,8 +122,7 @@ class Affiliate extends Component
     }
 
     #[Computed]
-    public function directReferrals()
-    {
+    public function directReferrals() {
         $query = $this->user->referrals()
             ->select('id', 'name', 'email', 'created_at', 'subscription_plan')
             ->withSum(['deposits as total_deposited' => fn($q) =>

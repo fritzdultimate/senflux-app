@@ -68,7 +68,7 @@
                             <div class="aff-level-row__badge">L{{ $lvl['level'] }}</div>
                             <div class="aff-level-row__rate">{{ number_format($lvl['rate'] * 100, 2) }}%</div>
                             <div class="aff-level-row__count">
-                                {{ $lvl['count'] }} {{ Str::plural('member', $lvl['count']) }}
+                                {{ $lvl['count'] }} {{ Illuminate\Support\Str::plural('member', $lvl['count']) }}
                             </div>
                             <div class="aff-level-row__earned">
                                 ${{ number_format($lvl['earned'], 2) }}
@@ -121,7 +121,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Joined</th>
-                                <th>Plan</th>
+                                <!-- <th>Plan</th> -->
                                 <th>Deposited</th>
                             </tr>
                         </thead>
@@ -132,7 +132,7 @@
                                         <span class="aff-table__name">{{ $ref->name }}</span>
                                     </td>
                                     <td class="aff-table__muted">{{ $ref->created_at->format('M j, Y') }}</td>
-                                    <td>
+                                    <td style="display: none;">
                                         @if($ref->subscription_plan)
                                             <span class="aff-plan-badge">{{ ucfirst($ref->subscription_plan) }}</span>
                                         @else

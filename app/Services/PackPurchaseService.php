@@ -89,8 +89,7 @@ class PackPurchaseService
      * while deployed — it isn't "locked," it's gone from the wallet and
      * tracked on the slot until the slot closes.
      */
-    public function fundSlot(PackSlot $slot, float $amount): PackSlot
-    {
+    public function fundSlot(PackSlot $slot, float $amount): PackSlot {
         $subscription = $slot->subscription;
         $tier = $subscription->packTier;
 

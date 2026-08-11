@@ -89,8 +89,7 @@ class ReferralBonusService
      * see the note in PackPurchaseService. Flagged for the client to
      * confirm; trivial to extend to slot-funding later if they want that.
      */
-    public function processForPackPurchase(PackSubscription $subscription): void
-    {
+    public function processForPackPurchase(PackSubscription $subscription): void {
         $buyer = $subscription->user;
         $amount = (float) $subscription->price_paid;
 
@@ -123,14 +122,8 @@ class ReferralBonusService
         }
     }
 
-    /**
-     * Confirms every pending bonus tied to a pack purchase — credits each
-     * upline's wallet for real and marks processed_at. Call this once the
-     * purchase's 3-day refund window has genuinely closed unrefunded
-     * (see confirmAllExpiredPending() for the scheduled sweep version).
-     */
-    public function confirmPendingFor(PackSubscription $subscription): void
-    {
+   
+    public function confirmPendingFor(PackSubscription $subscription): void {
         $pending = ReferralBonus::where('pack_subscription_id', $subscription->id)
             ->where('status', ReferralBonusStatus::PENDING->value)
             ->get();
@@ -157,28 +150,14 @@ class ReferralBonusService
         }
     }
 
-    /**
-     * Called from PackPurchaseService::refund() — cancels every pending
-     * bonus tied to that purchase. No wallet movement, since nothing was
-     * ever credited for a row that never left PENDING.
-     */
-    public function cancelPendingFor(PackSubscription $subscription): void
-    {
+   
+    public function cancelPendingFor(PackSubscription $subscription): void {
         ReferralBonus::where('pack_subscription_id', $subscription->id)
             ->where('status', ReferralBonusStatus::PENDING->value)
             ->update(['status' => ReferralBonusStatus::CANCELLED->value]);
     }
 
-    /**
-     * Scheduler-called sweep — confirms every pending bonus whose
-     * source purchase is more than 3 days old and was never refunded.
-     * This is what actually pays referrers in the common case (nobody
-     * refunds); confirmPendingFor() is also called directly wherever
-     * it's more convenient to tie into an existing scheduler entry
-     * rather than adding a new cron line for this alone.
-     */
-    public function confirmAllExpiredPending(): int
-    {
+    public function confirmAllExpiredPending(): int {
         $subscriptionIds = ReferralBonus::where('status', ReferralBonusStatus::PENDING->value)
             ->whereHas('packSubscription', fn ($q) => $q->where('purchased_at', '<=', now()->subDays(3)))
             ->pluck('pack_subscription_id')
@@ -194,17 +173,7 @@ class ReferralBonusService
         return $subscriptionIds->count();
     }
 
-    /**
-     * Slot-funding equivalent of processForPackPurchase() — same pending-
-     * then-confirm pattern, commission based on capital_amount. This
-     * exists because early exit has no time limit and only costs 8% —
-     * without holding commission pending here too, the same kind of
-     * "fund then immediately reverse" exposure that the 3-day pack
-     * refund window protects against would reopen one level down, at
-     * the slot.
-     */
-    public function processForSlotFunding(\App\Models\PackSlot $slot): void
-    {
+    public function processForSlotFunding(\App\Models\PackSlot $slot): void {
         $funder = $slot->subscription->user;
         $amount = (float) $slot->capital_amount;
 
@@ -226,19 +195,19 @@ class ReferralBonusService
                     'earner_id' => $upline->id,
                     'source_user_id' => $funder->id,
                     'pack_slot_id' => $slot->id,
-                    'status' => ReferralBonusStatus::PENDING,
+                    'status' => ReferralBonusStatus::CONFIRMED,
                     'level' => $level,
                     'rate' => $rate,
                     'amount' => $bonus,
                 ]);
+
             }
 
             $currentUser = $upline;
         }
     }
 
-    public function confirmPendingForSlot(\App\Models\PackSlot $slot): void
-    {
+    public function confirmPendingForSlot(\App\Models\PackSlot $slot): void {
         $pending = ReferralBonus::where('pack_slot_id', $slot->id)
             ->where('status', ReferralBonusStatus::PENDING->value)
             ->get();
@@ -265,32 +234,15 @@ class ReferralBonusService
         }
     }
 
-    /**
-     * Called from PackLifecycleService::earlyExit() — but only matters if
-     * the slot is exited within the pending window. A commission that's
-     * already CONFIRMED (3+ days passed) is real, earned money by then
-     * and does NOT get clawed back just because the slot exits early
-     * later — same "confirmed means final" principle as the pack
-     * purchase refund window.
-     */
-    public function cancelPendingForSlot(\App\Models\PackSlot $slot): void
-    {
+    
+    public function cancelPendingForSlot(\App\Models\PackSlot $slot): void {
         ReferralBonus::where('pack_slot_id', $slot->id)
             ->where('status', ReferralBonusStatus::PENDING->value)
             ->update(['status' => ReferralBonusStatus::CANCELLED->value]);
     }
 
-    /**
-     * Scheduler-called sweep — slot-funding equivalent of
-     * confirmAllExpiredPending(). 3 days is a default mirroring the pack
-     * purchase window for consistency; the PDF doesn't specify a holding
-     * period for slot-funding commission specifically since it never
-     * described a slot-level refund right at all — this is my own
-     * extension of the same protective pattern, not a number from the
-     * spec. Confirm with the client if a different window fits better.
-     */
-    public function confirmAllExpiredPendingSlots(): int
-    {
+    
+    public function confirmAllExpiredPendingSlots(): int {
         $slotIds = ReferralBonus::where('status', ReferralBonusStatus::PENDING->value)
             ->whereNotNull('pack_slot_id')
             ->whereHas('packSlot', fn ($q) => $q->where('funded_at', '<=', now()->subDays(3)))
