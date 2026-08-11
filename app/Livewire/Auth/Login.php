@@ -3,9 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\Formation;
-use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\RateLimiter as FacadesRateLimiter;
