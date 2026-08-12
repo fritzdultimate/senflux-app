@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\PaymentSetting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -11,9 +13,17 @@ class NowPaymentsService {
     private string $baseUrl;
 
     public function __construct() {
+        $settings = Cache::remember(
+            'payment_settings_nowpayments',
+            now()->addMinutes(30), // cache for 30 mins
+            fn () => PaymentSetting::where('provider', 'nowpayments')
+                ->where('is_active', true)
+                ->first()
+        );
+
         $sandbox = config('services.nowpayments.sandbox', true);
-        $this->apiKey  = config('services.nowpayments.api_key', '');
-        $this->ipnSecret = config('services.nowpayments.ipn_secret', '');
+        $this->apiKey  = $settings?->api_key ?? config('services.nowpayments.api_key', '');
+        $this->ipnSecret = $settings?->ipn_secret ??  config('services.nowpayments.ipn_secret', '');
         $this->baseUrl = 'https://api.nowpayments.io/v1';
     }
 
