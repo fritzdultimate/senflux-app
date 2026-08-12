@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\FormationShareController;
+use App\Http\Controllers\LegalPageController;
 use App\Http\Controllers\Webhook\NowPaymentsWebhookController;
 use App\Livewire\Auth\CollectEmail;
 use App\Livewire\Pages\About;
+use App\Livewire\Pages\Contact;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\HowItWorks;
 use App\Livewire\Pages\MarketInsights;
@@ -41,6 +43,23 @@ Route::get('/web/terminal',       \App\Livewire\Pages\Terminal::class)->name('te
 Route::get('/web/why-solana',       WhySolana::class)->name('why-solana');
 Route::get('/how-it-works',   HowItWorks::class)->name('how-it-works');
 Route::get('/market-insights',MarketInsights::class)->name('market-insights');
+Route::get('/contact', Contact::class)->name('contact');
+
+Route::get('/legal/terms-of-service', [LegalPageController::class, 'terms'])
+    ->name('terms');
+
+Route::get('/legal/privacy-policy', [LegalPageController::class, 'privacy'])
+    ->name('privacy');
+
+Route::get('/legal/cookie-policy', [LegalPageController::class, 'cookies'])
+    ->name('cookies');
+
+Route::get('/legal/security', [LegalPageController::class, 'security'])
+    ->name('security');
+
+Route::get('/legal/disclosures', [LegalPageController::class, 'disclosures'])
+    ->name('disclosures');
+
 
 Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])
     ->name('social.redirect');

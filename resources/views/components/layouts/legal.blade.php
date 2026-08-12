@@ -142,7 +142,7 @@
 
     {{-- ═══ PAGE CONTENT ═══ --}}
     <main>
-        {{ $slot }}
+        @yield('content')
     </main>
 
     {{-- ═══ FOOTER ═══ --}}
