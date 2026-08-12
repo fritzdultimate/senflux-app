@@ -136,7 +136,7 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				Capital Moves <span class="tg">Before</span> <br> Markets Do.
+				The Future of <span class="tg">Capital</span> <br> is <span class="tg">On-chain</span>.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
 				{{ env('APP_NAME') }} identifies strengthening market formations across the Solana network through AI-powered capital intelligence, validating qualifying conditions and automatically deploying when opportunities emerge.
