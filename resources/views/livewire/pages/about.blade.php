@@ -45,7 +45,7 @@
                         </p>
 
                         <p class="text-[14px] text-[#7a7a9a] max-w-[400px] mb-8 leading-[1.75]">
-                            Senflux is an automated trading system designed to identify, validate, and act on those movements.
+                            Senflux is an automated capital intelligence and deployment system built initially on the Solana network, designed to identify, validate, and act on meaningful capital movements.
                         </p>
                     </div>
 
@@ -359,8 +359,9 @@
             <p class="text-[14px] text-[#7a7a9a] max-w-[460px] mx-auto mt-4 mb-8 leading-[1.75]">
                 Senflux exists to transform that intelligence into systematic deployment.
             </p>
-            <a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:12px 28px;font-size:14px">Start
-                Deployment Now</a>
+            <a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:12px 28px;font-size:14px">
+                Explore Senflux
+            </a>
         </div>
     </section>
 

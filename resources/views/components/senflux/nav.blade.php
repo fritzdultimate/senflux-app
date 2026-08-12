@@ -20,9 +20,20 @@
 
         {{-- Desktop links --}}
         <ul class="hidden md:flex items-center gap-7 list-none">
-            <li><a href="{{ route('home') }}"            class="text-[13.5px] no-underline {{ $active('home') }}">Home</a></li>
-            <li><a href="{{ route('about') }}"           class="text-[13.5px] no-underline {{ $active('about') }}">About Us</a></li>
-            <li><a href="{{ route('terminal') }}"        class="text-[13.5px] no-underline {{ $active('terminal') }}">Terminal</a></li>
+            <li><a href="{{ route('home') }}" class="text-[13.5px] no-underline {{ $active('home') }}">Home</a></li>
+            <li><a href="{{ route('about') }}" class="text-[13.5px] no-underline {{ $active('about') }}">About Us</a></li>
+            <li style="display:none">
+                <a href="{{ route('terminal') }}" class="text-[13.5px] no-underline {{ $active('terminal') }}">
+                    Terminal
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('why-solana') }}" class="text-[13.5px] no-underline {{ $active('why-solana') }}">
+                    Why Solana
+                </a>
+            </li>
+
             <li><a href="{{ route('how-it-works') }}"    class="text-[13.5px] no-underline {{ $active('how-it-works') }}">How it Works</a></li>
             <li><a href="{{ route('market-insights') }}" class="text-[13.5px] no-underline {{ $active('market-insights') }}">Market Insights</a></li>
         </ul>
@@ -61,7 +72,21 @@
         <div class="flex flex-col px-5 pt-4 pb-2">
             <a href="{{ route('home') }}"            class="text-[13.5px] no-underline py-3 border-b {{ $mActive('home') }}"            style="border-color:rgba(255,255,255,.06)">Home</a>
             <a href="{{ route('about') }}"           class="text-[13.5px] no-underline py-3 border-b {{ $mActive('about') }}"           style="border-color:rgba(255,255,255,.06)">About Us</a>
-            <a href="{{ route('terminal') }}"        class="text-[13.5px] no-underline py-3 border-b {{ $mActive('terminal') }}"        style="border-color:rgba(255,255,255,.06)">Terminal</a>
+            <a 
+                href="{{ route('terminal') }}" 
+                class="text-[13.5px] no-underline py-3 border-b {{ $mActive('terminal') }}"        
+                style="border-color:rgba(255,255,255,.06); display: none;"
+            >
+                Terminal
+            </a>
+
+            <a 
+                href="{{ route('why-solana') }}" 
+                class="text-[13.5px] no-underline py-3 border-b {{ $mActive('why-solana') }}"        
+                style="border-color:rgba(255,255,255,.06)"
+            >
+                Why Solana
+            </a>
             <a href="{{ route('how-it-works') }}"    class="text-[13.5px] no-underline py-3 border-b {{ $mActive('how-it-works') }}"    style="border-color:rgba(255,255,255,.06)">How it Works</a>
             <a href="{{ route('market-insights') }}" class="text-[13.5px] no-underline py-3 {{ $mActive('market-insights') }}"          >Market Insights</a>
         </div>

@@ -143,7 +143,7 @@
 			</p>
 			<div class="flex gap-3 justify-center flex-wrap">
 				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">
-					Explore the Platform →
+					Explore Senflux →
 				</a>
 				<a href="https://youtu.be/nvbMhzTe3L8?si=FpAkApTXDouitRCJ" target="_blank" class="btn-o" style="padding:11px 26px;font-size:14px">
 					Watch Overview
@@ -743,8 +743,9 @@
 			<p class="text-[15px] text-[#7a7a9a] mt-4 mb-8 max-w-[480px] mx-auto leading-[1.75]">
 				The strongest opportunities rarely announce themselves. Senflux continuously evaluates market conditions, qualifies high-conviction formations, and deploys automatically when opportunity emerges.
 			</p>
-			<a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:13px 34px;font-size:14px">Start
-				Deploying Now →</a>
+			<a href="{{ route('register') }}" class="btn-p mx-auto" style="padding:13px 34px;font-size:14px">
+				Explore Senflux →
+			</a>
 		</div>
 	</section>
 
