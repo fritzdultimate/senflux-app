@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\PaymentSettings\Schemas;
+namespace App\Filament\Resources\MainWallets\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -19,6 +19,7 @@ class MainWalletsForm {
                     TextInput::make('currency')
                         ->label('Network')
                         ->default('USDTTRC20')
+                        ->unique()
                         ->required(),
                     TextInput::make('label')
                         ->label('Label')

@@ -4,6 +4,7 @@ namespace App\Livewire\Protected;
 
 use App\Enums\WalletType;
 use App\Enums\WithdrawalStatus;
+use App\Models\MainWallet;
 use App\Models\Withdrawal;
 use App\Services\WithdrawalService;
 use App\Services\WalletService;
@@ -34,14 +35,21 @@ class Withdraw extends Component
 
     // ── Supported networks ────────────────────────────────────────────────
 
-    public array $networks = [
-        ['code' => 'sol',    'label' => 'Solana',      'currency' => 'SOL'],
-        ['code' => 'usdtsol','label' => 'Solana',      'currency' => 'USDT'],
-        ['code' => 'trc20',  'label' => 'TRON (TRC-20)','currency' => 'USDT'],
-        ['code' => 'bsc',    'label' => 'BSC (BEP-20)','currency' => 'USDT'],
-        ['code' => 'erc20',  'label' => 'Ethereum',    'currency' => 'USDT'],
-        ['code' => 'btc',    'label' => 'Bitcoin',     'currency' => 'BTC'],
-    ];
+    // public array $networks = [
+    //     ['code' => 'sol',    'label' => 'Solana',      'currency' => 'SOL'],
+    //     ['code' => 'usdtsol','label' => 'Solana',      'currency' => 'USDT'],
+    //     ['code' => 'trc20',  'label' => 'TRON (TRC-20)','currency' => 'USDT'],
+    //     ['code' => 'bsc',    'label' => 'BSC (BEP-20)','currency' => 'USDT'],
+    //     ['code' => 'erc20',  'label' => 'Ethereum',    'currency' => 'USDT'],
+    //     ['code' => 'btc',    'label' => 'Bitcoin',     'currency' => 'BTC'],
+    // ];
+
+    #[Computed]
+    public function networks() {
+        $wallets = MainWallet::where('is_active', true)->get();
+
+        return $wallets;
+    }
 
     #[Computed]
     public function user() {
@@ -98,10 +106,10 @@ class Withdraw extends Component
         $this->amount = $this->availableBalance;
     }
 
-    public function selectNetwork(string $code): void {
-        $this->network = $code;
-        $found = collect($this->networks)->firstWhere('code', $code);
-        $this->cryptoCurrency = strtolower($found['currency'] ?? $code);
+    public function selectNetwork(string $currency): void {
+        $this->network = $currency;
+        $found = MainWallet::where('currency', $currency)->first();
+        $this->cryptoCurrency = strtolower($found->currency ?? $currency);
     }
 
     public function requestConfirm(): void {

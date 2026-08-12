@@ -90,14 +90,14 @@
                 <div class="wd-section">
                     <p class="wd-label">03 — NETWORK</p>
                     <div class="wd-network-grid">
-                        @foreach($networks as $net)
+                        @foreach($this->networks as $net)
                             <button
-                                wire:click="selectNetwork('{{ $net['code'] }}')"
+                                wire:click="selectNetwork('{{ $net->currency }}')"
                                 type="button"
-                                class="wd-network-btn {{ $network === $net['code'] ? 'wd-network-btn--active' : '' }}"
+                                class="wd-network-btn {{ $network === $net->currency ? 'wd-network-btn--active' : '' }}"
                             >
-                                <span class="wd-network-btn__currency">{{ $net['currency'] }}</span>
-                                <span class="wd-network-btn__label">{{ $net['label'] }}</span>
+                                <span class="wd-network-btn__currency uppercase">{{ $net->currency }}</span>
+                                <span class="wd-network-btn__label">{{ $net->label }}</span>
                             </button>
                         @endforeach
                     </div>

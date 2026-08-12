@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('ipn_secret')->nullable();
             $table->string('webhook_url')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->timestamps();
         });
     }
 

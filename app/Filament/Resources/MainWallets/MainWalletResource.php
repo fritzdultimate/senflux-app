@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\PaymentSettings;
+namespace App\Filament\Resources\MainWallets;
 
-use App\Filament\Resources\PaymentSettings\Pages\CreateMainWallet;
-use App\Filament\Resources\PaymentSettings\Pages\EditMainWallet;
-use App\Filament\Resources\PaymentSettings\Pages\ListMainWallets;
-use App\Filament\Resources\PaymentSettings\Schemas\MainWalletsForm;
-use App\Filament\Resources\PaymentSettings\Tables\MainWalletsTable;
+use App\Filament\Resources\MainWallets\Pages\CreateMainWallet;
+use App\Filament\Resources\MainWallets\Pages\EditMainWallet;
+use App\Filament\Resources\MainWallets\Pages\ListMainWallets;
+use App\Filament\Resources\MainWallets\Schemas\MainWalletsForm;
+use App\Filament\Resources\MainWallets\Tables\MainWalletsTable;
 use App\Models\MainWallet;
 use BackedEnum;
 use Filament\Resources\Resource;

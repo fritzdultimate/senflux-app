@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\PaymentSettings\Pages;
+namespace App\Filament\Resources\MainWallets\Pages;
 
-use App\Filament\Resources\PaymentSettings\MainWalletResource;
+use App\Filament\Resources\MainWallets\MainWalletResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

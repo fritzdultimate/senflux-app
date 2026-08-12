@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\PaymentSettings\Tables;
+namespace App\Filament\Resources\MainWallets\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
