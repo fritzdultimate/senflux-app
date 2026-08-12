@@ -36,8 +36,7 @@ class LiveTrade extends Model
         });
     }
 
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'entry_price'   => 'decimal:8',
             'current_price' => 'decimal:8',

@@ -44,14 +44,12 @@ class Withdraw extends Component
     ];
 
     #[Computed]
-    public function user()
-    {
+    public function user() {
         return Auth::user()->load('wallets');
     }
 
     #[Computed]
-    public function walletOptions(): array
-    {
+    public function walletOptions(): array {
         return collect(WalletType::cases())->map(fn($type) => [
             'value'   => $type->value,
             'label'   => $type->label(),
@@ -60,22 +58,19 @@ class Withdraw extends Component
     }
 
     #[Computed]
-    public function availableBalance(): float
-    {
+    public function availableBalance(): float {
         $wallet = $this->user->wallets->firstWhere('type', $this->walletType);
         if (!$wallet) return 0;
         return max(0, (float) $wallet->balance - (float) $wallet->locked_balance);
     }
 
     #[Computed]
-    public function settings(): object
-    {
+    public function settings(): object {
         return app(WithdrawalService::class)->getSettings();
     }
 
     #[Computed]
-    public function estimatedFee(): float
-    {
+    public function estimatedFee(): float {
         if ($this->amount <= 0) return 0;
         $s = $this->settings;
         if ((float) $s->fee_value <= 0) return 0;
@@ -87,34 +82,29 @@ class Withdraw extends Component
     }
 
     #[Computed]
-    public function netAmount(): float
-    {
+    public function netAmount(): float {
         return max(0, $this->amount - $this->estimatedFee);
     }
 
     #[Computed]
-    public function history()
-    {
+    public function history() {
         return Withdrawal::where('user_id', $this->user->id)
             ->latest()
             ->take(10)
             ->get();
     }
 
-    public function setMax(): void
-    {
+    public function setMax(): void {
         $this->amount = $this->availableBalance;
     }
 
-    public function selectNetwork(string $code): void
-    {
+    public function selectNetwork(string $code): void {
         $this->network = $code;
         $found = collect($this->networks)->firstWhere('code', $code);
         $this->cryptoCurrency = strtolower($found['currency'] ?? $code);
     }
 
-    public function requestConfirm(): void
-    {
+    public function requestConfirm(): void {
         $this->errorMessage = '';
 
         $this->validate([
@@ -131,8 +121,7 @@ class Withdraw extends Component
         $this->showConfirm = true;
     }
 
-    public function submit(WithdrawalService $service): void
-    {
+    public function submit(WithdrawalService $service): void {
         $this->errorMessage = '';
 
         try {
@@ -175,8 +164,7 @@ class Withdraw extends Component
         }
     }
 
-    public function render()
-    {
+    public function render() {
         return view('livewire.protected.withdraw');
     }
 }
