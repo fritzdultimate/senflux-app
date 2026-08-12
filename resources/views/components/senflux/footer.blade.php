@@ -42,16 +42,22 @@
             {{-- Product column --}}
             <div style="display:flex;flex-direction:column;gap:.65rem;">
                 <p class="sf-foot-col-head">Product</p>
-                @foreach([['#','Terminal'],['#','Market Insights'],['#','How It Works'],['#','Pricing'],['#','Changelog']] as [$h,$l])
-                <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
+                @foreach([['#','Terminal'],[route('market-insights'),'Market Insights'],[route('how-it-works'),'How It Works'],['#','Pricing'],['#','Changelog']] as [$h,$l])
+                    @if ($h === '#')
+                        @continue
+                    @endif
+                    <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
                 @endforeach
             </div>
 
             {{-- Company column --}}
             <div style="display:flex;flex-direction:column;gap:.65rem;">
                 <p class="sf-foot-col-head">Company</p>
-                @foreach([['#','About'],['#','Blog'],['#','Careers'],['#','Press Kit'],['#','Contact']] as [$h,$l])
-                <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
+                @foreach([[route('about'),'About'],['#','Blog'],['#','Careers'],['#','Press Kit'],['#','Contact']] as [$h,$l])
+                    @if ($h === '#')
+                        @continue
+                    @endif
+                    <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
                 @endforeach
             </div>
 
@@ -59,7 +65,10 @@
             <div style="display:flex;flex-direction:column;gap:.65rem;">
                 <p class="sf-foot-col-head">Legal</p>
                 @foreach([['#','Terms of Service'],['#','Privacy Policy'],['#','Cookie Policy'],['#','Security'],['#','Disclosures']] as [$h,$l])
-                <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
+                    @if ($h === '#')
+                        @continue
+                    @endif
+                    <a href="{{ $h }}" class="sf-foot-link">{{ $l }}</a>
                 @endforeach
             </div>
 
