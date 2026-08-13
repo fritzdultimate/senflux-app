@@ -74,6 +74,10 @@ Schedule::command('pack-lifecycle:close-expired-renewal-windows')
     ->everyFifteenMinutes()
     ->withoutOverlapping();
 
+Schedule::command('bonus:confirmation')
+    ->everyFiveMinutes()
+    ->withoutOverlapping();
+
 Schedule::command('birdeye:sync --batch=1')
     ->everyFiveMinutes()
     ->withoutOverlapping();
@@ -86,4 +90,4 @@ Schedule::call(function () {
         ->sum('active_wallets');
 
     Cache::put('active_wallets_yesterday', $today, now()->addDays(2));
-})->dailyAt('00:00');
+})->dailyAt('00:00'); 
