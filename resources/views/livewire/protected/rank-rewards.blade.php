@@ -1,8 +1,5 @@
 {{-- resources/views/livewire/protected/rank-rewards.blade.php --}}
 <div>
-    @push('styles')
-        @vite('resources/css/rank-rewards.css')
-    @endpush
 
     <div class="rnk">
 

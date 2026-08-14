@@ -1,7 +1,4 @@
 {{-- resources/views/livewire/protected/packs/browse-packs.blade.php --}}
-@push('styles')
-    @vite('resources/css/trading-bots.css')
-@endpush
 
 <div class="tb">
 

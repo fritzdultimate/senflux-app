@@ -68,19 +68,25 @@ class LiveTradesPage extends Component {
      */
     #[Computed]
     public function activityFeed() {
-        return FormationTradeActivity::with('formation')
+        $trades = FormationTradeActivity::with('formation')
             ->where('token_amount', '>', 0)
             ->where('source', TradeActivitySource::SENFLUX)
             ->where('failed', false)
             ->when($this->formationId, fn ($q) => $q->where('formation_id', $this->formationId))
             ->latest('block_time')
-            ->limit(10)
-            ->get()
-            ->map(fn ($trade) => [
-                'trade' => $trade,
-                'title' => $trade->type === 'buy' ? 'Capital Deployed' : 'Position Reduced',
-                'reason' => $this->narrativeReason($trade),
-            ]);
+            ->limit(40)
+            ->get();
+
+        $max = $trades->max('token_amount') ?: 1;
+
+        return $trades->map(fn ($trade) => [
+            'trade' => $trade,
+            'title' => $trade->type === 'buy' ? 'Capital Deployed' : 'Position Reduced',
+            'reason' => $this->narrativeReason($trade),
+            // relative size of this action against the largest in the current
+            // feed window — powers the impact bar on each card
+            'impact_pct' => max(6, (int) round(($trade->token_amount / $max) * 100)),
+        ]);
     }
 
     private function narrativeReason(FormationTradeActivity $trade): string {
@@ -149,12 +155,25 @@ class LiveTradesPage extends Component {
                 (is_object($row->state) ? $row->state->value : $row->state) => $row->c,
             ]);
 
+        $total = $counts->sum();
+        $strengthening = $counts->get('early', 0);
+        $building = $counts->get('building', 0) + $counts->get('active', 0);
+        $stable = $counts->get('mature', 0);
+        $weakening = $counts->get('weakening', 0);
+
         return [
-            'total' => $counts->sum(),
-            'strengthening' => $counts->get('early', 0),
-            'building' => $counts->get('building', 0) + $counts->get('active', 0),
-            'stable' => $counts->get('mature', 0),
-            'weakening' => $counts->get('weakening', 0),
+            'total' => $total,
+            'strengthening' => $strengthening,
+            'building' => $building,
+            'stable' => $stable,
+            'weakening' => $weakening,
+            // pre-computed ring stops for the conic-gradient radar — degrees
+            // around a 360° circle, running in the order the legend lists them
+            'ring' => $total > 0 ? [
+                'strengthening_deg' => round($strengthening / $total * 360, 1),
+                'building_deg' => round(($strengthening + $building) / $total * 360, 1),
+                'stable_deg' => round(($strengthening + $building + $stable) / $total * 360, 1),
+            ] : ['strengthening_deg' => 0, 'building_deg' => 0, 'stable_deg' => 0],
         ];
     }
 

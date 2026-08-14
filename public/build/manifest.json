@@ -10,13 +10,18 @@
     "isEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/app-H6B2DHpx.css",
+    "file": "assets/app-CDg-G3F2.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/billing.css": {
     "file": "assets/billing-dzB8j-9i.css",
     "src": "resources/css/billing.css",
+    "isEntry": true
+  },
+  "resources/css/bot-activity.css": {
+    "file": "assets/bot-activity-nSNXAdED.css",
+    "src": "resources/css/bot-activity.css",
     "isEntry": true
   },
   "resources/css/dashboard-shared.css": {

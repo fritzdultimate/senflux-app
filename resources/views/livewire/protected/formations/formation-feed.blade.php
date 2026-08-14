@@ -1,5 +1,4 @@
 <div>
-    @vite('resources/css/dc.css')
 
     <div class="dc">
         <div class="dc-console-header">

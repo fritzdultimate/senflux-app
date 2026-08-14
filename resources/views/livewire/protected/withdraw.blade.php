@@ -1,8 +1,5 @@
 {{-- resources/views/livewire/protected/withdraw.blade.php --}}
 <div>
-    @push('styles')
-        @vite('resources/css/withdraw.css')
-    @endpush
     <div class="wd">
 
         {{-- ── Alerts ───────────────────────────────────────────────────────── --}}

@@ -1,8 +1,5 @@
 {{-- resources/views/livewire/protected/settings.blade.php --}}
 <div>
-    @push('styles')
-        @vite('resources/css/settings.css')
-    @endpush
 
     <div class="set" wire:poll.3000ms="clearFlashes">
 

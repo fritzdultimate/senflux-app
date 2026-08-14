@@ -1,9 +1,4 @@
 <div>
-    @push('styles')
-        @vite('resources/css/dc.css')
-        @vite('resources/css/billing.css')
-        @vite('resources/css/deposit.css')
-    @endpush
 
     <div class="dc" wire:poll.10000ms="refreshIfPending">
 

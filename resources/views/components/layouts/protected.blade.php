@@ -8,10 +8,44 @@
     <title>{{ $title ?? 'Senflux' }}</title>
     @stack('styles')
     @vite([
+        'resources/css/dashboard.css',
         'resources/css/dashboard-shared.css',
         'resources/css/app.css',
+        'resources/css/live-trades.css',
+        'resources/css/formation-detail.css',
+        'resources/css/formation-card.css',
+        'resources/css/terminal.css',
+        'resources/css/bot-activity.css',
+
+        'resources/css/market-insights.css',
+
+        'resources/css/affiliate.css',
+
+        'resources/css/alerts.css',
+
+        'resources/css/portfolio.css',
+
+        'resources/css/rank-rewards.css',
+
+        'resources/css/settings.css',
+
+        'resources/css/signals.css',
+
+        'resources/css/wallet.css',
+
+        'resources/css/withdraw.css',
+
+        'resources/css/trading-bots.css',
+
+        'resources/css/my-bots.css',
+
+
         'resources/js/nav.js',
     ])
+
+    @vite('resources/css/dc.css')
+    @vite('resources/css/billing.css')
+    @vite('resources/css/deposit.css')
 
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"

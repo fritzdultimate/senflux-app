@@ -1,7 +1,4 @@
 {{-- resources/views/livewire/protected/signals.blade.php --}}
-@push('styles')
-    @vite('resources/css/signals.css')
-@endpush
 
 <div class="sig" wire:poll.30000ms="refresh">
 

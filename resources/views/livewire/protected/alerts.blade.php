@@ -1,9 +1,5 @@
 {{-- resources/views/livewire/protected/alerts.blade.php --}}
 <div>
-    @push('styles')
-        @vite('resources/css/alerts.css')
-    @endpush
-
     <div class="alt">
 
         @if($savedFlash)

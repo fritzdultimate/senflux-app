@@ -29,6 +29,7 @@ export default defineConfig({
             'resources/css/formation-detail.css',
             'resources/css/formation-card.css',
             'resources/css/market-insights.css',
+            'resources/css/bot-activity.css',
 
             'resources/js/app.js',
             'resources/js/nav.js',

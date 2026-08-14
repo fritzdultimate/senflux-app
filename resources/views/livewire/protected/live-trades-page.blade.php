@@ -1,11 +1,4 @@
 <div wire:poll.8000="refresh">
-    @push('styles')
-        @vite('resources/css/live-trades.css')
-        @vite('resources/css/formation-detail.css')
-        @vite('resources/css/terminal.css')
-        @vite('resources/css/bot-activity.css')
-    @endpush
-
     <div class="lt-page">
         <div class="fd-topbar">
             <a href="{{ route('dashboard.terminal') }}" wire:navigate class="fd-back">
@@ -63,52 +56,30 @@
             </div>
         </div>
 
-        {{-- PERFORMANCE + INTELLIGENCE --}}
+        {{-- PERFORMANCE --}}
         @php $perf = $this->performance; $intel = $this->intelligence; @endphp
-        <div class="ba-cards">
-            <div class="ba-card">
-                <p class="ba-card__title">Deployment Performance</p>
-                <div class="ba-card__grid">
-                    <div><span>Active Capital</span><strong>${{ number_format($perf['active_capital'], 2) }}</strong></div>
-                    <div><span>Realized Profit</span><strong class="ba-pos">${{ number_format($perf['realized_profit'], 2) }}</strong></div>
-                    <div><span>Unrealized P/L</span><strong>${{ number_format($perf['unrealized_pl'], 2) }}</strong></div>
-                    <div><span>24H Performance</span><strong class="{{ $perf['change_24h_pct'] > 0 ? 'ba-pos' : ($perf['change_24h_pct'] < 0 ? 'ba-neg' : '') }}">{{ $perf['change_24h_pct'] >= 0 ? '+' : '' }}{{ number_format($perf['change_24h_pct'], 2) }}%</strong></div>
-                    <div><span>Total Actions</span><strong>{{ number_format($perf['total_actions']) }}</strong></div>
-                </div>
-            </div>
-
-            <div class="ba-card">
-                <p class="ba-card__title">Current Intelligence</p>
-                <p class="ba-card__sub">{{ number_format($intel['total']) }} formations currently monitored</p>
-                <div class="ba-intel">
-                    <div class="ba-intel__row">
-                        <span class="ba-dot ba-dot--up"></span>
-                        <span class="ba-intel__label">Strengthening</span>
-                        <strong>{{ number_format($intel['strengthening']) }}</strong>
-                    </div>
-                    <div class="ba-intel__row">
-                        <span class="ba-dot ba-dot--purple"></span>
-                        <span class="ba-intel__label">Building</span>
-                        <strong>{{ number_format($intel['building']) }}</strong>
-                    </div>
-                    <div class="ba-intel__row">
-                        <span class="ba-dot ba-dot--cyan"></span>
-                        <span class="ba-intel__label">Stable</span>
-                        <strong>{{ number_format($intel['stable']) }}</strong>
-                    </div>
-                    <div class="ba-intel__row">
-                        <span class="ba-dot ba-dot--red"></span>
-                        <span class="ba-intel__label">Weakening</span>
-                        <strong>{{ number_format($intel['weakening']) }}</strong>
-                    </div>
-                </div>
+        <div class="ba-card ba-card--perf">
+            <p class="ba-card__title">Deployment Performance</p>
+            <div class="ba-card__grid">
+                <div><span>Active Capital</span><strong>${{ number_format($perf['active_capital'], 2) }}</strong></div>
+                <div><span>Realized Profit</span><strong class="ba-pos">${{ number_format($perf['realized_profit'], 2) }}</strong></div>
+                <div><span>Unrealized P/L</span><strong>${{ number_format($perf['unrealized_pl'], 2) }}</strong></div>
+                <div><span>24H Performance</span><strong class="{{ $perf['change_24h_pct'] > 0 ? 'ba-pos' : ($perf['change_24h_pct'] < 0 ? 'ba-neg' : '') }}">{{ $perf['change_24h_pct'] >= 0 ? '+' : '' }}{{ number_format($perf['change_24h_pct'], 2) }}%</strong></div>
+                <div><span>Total Actions</span><strong>{{ number_format($perf['total_actions']) }}</strong></div>
             </div>
         </div>
 
-        {{-- TABS --}}
+        {{--
+            Single Alpine root spans the tab buttons AND both panels below,
+            so `tab` is shared client-side state — no Livewire round trip
+            on click, switching is instant.
+        --}}
+        <div x-data="{ tab: @js($tab) }">
+
+        {{-- TABS — pure client-side switch --}}
         <div class="ba-tabs">
-            <button wire:click="switchTab('activity')" class="ba-tab {{ $tab === 'activity' ? 'ba-tab--active' : '' }}">Bot Activity</button>
-            <button wire:click="switchTab('history')" class="ba-tab {{ $tab === 'history' ? 'ba-tab--active' : '' }}">Trade History</button>
+            <button @click="tab = 'activity'" :class="{ 'ba-tab--active': tab === 'activity' }" class="ba-tab">Bot Activity</button>
+            <button @click="tab = 'history'" :class="{ 'ba-tab--active': tab === 'history' }" class="ba-tab">Trade History</button>
             @if ($this->formation)
                 <span class="ba-tab-filter">
                     ${{ $this->formation->token_symbol }}
@@ -117,49 +88,181 @@
             @endif
         </div>
 
-        @if ($tab === 'activity')
+        {{--
+            Both panels render on every request and are toggled purely with
+            CSS (x-show). That's what makes switching instant. Trade-off
+            worth knowing: since the History table's query isn't behind a
+            Blade @if anymore, it now runs on every 8s poll even while
+            hidden, not just while the tab is open. At 30-row pagination
+            that's cheap, but if it ever gets heavy, the fix is to lazy-load
+            history behind a one-time $wire.call() the first time the tab
+            is opened rather than reverting to server-side tab switching.
+        --}}
+        <div x-show="tab === 'activity'" x-cloak>
 
-            <div class="ba-disclaimer">
-                <strong>Your Senflux Activity</strong>
-                <p>Senflux continuously monitors qualifying formations and manages deployed capital automatically when conditions change.</p>
-            </div>
+            @php
+                $feed = $this->activityFeed;
+                $pulseFormations = $feed->unique(fn ($i) => $i['trade']->formation_id)->take(8);
+                $ring = $intel['ring'];
+            @endphp
 
-            <div class="ba-feed">
-                @forelse ($this->activityFeed as $item)
-                    @php $trade = $item['trade']; @endphp
-                    <div class="ba-feed__row" wire:key="feed-{{ $trade->id }}">
-                        <div class="ba-feed__icon ba-feed__icon--{{ $trade->type }}">
-                            @if ($trade->type === 'buy')
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-                            @else
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
-                            @endif
-                        </div>
-                        <div class="ba-feed__body">
-                            <div class="ba-feed__top">
-                                <span class="ba-feed__title">{{ $item['title'] }}</span>
-                                <span class="ba-feed__time">{{ $trade->block_time?->format('g:i A') ?? '—' }}</span>
-                            </div>
-                            <div class="ba-feed__meta">
-                                <a href="{{ route('dashboard.formations.detail', $trade->formation) }}" wire:navigate class="ba-feed__formation">
-                                    ${{ $trade->formation->token_symbol }}
-                                </a>
-                                @isset($trade->formation->state)
-                                    <span class="ba-feed__state ba-feed__state--{{ $trade->formation->state->value }}">
-                                        {{ ucfirst($trade->formation->state->value) }}
+            <div class="ba-activity-grid">
+
+                {{-- SIGNAL TIMELINE --}}
+                <div class="ba-signal-col">
+
+                    <div class="ba-disclaimer">
+                        <strong>Your Senflux Activity</strong>
+                        <p>Senflux continuously monitors qualifying formations and manages deployed capital automatically when conditions change.</p>
+                    </div>
+
+                    <div class="ba-signal">
+                        @forelse ($feed as $index => $item)
+                            @php $trade = $item['trade']; @endphp
+                            <div
+                                class="ba-signal__node {{ $index === 0 ? 'ba-signal__node--latest' : '' }}"
+                                wire:key="feed-{{ $trade->id }}"
+                                style="animation-delay: {{ min($index, 8) * 45 }}ms"
+                            >
+                                <div class="ba-signal__marker">
+                                    <span class="ba-signal__icon ba-signal__icon--{{ $trade->type }}">
+                                        @if ($trade->type === 'buy')
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+                                        @else
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+                                        @endif
                                     </span>
-                                @endisset
+                                    @if ($index === 0)
+                                        <span class="ba-signal__ping"></span>
+                                    @endif
+                                </div>
+
+                                <div class="ba-signal__card">
+                                    <div class="ba-signal__top">
+                                        <div class="ba-signal__heading">
+                                            <span class="ba-signal__title">{{ $item['title'] }}</span>
+                                            @if ($index === 0)
+                                                <span class="ba-signal__new">Latest</span>
+                                            @endif
+                                        </div>
+                                        <span class="ba-signal__time">{{ $trade->block_time?->format('g:i A') ?? '—' }}</span>
+                                    </div>
+
+                                    <div class="ba-signal__meta">
+                                        <a href="{{ route('dashboard.formations.detail', $trade->formation) }}" wire:navigate class="ba-signal__formation">
+                                            ${{ $trade->formation->token_symbol }}
+                                        </a>
+                                        @isset($trade->formation->state)
+                                            <span class="ba-signal__state ba-signal__state--{{ $trade->formation->state->value }}">
+                                                {{ ucfirst($trade->formation->state->value) }}
+                                            </span>
+                                        @endisset
+                                        <span class="ba-signal__amount">{{ number_format($trade->token_amount, 2) }} tokens</span>
+                                    </div>
+
+                                    <p class="ba-signal__reason">{{ $item['reason'] }}</p>
+
+                                    <div class="ba-signal__footer">
+                                        <div class="ba-signal__impact" title="Relative size vs. recent actions">
+                                            <span class="ba-signal__impact-fill ba-signal__impact-fill--{{ $trade->type }}" style="width: {{ $item['impact_pct'] }}%"></span>
+                                        </div>
+                                        <span class="ba-signal__status">✓ Executed</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="ba-feed__reason">{{ $item['reason'] }}</p>
-                            <span class="ba-feed__status">✓ Executed</span>
+                        @empty
+                            <div class="ba-signal__empty">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+                                <p>No bot activity yet</p>
+                                <span>Senflux will log actions here the moment a formation qualifies for deployment.</span>
+                            </div>
+                        @endforelse
+                    </div>
+
+                </div>
+
+                {{-- STICKY RAIL --}}
+                <div class="ba-rail">
+
+                    @if ($pulseFormations->isNotEmpty())
+                        <div class="ba-rail__panel">
+                            <p class="ba-rail__title">Live Pulse</p>
+                            <div class="ba-pulse">
+                                @foreach ($pulseFormations as $p)
+                                    @php $f = $p['trade']->formation; @endphp
+                                    <a href="{{ route('dashboard.formations.detail', $f) }}" wire:navigate class="ba-pulse__chip">
+                                        <span class="ba-pulse__dot ba-pulse__dot--{{ $f->state?->value ?? 'idle' }}"></span>
+                                        ${{ $f->token_symbol }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="ba-rail__panel">
+                        <p class="ba-rail__title">Deployment Radar</p>
+                        <p class="ba-rail__sub">{{ number_format($intel['total']) }} formations monitored</p>
+
+                        <div class="ba-radar">
+                            <div
+                                class="ba-radar__ring"
+                                style="background: conic-gradient(
+                                    #22c55e 0deg {{ $ring['strengthening_deg'] }}deg,
+                                    #9B7DFF {{ $ring['strengthening_deg'] }}deg {{ $ring['building_deg'] }}deg,
+                                    #06b6d4 {{ $ring['building_deg'] }}deg {{ $ring['stable_deg'] }}deg,
+                                    #ef4444 {{ $ring['stable_deg'] }}deg 360deg
+                                )"
+                            >
+                                <div class="ba-radar__center">
+                                    <strong>{{ number_format($intel['total']) }}</strong>
+                                    <span>total</span>
+                                </div>
+                            </div>
+
+                            <div class="ba-radar__legend">
+                                <div class="ba-radar__row">
+                                    <span class="ba-dot ba-dot--up"></span>
+                                    <span class="ba-radar__label">Strengthening</span>
+                                    <strong>{{ number_format($intel['strengthening']) }}</strong>
+                                </div>
+                                <div class="ba-radar__row">
+                                    <span class="ba-dot ba-dot--purple"></span>
+                                    <span class="ba-radar__label">Building</span>
+                                    <strong>{{ number_format($intel['building']) }}</strong>
+                                </div>
+                                <div class="ba-radar__row">
+                                    <span class="ba-dot ba-dot--cyan"></span>
+                                    <span class="ba-radar__label">Stable</span>
+                                    <strong>{{ number_format($intel['stable']) }}</strong>
+                                </div>
+                                <div class="ba-radar__row">
+                                    <span class="ba-dot ba-dot--red"></span>
+                                    <span class="ba-radar__label">Weakening</span>
+                                    <strong>{{ number_format($intel['weakening']) }}</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                @empty
-                    <div class="ba-feed__empty">No bot activity yet — Senflux will log actions here as formations qualify for deployment.</div>
-                @endforelse
+
+                    <div
+                        class="ba-rail__panel ba-scan"
+                        x-data="{ pct: 0 }"
+                        x-init="setInterval(() => { pct = (pct + 100/80) % 100 }, 100)"
+                    >
+                        <p class="ba-rail__title">Next Scan</p>
+                        <p class="ba-rail__sub">Formations are re-evaluated continuously</p>
+                        <div class="ba-scan__track">
+                            <div class="ba-scan__fill" :style="`width: ${pct}%`"></div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-        @else
+            </div>
+
+            <div x-show="tab === 'history'" x-cloak>
 
             <div class="lt-filters">
                 <button wire:click="filterBySource(null)" class="lt-filter-pill {{ !$source ? 'lt-filter-pill--active' : '' }}">All Sources</button>
@@ -237,6 +340,8 @@
                 </div>
             @endif
 
-        @endif
+            </div>
+
+        </div>
     </div>
 </div>

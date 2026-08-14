@@ -1,7 +1,4 @@
 {{-- resources/views/livewire/protected/packs/my-packs.blade.php --}}
-@push('styles')
-    @vite('resources/css/my-bots.css')
-@endpush
 
 <div class="myb" wire:poll.30000ms="refresh">
 

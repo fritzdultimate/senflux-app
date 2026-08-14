@@ -1,7 +1,4 @@
 {{-- resources/views/livewire/protected/market-insights.blade.php --}}
-@push('styles')
-    @vite('resources/css/market-insights.css')
-@endpush
 
 <div class="mi">
 

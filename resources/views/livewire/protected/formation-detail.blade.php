@@ -1,9 +1,4 @@
 <div wire:poll.10000="refresh">
-    @push('styles')
-        @vite('resources/css/terminal.css')
-        @vite('resources/css/formation-card.css')
-        @vite('resources/css/formation-detail.css')
-    @endpush
 
     @php $f = $this->fresh; @endphp
 
