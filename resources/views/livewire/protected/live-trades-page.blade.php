@@ -12,10 +12,16 @@
 
         {{-- HERO --}}
         <div class="ba-hero">
-            <div class="ba-hero__text">
-                <h1 class="ba-hero__title">Bot Activity</h1>
-                <p class="ba-hero__sub">Your Senflux system is continuously monitoring, validating, and deploying across qualifying formations.</p>
+
+            <div class="panel__head" style="margin-bottom: 20px">
+                <div>
+                    <div class="panel__title" style="font-size: 1.1rem">Bot Activity</div>
+                    <div class="panel__sub">
+                        Your Senflux system is continuously monitoring, validating, and deploying across qualifying formations.
+                    </div>
+                </div>
             </div>
+
             <div class="ba-status">
                 <span class="ba-status__dot"></span>
                 <div class="ba-status__text">

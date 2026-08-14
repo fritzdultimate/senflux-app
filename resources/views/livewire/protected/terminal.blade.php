@@ -1,8 +1,4 @@
 <div wire:poll.10000="refresh">
-    @push('styles')
-        @vite('resources/css/terminal.css')
-        @vite('resources/css/dashboard.css')
-    @endpush
 
     <div class="dash">
 
