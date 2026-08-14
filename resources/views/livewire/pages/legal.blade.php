@@ -35,7 +35,13 @@
                     {{ $intro }}
                 </p>
 
-                <div class="flex items-center gap-2 mt-6 text-[11px] text-[#55556c]">
+                <div class="flex flex-wrap items-center gap-2 mt-6 text-[11px] text-[#55556c]">
+                    @isset($effective)
+                        <span>Effective</span>
+                        <span class="w-1 h-1 rounded-full bg-[#7B5CF5]"></span>
+                        <span>{{ $effective }}</span>
+                        <span class="w-1 h-1 rounded-full bg-[#7B5CF5]"></span>
+                    @endisset
                     <span>Last updated</span>
                     <span class="w-1 h-1 rounded-full bg-[#7B5CF5]"></span>
                     <span>{{ $updated }}</span>

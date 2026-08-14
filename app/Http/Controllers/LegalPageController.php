@@ -13,6 +13,7 @@ class LegalPageController extends Controller
             'eyebrow' => 'Legal',
             'title' => 'Terms of Service',
             'intro' => 'The rules and conditions governing your use of the Senflux platform and website.',
+            'effective' => 'August 25, 2026',
             'updated' => 'August 12, 2026',
             'sections' => $this->termsSections(),
         ]);
@@ -71,96 +72,308 @@ class LegalPageController extends Controller
     {
         return [
             [
-                'title' => '1. Acceptance of Terms',
+                'title' => '1. About Senflux',
                 'body' => [
-                    'These Terms of Service govern your access to and use of Senflux websites, applications, dashboards, APIs, research, data products, and related services (collectively, the “Services”).',
-                    'By accessing or using the Services, you agree to be bound by these Terms. If you do not agree with these Terms, you should not access or use the Services.',
-                    'If you are using the Services on behalf of an organization, you represent that you have authority to bind that organization to these Terms.'
+                    'Senflux is a technology platform focused on Capital Intelligence and Automated Deployment within the digital-asset ecosystem.',
+                    'The platform is designed to analyze observable on-chain and market activity, identify potentially meaningful market formations, evaluate qualifying conditions, and facilitate automated deployment when the platform\'s defined conditions are met.',
+                    'Senflux currently operates within the Solana ecosystem.',
+                    'Senflux\'s technology, software, systems, interfaces, algorithms, models, methodologies, branding, and related intellectual property are proprietary to Senflux or its applicable licensors.',
                 ],
             ],
             [
-                'title' => '2. Description of the Services',
+                'title' => '2. Eligibility',
                 'body' => [
-                    'Senflux provides analytics and intelligence derived from blockchain, market, wallet, liquidity, and ecosystem activity. The Services are designed to help users understand participation, market formation, capital behavior, and related signals.',
-                    'The Services may include dashboards, scores, classifications, alerts, visualizations, research, datasets, APIs, reports, and other analytical outputs.',
-                    'We may modify, improve, suspend, or discontinue portions of the Services from time to time. Where practical, we will provide reasonable notice of material changes.'
+                    'You may use the Services only if you are legally capable of entering into a binding agreement, meet the minimum age requirement applicable in your jurisdiction, and your use of the Services is lawful in the jurisdiction in which you reside.',
+                    'You must not be subject to applicable sanctions or restrictions, and must not be prohibited from participating in digital-asset or related activities under applicable law. All information you provide to Senflux must be accurate and complete.',
+                    'Senflux may restrict, suspend, or terminate access where it reasonably believes that a user does not satisfy applicable eligibility requirements.',
+                    'You are responsible for determining whether participation in the Services is lawful in your jurisdiction.',
                 ],
             ],
             [
-                'title' => '3. Eligibility and Accounts',
+                'title' => '3. Important Risk Disclosure',
                 'body' => [
-                    'You must provide accurate information when creating an account or interacting with the Services. You are responsible for maintaining the confidentiality of credentials associated with your account.',
-                    'You are responsible for activity occurring through your account unless you have promptly notified us of unauthorized access.',
-                    'You may not create an account or use the Services for unlawful purposes or in violation of these Terms.'
+                    'Digital assets and automated market participation involve substantial risk. You may lose some or all of the capital you make available through the Services.',
+                    'Historical performance is not a guarantee, representation, or promise of future performance. Senflux does not guarantee profits, returns, a particular performance level, preservation of capital, successful execution of every deployment, that every identified formation will mature, that every deployment will be profitable, or that losses will not occur.',
+                    'Market conditions, liquidity, blockchain conditions, asset prices, execution conditions, and other factors can change rapidly. You should not commit capital that you cannot afford to lose.',
+                    'Nothing on the Senflux website or platform constitutes individualized financial, investment, tax, or legal advice.',
                 ],
             ],
             [
-                'title' => '4. Acceptable Use',
+                'title' => '4. Formation Packs',
                 'body' => [
-                    'You agree not to misuse the Services, interfere with their operation, attempt to gain unauthorized access, circumvent security controls, reverse engineer proprietary systems except where expressly permitted by applicable law, or use the Services to violate the rights of others.',
-                    'You must not use automated methods to excessively scrape, overload, probe, or otherwise interfere with Senflux infrastructure.',
-                    'You must comply with all laws and regulations applicable to your use of the Services.'
+                    'Senflux may offer Formation Packs that provide different levels of platform participation, intelligence coverage, capital capacity, and participation duration.',
+                    'Senflux may modify Formation Pack structures, capacities, fees, durations, or other characteristics in accordance with these Terms and applicable law.',
+                    'The terms applicable to a participant are those displayed and accepted at the time of activation, subject to subsequent changes that apply prospectively.',
                 ],
             ],
             [
-                'title' => '5. Data and Analytical Outputs',
+                'title' => '5. Formation Pack Fees',
                 'body' => [
-                    'Senflux analytics are generated from available data sources and proprietary analytical methods. Data may be incomplete, delayed, inaccurate, unavailable, or subject to changes in underlying networks and markets.',
-                    'Scores, classifications, signals, rankings, alerts, and other outputs should be treated as analytical information rather than guarantees of future outcomes.',
-                    'You are responsible for independently evaluating information before relying on it for business, investment, trading, or other decisions.'
+                    'Current Formation Pack activation fees are: Scout — $50, Vanguard — $99, Dominion — $249.',
+                    'Formation Pack fees are separate from participant capital. Unless expressly stated otherwise at the time of purchase, the Formation Pack fee is not deducted from deployed capital and does not represent a percentage of trading profits.',
+                    'Fees may be changed prospectively by Senflux.',
                 ],
             ],
             [
-                'title' => '6. Intellectual Property',
+                'title' => '6. Capital Capacity',
                 'body' => [
-                    'Senflux and its licensors retain all rights, title, and interest in the Services, software, designs, trademarks, documentation, methodologies, and other proprietary materials.',
-                    'Except as expressly permitted, you may not reproduce, redistribute, resell, publicly display, or commercially exploit proprietary Senflux materials.',
-                    'Nothing in these Terms transfers ownership of Senflux intellectual property to you.'
+                    'A Formation Pack\'s stated capital amount represents the applicable capital capacity, not necessarily the amount a participant must initially fund.',
+                    'For example, a Scout participant may activate with the applicable minimum and subsequently increase eligible active capital up to the Scout capacity.',
+                    'Capital capacity does not constitute a promise that Senflux will deploy the full capacity or generate a particular level of performance.',
                 ],
             ],
             [
-                'title' => '7. Third-Party Services',
+                'title' => '7. Top-Ups',
                 'body' => [
-                    'The Services may reference or integrate third-party networks, protocols, exchanges, data providers, infrastructure providers, or other services.',
-                    'Senflux does not control third-party services and is not responsible for their availability, accuracy, security, policies, or performance.',
-                    'Your use of third-party services may be subject to separate terms and policies.'
+                    'Where enabled by the platform, participants may add eligible capital to an active Formation Pack during its Formation Cycle, subject to the applicable Formation Pack capacity, platform requirements, applicable compliance requirements, and any other conditions communicated by Senflux.',
+                    'Unless Senflux expressly states otherwise, a top-up does not create another Formation Pack, does not create another participation slot, does not reset the Formation Cycle, and does not change the original maturity date.',
                 ],
             ],
             [
-                'title' => '8. Fees and Subscriptions',
+                'title' => '8. Pack Upgrades',
                 'body' => [
-                    'Certain Services may be offered on a paid or subscription basis. Applicable pricing, billing periods, usage limits, and cancellation conditions will be presented at the time of purchase or subscription.',
-                    'Unless otherwise stated, fees are non-refundable to the extent permitted by applicable law.',
-                    'We may change pricing for future billing periods with reasonable notice.'
+                    'A participant does not automatically move to a higher Formation Pack merely by adding capital. To upgrade, the participant must purchase or activate the applicable new Formation Pack.',
+                    'Where permitted, eligible active capital from the existing Formation Pack may be transferred to the new Formation Pack. The upgrade process may include: new pack activated, eligible capital transferred, minimum satisfied, previous pack closed, new cycle begins.',
+                    'The new Formation Pack may have a new capital capacity, intelligence coverage, participation structure, Formation Cycle, and maturity date. Senflux may determine eligibility and operational procedures for capital transfers.',
                 ],
             ],
             [
-                'title' => '9. Disclaimers',
+                'title' => '9. One Active Formation Pack',
                 'body' => [
-                    'The Services are provided on an “as available” and “as is” basis to the maximum extent permitted by law.',
-                    'Senflux does not warrant that the Services will be uninterrupted, error-free, complete, current, or suitable for every particular purpose.',
-                    'Nothing provided through the Services constitutes investment, financial, legal, tax, accounting, or other professional advice.'
+                    'The standard Senflux structure is designed around one active Formation Pack per participant.',
+                    'Senflux may restrict or reject attempts to maintain multiple overlapping active Formation Packs where doing so conflicts with the platform structure.',
                 ],
             ],
             [
-                'title' => '10. Limitation of Liability',
+                'title' => '10. Formation Cycle and Capital Lock',
                 'body' => [
-                    'To the maximum extent permitted by applicable law, Senflux and its affiliates, officers, employees, contractors, and licensors will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages arising from or related to your use of the Services.',
-                    'Any additional limitations applicable to a specific paid service may be stated in a separate agreement.'
+                    'Once capital is activated within a Formation Pack, the applicable capital is committed to the Formation Cycle. Participating capital is generally locked for the duration of the applicable Formation Cycle.',
+                    'During the Formation Cycle, the participant may not ordinarily withdraw the underlying participating capital before maturity except through an early-exit process expressly made available by Senflux.',
+                    'The applicable Formation Cycle begins according to the platform\'s activation records.',
                 ],
             ],
             [
-                'title' => '11. Termination',
+                'title' => '11. Profits and Withdrawals',
                 'body' => [
-                    'You may stop using the Services at any time. Senflux may suspend or terminate access where reasonably necessary to protect the Services, users, infrastructure, or comply with law.',
-                    'Provisions that by their nature should survive termination will remain in effect.'
+                    'Where the platform permits profit withdrawals during an active Formation Cycle, eligible profits may be made available for withdrawal subject to the applicable platform rules, processing requirements, and minimum withdrawal requirements.',
+                    'The availability of profits for withdrawal does not mean that the underlying participating capital becomes freely withdrawable.',
+                    'Participants should review the withdrawal interface and applicable rules before initiating a withdrawal.',
                 ],
             ],
             [
-                'title' => '12. Changes to These Terms',
+                'title' => '12. Early Withdrawal',
                 'body' => [
-                    'We may update these Terms as our Services, business, or legal requirements evolve. Updated Terms will be published through the relevant Senflux website or application.',
-                    'Your continued use of the Services after an updated version becomes effective constitutes acceptance of the revised Terms, to the extent permitted by law.'
+                    'Where Senflux permits early withdrawal of participating capital before maturity, an early-exit fee of 10% may apply to the applicable withdrawal amount.',
+                    'The exact calculation, minimums, processing requirements, and treatment of the remaining Formation Pack will be displayed or otherwise communicated through the platform\'s applicable withdrawal process.',
+                    'Senflux reserves the right to suspend or restrict early withdrawals where required by security considerations, blockchain conditions, liquidity constraints, compliance requirements, technical issues, force majeure events, or applicable law.',
+                    'Important: An early withdrawal may affect the participant\'s Formation Pack status and may result in closure or termination of the applicable Formation Cycle.',
+                ],
+            ],
+            [
+                'title' => '13. Maturity',
+                'body' => [
+                    'At the end of the applicable Formation Cycle, eligible participating capital becomes available according to the platform\'s maturity and withdrawal procedures.',
+                    'Depending on the applicable Formation Pack and platform rules, a participant may be able to withdraw, renew, upgrade, or redeploy.',
+                    'A new Formation Cycle requires a new or renewed Formation Pack or other applicable activation.',
+                ],
+            ],
+            [
+                'title' => '14. Automated Deployment',
+                'body' => [
+                    'Senflux may use automated systems, algorithms, models, smart-contract infrastructure, blockchain transactions, and other technology to facilitate deployment. "Automated Deployment" means that qualifying deployment actions may be initiated or executed by Senflux technology according to predefined system conditions.',
+                    'Automated deployment does not mean every opportunity will be profitable, every transaction will execute at the expected price, every transaction will succeed, losses cannot occur, or that human or system intervention will never be required.',
+                    'Blockchain transactions may be affected by network congestion, liquidity, slippage, transaction fees, smart-contract behavior, technical failures, and other conditions outside Senflux\'s control.',
+                ],
+            ],
+            [
+                'title' => '15. Capital Intelligence',
+                'body' => [
+                    'Senflux may analyze observable market and on-chain information including wallet activity, capital concentration, liquidity movement, participation patterns, wallet clusters, formation strength, capital rotation, historical wallet behavior, market conditions, and other publicly observable blockchain or market information.',
+                    'Senflux may use this information to generate internal signals, scores, classifications, or deployment decisions.',
+                    'No individual signal, score, or classification should be interpreted as a guarantee of future performance.',
+                ],
+            ],
+            [
+                'title' => '16. Formation Quality',
+                'body' => [
+                    'Senflux may evaluate formations using multiple factors, which may include capital quality, liquidity, migration, participation growth, persistence, and wallet behavior.',
+                    'A formation may qualify for deployment only when applicable system conditions are satisfied.',
+                    'A qualifying formation may subsequently weaken, fail to mature, become illiquid, or produce losses.',
+                ],
+            ],
+            [
+                'title' => '17. Historical Performance',
+                'body' => [
+                    'Senflux may publish historical performance ranges. Where applicable, current illustrative historical monthly ranges may include: Scout 18–20%, Vanguard 20–24%, Dominion 26–30%.',
+                    'These figures are historical ranges only. They are not guaranteed returns, fixed monthly income, promised profits, guaranteed yields, minimum returns, or forecasts of future performance.',
+                    'Actual results may differ materially.',
+                ],
+            ],
+            [
+                'title' => '18. No Guarantee of Performance',
+                'body' => [
+                    'Senflux expressly disclaims any representation that a participant will achieve historical performance figures or any particular financial result.',
+                    'Past performance does not reliably predict future results. Participants remain responsible for evaluating their own tolerance for risk.',
+                ],
+            ],
+            [
+                'title' => '19. Digital-Asset and Blockchain Risks',
+                'body' => [
+                    'Participation in digital-asset markets involves risks including, without limitation, extreme price volatility, liquidity risk, slippage, market manipulation, smart-contract vulnerabilities, blockchain outages, and network congestion.',
+                    'Additional risks include transaction failures, protocol changes, cyberattacks, loss or theft of digital assets, private-key compromise, regulatory changes, counterparty risk, and technological failure.',
+                    'Senflux cannot eliminate these risks.',
+                ],
+            ],
+            [
+                'title' => '20. Fees, Network Costs and Transaction Costs',
+                'body' => [
+                    'Participants may incur fees associated with Formation Pack activation, blockchain transactions, network fees, deployment, withdrawal, early withdrawal, third-party infrastructure, or other applicable platform services.',
+                    'Applicable fees will be communicated through the platform where reasonably practicable.',
+                    'Blockchain network fees may change without notice because they are determined by network conditions.',
+                ],
+            ],
+            [
+                'title' => '21. Referral and Leadership Programs',
+                'body' => [
+                    'Senflux may provide referral commissions, rank advancement bonuses, matching bonuses, and other leadership incentives. Current compensation structures may include commissions across multiple levels and other qualifying rewards.',
+                    'Participation in compensation programs is subject to qualification requirements, rank requirements, applicable policies, compliance requirements, legitimate referral activity, and any additional terms governing the applicable program.',
+                    'Compensation is not guaranteed merely because a participant joins Senflux or purchases a Formation Pack.',
+                ],
+            ],
+            [
+                'title' => '22. No Guarantee of Referral Income',
+                'body' => [
+                    'Referral and leadership compensation depends on actual qualifying activity.',
+                    'Participants must not make income guarantees or misleading earnings claims when promoting Senflux.',
+                ],
+            ],
+            [
+                'title' => '23. Marketing and Representations',
+                'body' => [
+                    'Participants and leaders may not guarantee returns, describe historical performance as guaranteed, promise fixed monthly income, misrepresent Senflux\'s technology, make false claims regarding risk, fabricate testimonials or performance results, or make statements inconsistent with Senflux\'s approved materials.',
+                    'Senflux may suspend or terminate accounts associated with prohibited promotional conduct.',
+                ],
+            ],
+            [
+                'title' => '24. Company and Corporate Information',
+                'body' => [
+                    'The company\'s current registered jurisdiction and legal entity information may be provided through the website\'s corporate information or legal notice.',
+                    'Registration or incorporation in a particular jurisdiction does not by itself constitute regulatory approval, endorsement, or authorization to provide regulated financial services in every jurisdiction.',
+                    'Participants are responsible for complying with laws applicable to them.',
+                ],
+            ],
+            [
+                'title' => '25. Intellectual Property',
+                'body' => [
+                    'All Senflux content and technology — including trademarks, logos, software, source code, interfaces, designs, databases, algorithms, models, methodologies, documentation, videos, graphics, text, and other proprietary materials — are owned by or licensed to Senflux and are protected by applicable intellectual-property laws.',
+                    'You may not reproduce, modify, distribute, reverse engineer, sell, or commercially exploit Senflux intellectual property without prior written authorization.',
+                ],
+            ],
+            [
+                'title' => '26. Account Security',
+                'body' => [
+                    'You are responsible for maintaining the security of your account credentials and any authentication methods associated with your account.',
+                    'You must immediately notify Senflux if you suspect unauthorized access, credential compromise, suspicious activity, or unauthorized transactions.',
+                    'Senflux will not be responsible for losses arising from your failure to maintain appropriate account security, except to the extent liability cannot lawfully be excluded.',
+                ],
+            ],
+            [
+                'title' => '27. Prohibited Use',
+                'body' => [
+                    'You agree not to use the Services to violate applicable law, commit fraud, launder money, finance prohibited activities, manipulate markets, or impersonate another person.',
+                    'You also agree not to interfere with the platform, introduce malicious software, exploit security vulnerabilities, reverse engineer proprietary technology, circumvent platform controls, or engage in activity that could reasonably expose Senflux or other users to legal, regulatory, or security risk.',
+                ],
+            ],
+            [
+                'title' => '28. Compliance and Transaction Monitoring',
+                'body' => [
+                    'Senflux may implement identity verification, transaction monitoring, sanctions screening, source-of-funds checks, and other compliance procedures where appropriate.',
+                    'Senflux may delay, reject, restrict, or suspend transactions while conducting compliance or security reviews.',
+                    'Where required by law, Senflux may cooperate with competent authorities.',
+                ],
+            ],
+            [
+                'title' => '29. Suspension and Termination',
+                'body' => [
+                    'Senflux may suspend or terminate access to the Services where it reasonably determines that these Terms have been violated, fraudulent or prohibited activity has occurred, security is at risk, legal or regulatory requirements require action, the account presents material operational risk, or continued access is otherwise inappropriate.',
+                    'Termination does not automatically eliminate obligations that accrued before termination.',
+                    'Treatment of any remaining capital following suspension or termination will be handled according to applicable platform rules, contractual rights, and applicable law.',
+                ],
+            ],
+            [
+                'title' => '30. Service Availability',
+                'body' => [
+                    'Senflux aims to maintain reliable access to the Services but does not guarantee uninterrupted availability.',
+                    'The platform may occasionally be unavailable because of maintenance, upgrades, technical failures, blockchain network conditions, cybersecurity incidents, third-party infrastructure, force majeure events, or other circumstances beyond Senflux\'s reasonable control.',
+                ],
+            ],
+            [
+                'title' => '31. Third-Party Services',
+                'body' => [
+                    'The Services may interact with third-party services, blockchain protocols, wallets, infrastructure providers, exchanges, data providers, or other external systems.',
+                    'Senflux does not necessarily control those third parties and is not responsible for their independent actions, policies, availability, or security. Third-party services may have their own terms and privacy policies.',
+                ],
+            ],
+            [
+                'title' => '32. Privacy',
+                'body' => [
+                    'Senflux\'s collection and use of personal information is governed by its applicable Privacy Policy, which forms part of these Terms by reference.',
+                    'By using the Services, you acknowledge that Senflux may process information necessary to provide, secure, and administer the Services in accordance with applicable privacy requirements.',
+                ],
+            ],
+            [
+                'title' => '33. Disclaimers',
+                'body' => [
+                    'To the maximum extent permitted by law, the Services are provided on an "as is" and "as available" basis. Senflux disclaims warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, non-infringement, availability, accuracy, and uninterrupted operation.',
+                    'Senflux does not warrant that the platform will always operate without interruption, that information will always be accurate or complete, that every transaction will execute successfully, that every formation identified will be profitable, or that the Services will meet every user\'s expectations.',
+                ],
+            ],
+            [
+                'title' => '34. Limitation of Liability',
+                'body' => [
+                    'To the maximum extent permitted by applicable law, Senflux and its officers, directors, employees, affiliates, contractors, and service providers will not be liable for indirect, incidental, consequential, special, exemplary, or punitive damages arising from or related to your use of the Services.',
+                    'This includes, without limitation, losses arising from market movements, digital-asset price changes, failed or delayed transactions, blockchain network failures, smart-contract vulnerabilities, liquidity conditions, slippage, unauthorized account access, third-party services, or loss of anticipated profits.',
+                    'Nothing in these Terms excludes liability that cannot legally be excluded or limited.',
+                ],
+            ],
+            [
+                'title' => '35. Indemnification',
+                'body' => [
+                    'To the maximum extent permitted by law, you agree to indemnify and hold harmless Senflux and its officers, directors, employees, affiliates, and service providers from claims, liabilities, damages, losses, and expenses arising from your violation of these Terms, your unlawful use of the Services, your violation of another person\'s rights, your unauthorized representations about Senflux, or your fraudulent, negligent, or abusive conduct.',
+                ],
+            ],
+            [
+                'title' => '36. Changes to These Terms',
+                'body' => [
+                    'Senflux may update these Terms from time to time. Updated Terms will become effective when posted to the website unless otherwise stated.',
+                    'Your continued use of the Services after updated Terms become effective constitutes acceptance of the revised Terms to the extent permitted by law.',
+                ],
+            ],
+            [
+                'title' => '37. Governing Law and Dispute Resolution',
+                'body' => [
+                    'These Terms and any dispute arising from or relating to the Services shall be governed by the laws of the Republic of the Marshall Islands, without regard to conflict-of-law principles.',
+                    'Any dispute, claim, or controversy arising out of or relating to these Terms or the Services shall, to the extent permitted by applicable law, be resolved through confidential and binding arbitration in accordance with the applicable laws of the Republic of the Marshall Islands.',
+                    'Nothing in this Section prevents Senflux from seeking urgent or injunctive relief from a court of competent jurisdiction where necessary to protect its rights, property, systems, or confidential information.',
+                ],
+            ],
+            [
+                'title' => '38. Severability',
+                'body' => [
+                    'If any provision of these Terms is determined to be invalid, illegal, or unenforceable, the remaining provisions will remain in full force and effect.',
+                    'The invalid provision will be modified to the minimum extent necessary to make it enforceable while preserving its original intent.',
+                ],
+            ],
+            [
+                'title' => '39. No Waiver',
+                'body' => [
+                    'Failure by Senflux to enforce any provision of these Terms does not constitute a waiver of its right to enforce that provision in the future.',
+                ],
+            ],
+            [
+                'title' => '40. Entire Agreement',
+                'body' => [
+                    'These Terms, together with the Privacy Policy and any additional terms expressly incorporated into the Services, constitute the entire agreement between you and Senflux concerning your use of the Services, unless a separate written agreement expressly applies.',
                 ],
             ],
         ];
