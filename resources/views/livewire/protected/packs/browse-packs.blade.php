@@ -69,13 +69,13 @@
 
                 <div class="tb-card__range">
                     @if($tier->historical_outcome_min)
-                        {{ $tier->historical_outcome_min }}–{{ $tier->historical_outcome_max }}%<span>historical</span>
+                        {{ number_format($tier->historical_outcome_min) }} – {{ number_format($tier->historical_outcome_max) }}%<span> historical</span>
                     @endif
-                     · {{ $tier->duration_days }} days · {{ $tier->slot_count }} slots
+                     · {{ $tier->duration_days }} days
                 </div>
 
                 <div class="tb-card__range">
-                    ${{ number_format($tier->min_capital_per_slot, 0) }}{{ $tier->max_capital_per_slot ? ' – $'.number_format($tier->max_capital_per_slot, 0) : '+' }} per slot
+                    ${{ number_format($tier->min_capital_per_slot, 0) }} min deployment
                 </div>
 
                 @if(!empty($tier->features))
