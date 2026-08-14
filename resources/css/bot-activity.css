@@ -179,7 +179,7 @@
 }
 
 .ba-card__grid > div strong {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'IBM Plex Mono';
     font-size: .95rem;
     color: #fff;
     font-weight: 700;
