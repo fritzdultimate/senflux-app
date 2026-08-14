@@ -296,7 +296,7 @@
                             <th>Formation</th>
                             <th>Type</th>
                             <th>Token Amount</th>
-                            <th>Trader Wallet</th>
+                            <th class="hidden">Trader Wallet</th>
                             <th>Source</th>
                             <th>Status</th>
                             <th>Verify</th>
@@ -315,7 +315,7 @@
                                     <span class="lt-side lt-side--{{ $trade->type }}">{{ strtoupper($trade->type) }}</span>
                                 </td>
                                 <td class="mono">{{ number_format($trade->token_amount, 4) }}</td>
-                                <td class="mono">{{ Str::limit($trade->trader_wallet, 12) }}</td>
+                                <td class="mono hidden">{{ Str::limit($trade->trader_wallet, 12) }}</td>
                                 <td>
                                     <span class="lt-source lt-source--{{ $trade->source->value }}">
                                         {{ $trade->source === \App\Enums\TradeActivitySource::MARKET_POOL ? 'Market Pool' : 'Senflux' }}
