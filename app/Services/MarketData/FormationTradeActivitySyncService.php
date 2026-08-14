@@ -76,6 +76,7 @@ class FormationTradeActivitySyncService {
         $lastId = Cache::get(self::CURSOR_CACHE_KEY, 0);
 
         $formations = Formation::active()
+            ->whereIn('state', ['active', 'building', 'mature'])
             ->whereNotNull('pair_address')
             ->where('id', '>', $lastId)
             ->orderBy('id')
