@@ -142,7 +142,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 });
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
-    ->name('webhook.nowpayments');
+    ->name('webhooks.nowpayments');
 
 Route::get('/test-log', function () {
     Log::error('Telescope should capture this');
