@@ -70,10 +70,6 @@ class DailySlotEarningsService {
                     return null; // beat by another worker, or no longer eligible
                 }
             } else {
-                // Same fallback as the query above, re-checked here in
-                // case processSlotEarning() is ever called directly
-                // (outside processEligibleSlots()) with a slot that
-                // hasn't actually cleared the floor yet.
                 $minHours = config('packs.earning_min_interval_hours', 24);
 
                 if (!$slot->deployed_at || $slot->deployed_at->diffInHours(now()) < $minHours) {

@@ -43,9 +43,7 @@ class SlotAutoDeploymentService {
             return 0;
         }
 
-        // Track capital committed to a formation WITHIN this pass, so we
-        // don't blow past max_capital_per_formation by deploying five
-        // slots into the same top-scored formation in one sweep.
+        
         $committedThisPass = [];
 
         foreach ($slots as $slot) {

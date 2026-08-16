@@ -313,12 +313,12 @@ class PackLifecycleService {
                 );
             }
  
-            $subscription->update([
-                'pack_tier_id' => $newTier->id,
-                'upgraded_from_tier_id' => $oldTier->id,
-                'upgraded_at' => now(),
-                'upgrade_transaction_id' => $transaction?->id,
-            ]);
+            // $subscription->update([
+            //     'pack_tier_id' => $newTier->id,
+            //     'upgraded_from_tier_id' => $oldTier->id,
+            //     'upgraded_at' => now(),
+            //     'upgrade_transaction_id' => $transaction?->id,
+            // ]);
 
             $subscription->update([
                 'pack_tier_id' => $newTier->id,
@@ -327,16 +327,6 @@ class PackLifecycleService {
                 'upgrade_transaction_id' => $transaction?->id,
                 'matures_at' => now()->addDays($newTier->duration_days),
             ]);
- 
-            
-            $existingSlotCount = $subscription->slots()->count();
-            for ($i = $existingSlotCount + 1; $i <= $newTier->slot_count; $i++) {
-                PackSlot::create([
-                    'pack_subscription_id' => $subscription->id,
-                    'slot_number' => $i,
-                    'status' => PackSlotStatus::EMPTY,
-                ]);
-            }
  
             return $subscription->fresh('slots');
         });
