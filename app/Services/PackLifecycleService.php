@@ -11,27 +11,13 @@ use App\Models\PackSubscription;
 use App\Models\PackTier;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Same TransactionType caveat as PackPurchaseService — this file also
- * uses PACK_CAPITAL_RETURN and PACK_COMPOUND_RESTAKE, plus reuses the
- * existing FEE case for the 8% early-exit fee (rather than inventing a
- * separate case, since FEE already exists and the description field
- * carries the specific reason).
- */
-class PackLifecycleService
-{
+
+class PackLifecycleService {
     public function __construct(
         private WalletService $wallet,
         private ReferralBonusService $referralBonus,
     ) {}
 
-    /**
-     * Scheduler-called sweep: ACTIVE subscriptions whose maturity has
-     * passed move into the 7-day renewal window. The window is anchored
-     * to the true maturity moment (matures_at + 7 days), not to whenever
-     * this sweep happens to run, so cron timing imprecision never shifts
-     * the deadline a user actually sees.
-     */
     public function openRenewalWindowsForMatured(): int {
         $matured = PackSubscription::where('status', PackSubscriptionStatus::ACTIVE->value)
             ->where('matures_at', '<=', now())
@@ -47,13 +33,7 @@ class PackLifecycleService
         return $matured->count();
     }
 
-    /**
-     * Scheduler-called sweep: renewal windows that closed without the
-     * user making a choice. Every funded slot's capital returns to the
-     * wallet (full amount, no fee — this is the "clean" exit point, fee
-     * only applies to manual early exit), slots close, subscription
-     * becomes EXPIRED.
-     */
+   
     public function closeExpiredRenewalWindows(): int {
         $expired = PackSubscription::where('status', PackSubscriptionStatus::IN_RENEWAL_WINDOW->value)
             ->where('renewal_window_ends_at', '<=', now())
@@ -72,11 +52,7 @@ class PackLifecycleService
         return $expired->count();
     }
 
-    /**
-     * User chooses Withdraw during the renewal window — same capital
-     * return as the auto-expiry sweep, just user-initiated and marked
-     * CLOSED rather than EXPIRED.
-     */
+    
     public function withdraw(PackSubscription $subscription): PackSubscription {
         $this->guardInRenewalWindow($subscription);
 
@@ -91,14 +67,7 @@ class PackLifecycleService
         });
     }
 
-    /**
-     * User chooses Continue — capital rolls into a new subscription cycle
-     * of the SAME tier. Profit already paid out daily stays in the wallet
-     * as free cash; only the principal carries forward. No wallet
-     * transaction for the rolled principal — it never re-enters
-     * wallet.balance, it just moves from the old slot's row to the new
-     * slot's row directly.
-     */
+    
     public function continueCycle(PackSubscription $old): PackSubscription {
         return $this->renewInto($old, $old->packTier, compound: false);
     }
@@ -112,15 +81,7 @@ class PackLifecycleService
         return $this->renewInto($old, $old->packTier, compound: true);
     }
 
-    /**
-     * User chooses Upgrade — rolls into a new subscription on a HIGHER
-     * tier. Each old funded slot's capital (plus profit if $compound) must
-     * meet the new tier's minimum per-slot — this does not auto-top-up;
-     * it throws and asks the user to fund the difference separately
-     * first, since silently pulling extra money from the wallet on an
-     * upgrade is exactly the kind of surprising money movement worth
-     * avoiding.
-     */
+    
     public function upgrade(PackSubscription $old, PackTier $newTier, bool $compound = false): PackSubscription {
         if ($newTier->price <= $old->packTier->price) {
             throw new \DomainException('Upgrade target must be a higher tier than the current pack.');
@@ -129,12 +90,7 @@ class PackLifecycleService
         return $this->renewInto($old, $newTier, $compound, true);
     }
 
-    /**
-     * Manual undeployment, available any time a slot is funded (not just
-     * during the renewal window) — 8% fee, charged as a separate FEE
-     * transaction so the ledger shows "capital returned" and "fee
-     * charged" as two legible lines rather than one opaque net figure.
-     */
+    
     public function earlyExit(PackSlot $slot): PackSlot {
         if ($slot->status !== PackSlotStatus::FUNDED) {
             throw new \DomainException('Only a funded slot can be exited early.');
@@ -216,7 +172,7 @@ class PackLifecycleService
                 'price_paid' => $newTier->price,
                 'purchased_at' => now(),
                 'matures_at' => now()->addDays($newTier->duration_days),
-                'renewed_from_subscription_id' => $old->id,
+                'renewed_from_subscription_id' => !$upgrade ? $old->id : null,
                 'purchase_transaction_id' => $transaction->id,
             ]);
 
