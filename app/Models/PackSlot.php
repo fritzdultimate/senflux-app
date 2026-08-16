@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PackSlotStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PackSlot extends Model
 {
@@ -57,6 +58,14 @@ class PackSlot extends Model
 
     public function closeTransaction(): BelongsTo {
         return $this->belongsTo(WalletTransaction::class, 'close_transaction_id');
+    }
+
+    /**
+     * Every deploy + top-up logged against this slot — powers the
+     * Position panel's deployment-history timeline.
+     */
+    public function contributions(): HasMany {
+        return $this->hasMany(SlotContribution::class);
     }
 
     public function isFunded(): bool {

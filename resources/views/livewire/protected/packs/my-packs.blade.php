@@ -76,7 +76,7 @@
                             <span>Earned</span>
                             <strong class="myb-card__stat--green">+${{ number_format($earned, 2) }}</strong>
                         </div>
-                        <div class="myb-card__stat">
+                        <div class="myb-card__stat hidden!">
                             <span>Slots</span>
                             <strong>{{ $fundedCount }}/{{ $totalSlots }}</strong>
                         </div>

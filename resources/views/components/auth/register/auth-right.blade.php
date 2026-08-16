@@ -191,9 +191,9 @@
                     error="terms"
                 >
                     I agree to the
-                    <a href="#" class="text-[#9B7DFF] hover:text-white transition-colors" onclick="return false">Terms of Service</a>
+                    <a href="{{ route('terms') }}" target="_black" class="text-[#9B7DFF] hover:text-white transition-colors">Terms of Service</a>
                     and
-                    <a href="#" class="text-[#9B7DFF] hover:text-white transition-colors" onclick="return false">Privacy Policy</a>
+                    <a href="{{ route('privacy') }}" target="_black" class="text-[#9B7DFF] hover:text-white transition-colors">Privacy Policy</a>
                 </x-auth.checkbox-row>
 
             </div>

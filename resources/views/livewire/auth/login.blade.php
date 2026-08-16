@@ -208,9 +208,9 @@
             <div class="fade-up-d5 mt-7 pt-5 border-t border-white/[.06] text-center">
                 <p class="text-[11.5px] text-[#4a4a6a] leading-relaxed">
                     By signing in you agree to our
-                    <a href="#" class="text-[#7a7a9a] hover:text-white transition-colors">Terms of Service</a>
+                    <a href="{{ route('terms') }}" target="_black" class="text-[#7a7a9a] hover:text-white transition-colors">Terms of Service</a>
                     and
-                    <a href="#" class="text-[#7a7a9a] hover:text-white transition-colors">Privacy Policy</a>.
+                    <a href="{{ route('privacy') }}" target="_black" class="text-[#7a7a9a] hover:text-white transition-colors">Privacy Policy</a>.
                 </p>
             </div>
  

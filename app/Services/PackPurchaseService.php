@@ -16,11 +16,17 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * NOTE ON TransactionType: this file uses TransactionType::PACK_PURCHASE,
- * PACK_SLOT_FUND, and PACK_REFUND. I haven't seen your TransactionType
- * enum's real case list — only WITHDRAWAL, FEE, REFERRAL_BONUS, RANK_BONUS,
- * LEADERSHIP_MATCH, and DEPOSIT (assumed) are confirmed. Add these three
- * cases (or rename to whatever convention already exists) before this
- * will run.
+ * PACK_SLOT_FUND, PACK_SLOT_TOPUP, and PACK_REFUND. I haven't seen your
+ * TransactionType enum's real case list — only WITHDRAWAL, FEE,
+ * REFERRAL_BONUS, RANK_BONUS, LEADERSHIP_MATCH, and DEPOSIT (assumed) are
+ * confirmed. Add PACK_SLOT_TOPUP alongside the other three (or rename to
+ * whatever convention already exists) before this will run.
+ *
+ * NOTE ON THE SLOT MODEL CHANGE: per the "no more 3/5/10 slots" decision,
+ * buyPack() now always creates exactly one slot regardless of
+ * $tier->slot_count. That column isn't touched here — it's just no longer
+ * read — so decide separately whether to backfill/deprecate it on
+ * PackTier.
  */
 class PackPurchaseService
 {
@@ -31,10 +37,10 @@ class PackPurchaseService
 
     /**
      * Buy a pack tier — debits the tier price (locked funds first), creates
-     * the subscription and its empty slots, and dispatches the referral
-     * commission job (creates PENDING rows — see ReferralBonusService;
-     * nothing pays out yet, on purpose, since this purchase is still
-     * within its 3-day refund window).
+     * the subscription and its single empty slot, and dispatches the
+     * referral commission job (creates PENDING rows — see
+     * ReferralBonusService; nothing pays out yet, on purpose, since this
+     * purchase is still within its 3-day refund window).
      */
     public function buyPack(User $user, PackTier $tier): PackSubscription {
         return DB::transaction(function () use ($user, $tier) {
@@ -70,18 +76,37 @@ class PackPurchaseService
                 'purchase_transaction_id' => $transaction->id,
             ]);
 
-            for ($i = 1; $i <= $tier->slot_count; $i++) {
-                PackSlot::create([
-                    'pack_subscription_id' => $subscription->id,
-                    'slot_number' => $i,
-                    'status' => PackSlotStatus::EMPTY,
-                ]);
-            }
+            // One slot per subscription now — the "3/5/10 slots" tiering is
+            // gone. A subscriber deploys once, then tops up the same slot.
+            PackSlot::create([
+                'pack_subscription_id' => $subscription->id,
+                'slot_number' => 1,
+                'status' => PackSlotStatus::EMPTY,
+            ]);
 
             ProcessPackPurchaseReferralBonus::dispatch($subscription);
 
             return $subscription->fresh('slots');
         });
+    }
+
+    /**
+     * Deploy capital into a subscription's slot for the first time.
+     * Resolves the subscription's single EMPTY slot and delegates to
+     * fundSlot() for the actual validation/debit/logging — this is just
+     * the subscription-level entry point the Livewire component calls,
+     * since under the new model callers no longer pick a slot by hand.
+     */
+    public function deploySlot(PackSubscription $subscription, float $amount): PackSlot {
+        $slot = $subscription->slots()
+            ->where('status', PackSlotStatus::EMPTY->value)
+            ->first();
+
+        if (!$slot) {
+            throw new \DomainException('This pack already has an active position.');
+        }
+
+        return $this->fundSlot($slot, $amount);
     }
 
     /**
@@ -124,7 +149,60 @@ class PackPurchaseService
                 'fund_transaction_id' => $transaction->id,
             ]);
 
+            $slot->contributions()->create([
+                'amount' => $amount,
+                'type' => 'deploy',
+                'wallet_transaction_id' => $transaction->id,
+            ]);
+
             ProcessSlotFundingReferralBonus::dispatch($slot);
+
+            return $slot->fresh();
+        });
+    }
+
+    
+    public function topUp(PackSlot $slot, float $amount): PackSlot {
+        $subscription = $slot->subscription;
+        $tier = $subscription->packTier;
+
+        if ($subscription->status !== PackSubscriptionStatus::ACTIVE) {
+            throw new \DomainException("This pack isn't open for top-ups (status: {$subscription->status->value}).");
+        }
+
+        if ($slot->status !== PackSlotStatus::FUNDED) {
+            throw new \DomainException('Deploy capital before adding more.');
+        }
+
+        if ($amount <= 0) {
+            throw new \DomainException('Top-up amount must be greater than zero.');
+        }
+
+        $projectedTotal = (float) $slot->capital_amount + $amount;
+
+        if ($tier->max_capital_per_slot && $projectedTotal > (float) $tier->max_capital_per_slot) {
+            $room = max(0, (float) $tier->max_capital_per_slot - (float) $slot->capital_amount);
+            throw new \DomainException("This would exceed the {$tier->name} capacity of \${$tier->max_capital_per_slot}. You can add up to \${$room} more.");
+        }
+
+        return DB::transaction(function () use ($slot, $amount, $subscription) {
+            $transaction = $this->wallet->debitRespectingLock(
+                user: $subscription->user,
+                walletType: WalletType::MAIN,
+                amount: $amount,
+                type: TransactionType::PACK_SLOT_TOPUP,
+                description: "Added capital to slot #{$slot->slot_number} — {$subscription->packTier->name}",
+                referenceType: PackSlot::class,
+                referenceId: $slot->id,
+            );
+
+            $slot->increment('capital_amount', $amount);
+
+            $slot->contributions()->create([
+                'amount' => $amount,
+                'type' => 'topup',
+                'wallet_transaction_id' => $transaction->id,
+            ]);
 
             return $slot->fresh();
         });
