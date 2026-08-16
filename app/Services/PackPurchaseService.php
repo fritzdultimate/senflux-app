@@ -14,12 +14,14 @@ use App\Models\PackTier;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
+
 class PackPurchaseService {
     public function __construct(
         private WalletService $wallet,
         private ReferralBonusService $referralBonus,
     ) {}
 
+    
     public function buyPack(User $user, PackTier $tier): PackSubscription {
         return DB::transaction(function () use ($user, $tier) {
             $hasActive = PackSubscription::where('user_id', $user->id)
@@ -54,6 +56,8 @@ class PackPurchaseService {
                 'purchase_transaction_id' => $transaction->id,
             ]);
 
+            // One slot per subscription now — the "3/5/10 slots" tiering is
+            // gone. A subscriber deploys once, then tops up the same slot.
             PackSlot::create([
                 'pack_subscription_id' => $subscription->id,
                 'slot_number' => 1,
@@ -65,18 +69,40 @@ class PackPurchaseService {
             return $subscription->fresh('slots');
         });
     }
-   
+
+    
     public function deploySlot(PackSubscription $subscription, float $amount): PackSlot {
-        $slot = $subscription->slots()
-            ->where('status', PackSlotStatus::EMPTY->value)
+        $currentSlot = $subscription->slots()
+            ->reorder('slot_number', 'desc')
             ->first();
 
-        if (!$slot) {
-            throw new \DomainException('This pack already has an active position.');
+        
+        if (!$currentSlot) {
+            $newSlot = $subscription->slots()->create([
+                'slot_number' => 1,
+                'status' => PackSlotStatus::EMPTY,
+            ]);
+
+            return $this->fundSlot($newSlot, $amount);
         }
 
-        return $this->fundSlot($slot, $amount);
+        if ($currentSlot->status === PackSlotStatus::EMPTY) {
+            return $this->fundSlot($currentSlot, $amount);
+        }
+
+        if ($currentSlot->status === PackSlotStatus::CLOSED) {
+            $newSlot = $subscription->slots()->create([
+                'slot_number' => $currentSlot->slot_number + 1,
+                'status' => PackSlotStatus::EMPTY,
+            ]);
+
+            return $this->fundSlot($newSlot, $amount);
+        }
+
+        // FUNDED
+        throw new \DomainException('This pack already has an active position.');
     }
+
     
     public function fundSlot(PackSlot $slot, float $amount): PackSlot {
         $subscription = $slot->subscription;
@@ -89,8 +115,7 @@ class PackPurchaseService {
         if ($slot->status !== PackSlotStatus::EMPTY) {
             throw new \DomainException("Slot #{$slot->slot_number} is already {$slot->status->value}.");
         }
-        
-        // I will come back here, for max allocation
+
         if (!$tier->isCapitalWithinBounds($amount)) {
             $max = $tier->max_capital_per_slot ? "\${$tier->max_capital_per_slot}" : 'no limit';
             throw new \DomainException("Amount must be between \${$tier->min_capital_per_slot} and {$max} for {$tier->name}.");
@@ -125,6 +150,7 @@ class PackPurchaseService {
             return $slot->fresh();
         });
     }
+
     
     public function topUp(PackSlot $slot, float $amount): PackSlot {
         $subscription = $slot->subscription;
