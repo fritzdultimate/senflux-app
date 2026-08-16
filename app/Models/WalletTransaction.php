@@ -61,9 +61,11 @@ class WalletTransaction extends Model
             TransactionType::WITHDRAWAL, 
             TransactionType::FEE,
             TransactionType::PACK_PURCHASE,
+            TransactionType::PACK_RENEWAL,
             TransactionType::PACK_SLOT_FUND,
             TransactionType::PACK_COMPOUND_RESTAKE,
-            TransactionType::PACK_SLOT_TOPUP,
+            TransactionType::PACK_SLOT_TOPUP, 
+            TransactionType::PACK_UPGRADE_FEE
 
         ]);
     }
