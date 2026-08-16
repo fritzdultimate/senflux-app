@@ -63,12 +63,12 @@ class WalletTransaction extends Model
             TransactionType::PACK_PURCHASE,
             TransactionType::PACK_SLOT_FUND,
             TransactionType::PACK_COMPOUND_RESTAKE,
+            TransactionType::PACK_SLOT_TOPUP,
 
         ]);
     }
 
-    public function getSignedAmountAttribute(): string
-    {
+    public function getSignedAmountAttribute(): string {
         return $this->is_debit
             ? '-' . number_format((float) $this->amount, 2)
             : '+' . number_format((float) $this->amount, 2);

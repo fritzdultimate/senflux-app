@@ -43,8 +43,7 @@ class Wallet extends Component
     }
 
     #[Computed]
-    public function wallets(): array
-    {
+    public function wallets(): array {
         return collect(WalletType::cases())->map(function ($type) {
             $wallet = $this->user->wallets->firstWhere('type', $type->value);
             return [
@@ -76,8 +75,7 @@ class Wallet extends Component
     }
 
     #[Computed]
-    public function typeOptions(): array
-    {
+    public function typeOptions(): array {
         return collect(TransactionType::cases())->map(fn($t) => [
             'value' => $t->value,
             'label' => $t->label(),
@@ -85,8 +83,7 @@ class Wallet extends Component
     }
 
     #[Computed]
-    public function transactions()
-    {
+    public function transactions() {
         $query = WalletTransaction::where('user_id', $this->user->id)
             ->with('wallet');
 

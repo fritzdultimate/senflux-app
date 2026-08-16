@@ -53,8 +53,7 @@ enum TransactionType: string {
             self::LEADERSHIP_MATCH,
             self::PACK_REFUND,
             self::PACK_CAPITAL_RETURN,
-            self::PACK_SLOT_EARNING,
-            self::PACK_SLOT_TOPUP
+            self::PACK_SLOT_EARNING
         ]);
     }
 }

@@ -425,6 +425,111 @@
 
         @endif
 
+        {{-- ═══════════════════════════════════════════════════════════════
+             POSITION HISTORY — every past slot on this subscription that's
+             been closed (early exit or otherwise). Each row expands to its
+             own deposit/top-up timeline, same as the live Position panel.
+             ═══════════════════════════════════════════════════════════════ --}}
+        @if($this->closedSlots->total() > 0)
+            <div class="mt-2 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]">
+                <div class="flex items-center justify-between p-6 pb-4 sm:px-7 sm:pt-7">
+                    <div>
+                        <p class="text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">Position History</p>
+                        <p class="mt-0.5 text-xs text-[#888EA3]">Past positions on this pack — {{ $this->closedSlots->total() }} closed</p>
+                    </div>
+                </div>
+
+                <div class="divide-y divide-white/[0.05]">
+                    @foreach($this->closedSlots as $closed)
+                        @php
+                            $closedProfit = $closed->realized_profit ?? 0;
+                            $closedCapital = $closed->capital_amount ?? 0;
+                            $duration = $closed->funded_at && $closed->closed_at
+                                ? $closed->funded_at->diffForHumans($closed->closed_at, ['parts' => 1, 'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE])
+                                : null;
+                        @endphp
+                        <div x-data="{ open: false }" class="px-6 py-4 sm:px-7">
+                            <button type="button" @click="open = !open" class="flex w-full items-center justify-between gap-4 text-left">
+                                <div class="flex items-center gap-3">
+                                    <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] font-['IBM_Plex_Mono'] text-[11px] font-bold text-[#888EA3]">
+                                        #{{ $closed->slot_number }}
+                                    </span>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm font-semibold text-[#F2F3F7]">${{ number_format($closedCapital, 2) }}</span>
+                                            @if($closed->was_early_exit)
+                                                <span class="rounded-full border border-[#F2545B]/30 bg-[#F2545B]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#F2545B]">Early Exit</span>
+                                            @else
+                                                <span class="rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#888EA3]">Closed</span>
+                                            @endif
+                                        </div>
+                                        <p class="mt-0.5 text-[11px] text-[#565B6E]">
+                                            {{ $closed->closed_at?->format('M j, Y') ?? '—' }}
+                                            @if($duration) · held {{ $duration }} @endif
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-4">
+                                    <span class="font-['IBM_Plex_Mono'] text-sm font-semibold tabular-nums {{ $closedProfit >= 0 ? 'text-[#3ECF8E]' : 'text-[#F2545B]' }}">
+                                        {{ $closedProfit >= 0 ? '+' : '' }}${{ number_format($closedProfit, 2) }}
+                                    </span>
+                                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" class="shrink-0 text-[#565B6E] transition-transform" :class="{ 'rotate-180': open }"><polyline points="6 9 12 15 18 9"/></svg>
+                                </div>
+                            </button>
+
+                            <div x-show="open" x-cloak x-transition.opacity.duration.150ms class="mt-4 space-y-3 border-t border-white/[0.05] pt-4">
+
+                                @if($closed->was_early_exit)
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-[#565B6E]">Early exit fee charged</span>
+                                        <span class="font-['IBM_Plex_Mono'] font-semibold text-[#F2545B]">−${{ number_format($closed->early_exit_fee_charged ?? 0, 2) }}</span>
+                                    </div>
+                                @endif
+
+                                @forelse($closed->contributions as $c)
+                                    <div class="flex items-center gap-3">
+                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
+                                            <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="#888EA3" stroke-width="2.6"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+                                        </span>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="text-xs font-medium text-[#c8c8d4]">{{ $c->type === 'topup' ? 'Capital Top-Up' : 'Initial Deployment' }}</p>
+                                            <p class="text-[10px] text-[#565B6E]">{{ $c->created_at->format('M j, Y · g:i A') }}</p>
+                                        </div>
+                                        <span class="font-['IBM_Plex_Mono'] text-xs font-semibold tabular-nums text-[#c8c8d4]">+${{ number_format($c->amount, 2) }}</span>
+                                    </div>
+                                @empty
+                                    <p class="text-xs text-[#565B6E]">No deployment history recorded for this position.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                @if($this->closedSlots->lastPage() > 1)
+                    <div class="flex items-center justify-between border-t border-white/[0.06] px-6 py-4 text-xs sm:px-7">
+                        <button
+                            type="button"
+                            wire:click="previousPage('historyPage')"
+                            @disabled($this->closedSlots->onFirstPage())
+                            class="rounded-lg border border-white/10 px-3 py-1.5 font-semibold text-[#888EA3] transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:pointer-events-none hover:text-[#F2F3F7]"
+                        >
+                            ← Prev
+                        </button>
+                        <span class="font-['IBM_Plex_Mono'] text-[#565B6E]">Page {{ $this->closedSlots->currentPage() }} of {{ $this->closedSlots->lastPage() }}</span>
+                        <button
+                            type="button"
+                            wire:click="nextPage('historyPage')"
+                            @disabled(!$this->closedSlots->hasMorePages())
+                            class="rounded-lg border border-white/10 px-3 py-1.5 font-semibold text-[#888EA3] transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:pointer-events-none hover:text-[#F2F3F7]"
+                        >
+                            Next →
+                        </button>
+                    </div>
+                @endif
+            </div>
+        @endif
+
     </div>
 
     {{-- ═══════════════════════════════════════════════════════════════════
