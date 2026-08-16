@@ -47,13 +47,30 @@ class NewSubscriptionDetail extends Component {
     }
 
     
-    public function getClosedSlotsProperty()
-    {
+    public function getClosedSlotsProperty() {
         return $this->subscription->slots()
             ->where('status', PackSlotStatus::CLOSED->value)
             ->orderByDesc('slot_number')
             ->with('contributions')
             ->paginate(5, ['*'], 'historyPage');
+    }
+
+    public function getContributionsProperty() {
+        if (!$this->slot) {
+            return collect();
+        }
+ 
+        try {
+            return $this->slot->contributions()->latest()->paginate(8, ['*'], 'contribPage');
+        } catch (\Throwable $e) {
+            return collect([
+                (object) [
+                    'type' => 'deploy',
+                    'amount' => $this->slot->capital_amount,
+                    'created_at' => $this->slot->created_at,
+                ],
+            ]);
+        }
     }
 
     public function getUpgradeOptionsProperty() {

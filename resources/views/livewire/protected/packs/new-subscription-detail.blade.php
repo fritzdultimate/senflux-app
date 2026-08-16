@@ -54,21 +54,9 @@
     $earlyExitFee = round($capitalDeployed * 0.08, 2);
     $earlyExitNet = $capitalDeployed - $earlyExitFee;
 
-    // Contribution timeline — deploy + every top-up, newest first.
-    $contributions = collect();
-    if ($slot) {
-        try {
-            $contributions = $slot->contributions()->latest()->get();
-        } catch (\Throwable $e) {
-            $contributions = collect([
-                (object) [
-                    'type' => 'deploy',
-                    'amount' => $capitalDeployed,
-                    'created_at' => $slot->created_at,
-                ],
-            ]);
-        }
-    }
+    // Contribution timeline for the CURRENT slot — paginated (see
+    // getContributionsProperty on the component). Newest first.
+    $contributions = $this->contributions;
 @endphp
 
 <div
@@ -312,7 +300,12 @@
 
                 {{-- Contribution timeline --}}
                 <div class="border-t border-white/[0.06] p-6 sm:p-7">
-                    <p class="mb-4 text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">Deployment history</p>
+                    <p class="mb-4 text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">
+                        Deployment history
+                        @if($contributions instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                            <span class="font-['IBM_Plex_Mono'] text-[10px] font-normal normal-case tracking-normal text-[#565B6E]">· {{ $contributions->total() }} total</span>
+                        @endif
+                    </p>
 
                     <div class="space-y-0">
                         @foreach($contributions as $c)
@@ -328,6 +321,28 @@
                             </div>
                         @endforeach
                     </div>
+
+                    @if($contributions instanceof \Illuminate\Pagination\LengthAwarePaginator && $contributions->lastPage() > 1)
+                        <div class="mt-4 flex items-center justify-between border-t border-white/[0.05] pt-4 text-xs">
+                            <button
+                                type="button"
+                                wire:click="previousPage('contribPage')"
+                                @disabled($contributions->onFirstPage())
+                                class="rounded-lg border border-white/10 px-3 py-1.5 font-semibold text-[#888EA3] transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:pointer-events-none hover:text-[#F2F3F7]"
+                            >
+                                ← Prev
+                            </button>
+                            <span class="font-['IBM_Plex_Mono'] text-[#565B6E]">Page {{ $contributions->currentPage() }} of {{ $contributions->lastPage() }}</span>
+                            <button
+                                type="button"
+                                wire:click="nextPage('contribPage')"
+                                @disabled(!$contributions->hasMorePages())
+                                class="rounded-lg border border-white/10 px-3 py-1.5 font-semibold text-[#888EA3] transition-colors disabled:cursor-not-allowed disabled:opacity-40 disabled:pointer-events-none hover:text-[#F2F3F7]"
+                            >
+                                Next →
+                            </button>
+                        </div>
+                    @endif
                 </div>
 
                 {{-- Early exit — only meaningful before maturity, and only for an actionable subscription --}}
