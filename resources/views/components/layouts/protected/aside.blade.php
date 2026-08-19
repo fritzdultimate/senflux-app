@@ -157,6 +157,14 @@
         <span>Security</span>
     </a>
 
+    <a href="{{ route('dashboard.activity') }}" wire:navigate class="sb-item {{ request()->routeIs('dashboard.activity') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3C7.5 3 4 6.5 4 11v6l-2 3h20l-2-3v-6c0-4.5-3.5-8-8-8z"/>
+            <path d="M9.5 20c0 1.4 1.1 2.5 2.5 2.5s2.5-1.1 2.5-2.5"/>
+        </svg>
+        <span>Activity</span>
+    </a>
+
     <a href="{{ route('dashboard.settings') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1L9 4l3-.5L13 6l-2 2 1.5 3-2.5 1L8 10H7l-1.5 2-2.5-1L4.5 8 2 6l1.5-2.5L6.5 4zM7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />

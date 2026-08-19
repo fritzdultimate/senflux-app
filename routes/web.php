@@ -12,6 +12,7 @@ use App\Livewire\Pages\HowItWorks;
 use App\Livewire\Pages\MarketInsights;
 use App\Livewire\Pages\WhySolana;
 use App\Livewire\Protected\Affiliate;
+use App\Livewire\Protected\ActivityFeed;
 use App\Livewire\Protected\Alerts;
 use App\Livewire\Protected\Dashboard;
 use App\Livewire\Protected\Deposit\CreateDeposit;
@@ -105,6 +106,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
     Route::get('/security', \App\Livewire\Protected\Security\TwoFactorSetup::class)
         ->name('security');
+
+    Route::get('/activity', ActivityFeed::class)
+        ->name('activity');
 
     Route::get('/affiliate', Affiliate::class)
         ->name('affiliate');

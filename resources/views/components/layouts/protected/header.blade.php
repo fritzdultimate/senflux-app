@@ -47,13 +47,7 @@
             </svg>
             <span class="btn-text">Withdraw</span>
         </a>
-        <div class="tb-ico">
-            <svg width="14" height="14" fill="none" viewBox="0 0 14 14" stroke="#c8c8e0" stroke-width="1.3">
-                <path d="M7 1.5C4.5 1.5 2.5 3.5 2.5 6v3.5l-1 1.5h11l-1-1.5V6C11.5 3.5 9.5 1.5 7 1.5z"/>
-                <path d="M5.5 11.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5"/>
-            </svg>
-            <div class="ndot"></div>
-        </div>
+        <livewire:protected.activity-bell />
         <div class="tb-av">{{ strtoupper(substr(auth()->user()->name ?? 'JD', 0, 2)) }}</div>
     </div>
 
