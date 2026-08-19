@@ -40,6 +40,7 @@
     // all — refunded/closed/anything-not-active-or-renewal short-circuits
     // the Position/Deploy panels entirely, regardless of slot state.
     $isActionable = $this->isActionable;
+
     $isFunded = $slot && $slot->isFunded();
 
     // ASSUMPTION: REFUNDED is the only terminal status I've confirmed exists
@@ -222,7 +223,7 @@
                                 @endif
                             </div>
                             <div class="mt-2 flex items-baseline gap-3">
-                                <span class="font-['Sora'] text-[2.35rem] font-bold leading-none text-[#F2F3F7] tabular-nums">${{ number_format($capitalDeployed, 2) }}</span>
+                                <span class="font-['Sora'] text-2xl md:text-[2.35rem] font-bold leading-none text-[#F2F3F7] tabular-nums">${{ number_format($capitalDeployed, 2) }}</span>
                                 @if($totalEarned != 0)
                                     <span class="font-['IBM_Plex_Mono'] text-sm font-semibold tabular-nums {{ $totalEarned >= 0 ? 'text-[#3ECF8E]' : 'text-[#F2545B]' }}">
                                         {{ $totalEarned >= 0 ? '+' : '' }}${{ number_format($totalEarned, 2) }}
