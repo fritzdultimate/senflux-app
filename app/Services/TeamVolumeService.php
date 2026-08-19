@@ -24,11 +24,17 @@ class TeamVolumeService
     private const CACHE_MINUTES = 15;
 
     public function getCachedForUser(User $user): TeamVolume {
-        return Cache::remember(
-            $this->cacheKey($user),
-            now()->addMinutes(self::CACHE_MINUTES),
-            fn () => $this->computeForUser($user),
-        );
+        $cached = Cache::get($this->cacheKey($user));
+
+        if ($cached instanceof TeamVolume) {
+            return $cached;
+        }
+        
+        $fresh = $this->computeForUser($user);
+
+        Cache::put($this->cacheKey($user), $fresh, now()->addMinutes(self::CACHE_MINUTES));
+
+        return $fresh;
     }
 
     private function cacheKey(User $user): string {
