@@ -211,7 +211,7 @@
                 <div class="relative overflow-hidden p-6 sm:p-7">
                     <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl opacity-[0.08]" style="background: {{ $isMatured ? '#F0A93D' : $accent }}"></div>
 
-                    <div class="relative flex items-start justify-between gap-6">
+                    <div class="relative flex flex-col md:flex-row items-start justify-between gap-6">
                         <div>
                             <div class="flex items-center gap-2">
                                 <p class="text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">Your Position</p>
