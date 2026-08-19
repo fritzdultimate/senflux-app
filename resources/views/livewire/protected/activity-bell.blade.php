@@ -43,7 +43,7 @@
         style="font-family: 'Inter', sans-serif;"
     >
         <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
-            <p class="font-['Sora'] text-[13px] font-semibold text-white">Activityz</p>
+            <p class="font-['Sora'] text-[13px] font-semibold text-white">Activity</p>
             <a
                 href="{{ route('dashboard.activity') }}"
                 wire:navigate
