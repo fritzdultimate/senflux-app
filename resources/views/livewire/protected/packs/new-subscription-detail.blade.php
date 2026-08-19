@@ -46,7 +46,8 @@
     // (from PackPurchaseService::refund()). If there are other terminal
     // states (withdrawn/closed/etc.) add them here so a matured-but-already-
     // closed pack doesn't show the renewal panel again.
-    $showRenewalPanel = $isFunded && $isMatured && $isActionable;
+    // $showRenewalPanel = $isFunded && $isMatured && $isActionable;
+    $showRenewalPanel = $isMatured && $isActionable;
 
     // Early-exit breakdown — computed here (not in the modal) so the number
     // shown in the confirmation is exactly what the backend will charge,

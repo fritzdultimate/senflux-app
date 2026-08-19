@@ -82,8 +82,7 @@ class NewSubscriptionDetail extends Component {
     }
 
     
-    public function getIsMaturedProperty(): bool
-    {
+    public function getIsMaturedProperty(): bool {
         return now()->gte($this->subscription->matures_at);
     }
 
