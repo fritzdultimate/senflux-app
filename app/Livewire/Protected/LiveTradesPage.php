@@ -6,6 +6,7 @@ use App\Enums\TradeActivitySource;
 use App\Models\Formation;
 use App\Models\FormationTradeActivity;
 use App\Models\PackSlot;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Illuminate\Support\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -128,6 +129,7 @@ class LiveTradesPage extends Component {
             'successful_today' => (clone $today)->where('failed', false)->count(),
             'failed_today' => (clone $today)->where('failed', true)->count(),
             'capital_deployed' => (clone $activeSlots)->sum('capital_amount'),
+            'realized_profit' => (clone $activeSlots)->Sum('realized_profit'),
             'active_deployments' => (clone $activeSlots)->count(),
         ];
     }
@@ -172,7 +174,7 @@ class LiveTradesPage extends Component {
 
         return [
             'active_capital' => $overview['capital_deployed'],
-            'realized_profit' => 0, // TODO: wire to SlotEarning realized-profit sum
+            'realized_profit' => $overview['realized_profit'], // TODO: wire to SlotEarning realized-profit sum
             'unrealized_pl' => 0,   // TODO: wire to mark-to-market calc
             'change_24h_pct' => 0,  // TODO: wire to 24h performance calc
             'total_actions' => FormationTradeActivity::where('source', TradeActivitySource::SENFLUX)
