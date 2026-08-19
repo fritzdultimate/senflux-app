@@ -215,6 +215,75 @@
     white-space: nowrap;
 }
 
+/* ── Team volume distribution ─────────────────────────────────────────── */
+.aff-tv-title {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #e7e9f3;
+    margin: 0 0 .35rem;
+    font-family: var(--d-syne, 'Syne', sans-serif);
+}
+
+.aff-tv-title span {
+    color: #9B7DFF;
+}
+
+.aff-tv-sub {
+    font-size: .78rem;
+    color: #6b7280;
+    margin: 0 0 1.1rem;
+}
+
+.aff-tv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .65rem;
+}
+
+@media (min-width: 640px) {
+    .aff-tv-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.aff-tv-card {
+    background: #0d1120;
+    border: 1px solid rgba(155,125,255,.12);
+    border-radius: 10px;
+    padding: .95rem .75rem;
+    text-align: center;
+}
+
+.aff-tv-card__pct {
+    font-size: .95rem;
+    font-weight: 800;
+    color: #9B7DFF;
+    margin: 0 0 .7rem;
+    font-family: var(--d-syne, 'Syne', sans-serif);
+}
+
+.aff-tv-card__divider {
+    height: 1px;
+    background: rgba(255,255,255,.08);
+    margin: 0 0 .6rem;
+}
+
+.aff-tv-card__level {
+    font-size: .72rem;
+    color: #9ca3af;
+    margin: 0;
+}
+
+.aff-tv-note {
+    margin-top: 1rem;
+    background: rgba(155,125,255,.08);
+    border: 1px solid rgba(155,125,255,.12);
+    border-radius: 8px;
+    padding: .7rem .9rem;
+    font-size: .74rem;
+    color: #9ca3af;
+}
+
 /* ── Bonus list ────────────────────────────────────────────────────────── */
 .aff-bonus-list {
     display: flex;
@@ -333,3 +402,18 @@
 }
 
 .aff-pagination nav { font-size: .75rem; }
+
+
+.aff-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+}
+
+@media (min-width: 640px) {
+    .aff-stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 900px) {
+    .aff-stats { grid-template-columns: repeat(5, 1fr); }
+}

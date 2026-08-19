@@ -52,6 +52,11 @@
                 <p class="aff-stat__label">This Month</p>
                 <p class="aff-stat__value aff-stat__value--green">${{ number_format($this->thisMonthEarnings, 2) }}</p>
             </div>
+
+            <div class="aff-stat">
+                <p class="aff-stat__label">Team Volume</p>
+                <p class="aff-stat__value">${{ number_format($this->teamVolume, 2) }}</p>
+            </div>
         </div>
 
         <div class="aff-layout">
@@ -100,6 +105,26 @@
                 @endif
             </div>
 
+        </div>
+
+        {{-- ── Team volume distribution formulae ───────────────────────────── --}}
+        <div class="aff-panel">
+            <p class="aff-tv-title">Team Volume <span>distribution formulae</span></p>
+            <p class="aff-tv-sub">This shows how team volume is calculated across all levels of downlines</p>
+
+            <div class="aff-tv-grid">
+                @foreach($this->teamVolumeDistribution as $row)
+                    <div class="aff-tv-card">
+                        <p class="aff-tv-card__pct">{{ $row['label'] }} payout</p>
+                        <div class="aff-tv-card__divider"></div>
+                        <p class="aff-tv-card__level">Level {{ $row['level'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="aff-tv-note">
+                Additional participation and reward structures are managed within the platform ecosystem.
+            </div>
         </div>
 
         {{-- ── Direct referrals table ──────────────────────────────────────── --}}

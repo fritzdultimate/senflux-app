@@ -4,6 +4,7 @@ namespace App\Livewire\Protected;
 
 use App\Models\Referral;
 use App\Models\ReferralBonus;
+use App\Services\TeamVolumeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
@@ -37,8 +38,7 @@ class Affiliate extends Component
     ];
 
     #[Computed]
-    public function user()
-    {
+    public function user() {
         return Auth::user();
     }
 
@@ -66,13 +66,21 @@ class Affiliate extends Component
     }
 
     #[Computed]
-    public function thisMonthEarnings(): float
-    {
+    public function thisMonthEarnings(): float {
         return (float) ReferralBonus::where('earner_id', $this->user->id)
             ->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->sum('amount');
     }
+
+    #[Computed]
+    public function teamVolume(): float {
+        $teamVolume = app(TeamVolumeService::class)->computeForUser($this->user);
+
+        return (float) ($teamVolume?->weighted_total ?? 0);
+
+    }
+
 
     #[Computed]
     public function levelBreakdown() {
@@ -119,6 +127,26 @@ class Affiliate extends Component
             'count'   => (int) ($counts[$level] ?? 0),
             'earned'  => (float) ($earnings[$level] ?? 0),
         ]);
+    }
+
+    /**
+     * How team volume from a downline level counts toward this user's
+     * qualifying team volume — distinct from the direct commission `rates`
+     * above. Static/informational for now; move to config or a settings
+     * table if this ever needs to be admin-tunable.
+     */
+    #[Computed]
+    public function teamVolumeDistribution(): array {
+        return [
+            ['level' => 1, 'label' => '100%'],
+            ['level' => 2, 'label' => '75%'],
+            ['level' => 3, 'label' => '50%'],
+            ['level' => 4, 'label' => '25%'],
+            ['level' => 5, 'label' => '15%'],
+            ['level' => 6, 'label' => '10%'],
+            ['level' => 7, 'label' => '5%'],
+            ['level' => 8, 'label' => '2.5%'],
+        ];
     }
 
     #[Computed]

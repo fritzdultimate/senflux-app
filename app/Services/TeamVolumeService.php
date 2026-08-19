@@ -24,8 +24,7 @@ class TeamVolumeService
     /**
      * Compute and cache team volume for a user.
      */
-    public function computeForUser(User $user): TeamVolume
-    {
+    public function computeForUser(User $user): TeamVolume {
         $levels = [];
         $currentLevel = [$user->id];
         $visited = [$user->id => true];
@@ -60,7 +59,7 @@ class TeamVolumeService
             if (empty($currentLevel)) break;
         }
 
-        $rawTotal      = array_sum($levels);
+        $rawTotal = array_sum($levels);
         $weightedTotal = 0;
         foreach ($levels as $l => $vol) {
             $weightedTotal += $vol * (self::WEIGHTS[$l] ?? 0);

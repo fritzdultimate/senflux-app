@@ -174,8 +174,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail {
         return $this->hasMany(LeadershipMatchBonus::class, 'earner_id');
     }
 
-    public function teamVolume(): HasOne
-    {
+    public function teamVolume(): HasOne {
         return $this->hasOne(TeamVolume::class);
     }
 
