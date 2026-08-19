@@ -39,7 +39,7 @@
         x-transition:leave="transition ease-in duration-100"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="absolute right-0 z-50 mt-2 w-[92vw] max-w-[360px] origin-top-right rounded-2xl border border-white/10 bg-[#0B0C14] shadow-2xl shadow-black/50"
+        class="fixed right-3 top-[58px] z-50 w-[calc(100vw-24px)] max-w-[360px] origin-top-right rounded-2xl border border-white/10 bg-[#0B0C14] shadow-2xl shadow-black/50 sm:right-4"
         style="font-family: 'Inter', sans-serif;"
     >
         <div class="flex items-center justify-between border-b border-white/10 px-4 py-3">
