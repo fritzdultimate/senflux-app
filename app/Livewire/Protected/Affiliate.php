@@ -75,7 +75,7 @@ class Affiliate extends Component
 
     #[Computed]
     public function teamVolume(): float {
-        $teamVolume = app(TeamVolumeService::class)->computeForUser($this->user);
+        $teamVolume = app(TeamVolumeService::class)->getCachedForUser($this->user);
 
         return (float) ($teamVolume?->weighted_total ?? 0);
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Deposit;
 use App\Models\TeamVolume;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class TeamVolumeService
@@ -20,6 +21,19 @@ class TeamVolumeService
         7 => 0.05,
         8 => 0.025,
     ];
+    private const CACHE_MINUTES = 15;
+
+    public function getCachedForUser(User $user): TeamVolume {
+        return Cache::remember(
+            $this->cacheKey($user),
+            now()->addMinutes(self::CACHE_MINUTES),
+            fn () => $this->computeForUser($user),
+        );
+    }
+
+    private function cacheKey(User $user): string {
+        return "team_volume:{$user->id}";
+    }
 
     /**
      * Compute and cache team volume for a user.
@@ -81,6 +95,7 @@ class TeamVolumeService
                 'last_computed_at' => now(),
             ]
         );
+        Cache::forget($this->cacheKey($user));
 
         return $record;
     }
