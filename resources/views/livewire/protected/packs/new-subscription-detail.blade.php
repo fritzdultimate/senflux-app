@@ -214,7 +214,9 @@
                     <div class="relative flex flex-col md:flex-row items-start justify-between gap-6">
                         <div>
                             <div class="flex items-center gap-2">
-                                <p class="text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">Your Position</p>
+                                <p class="text-[11px] font-bold uppercase tracking-wide text-[#565B6E]">
+                                    Your Position
+                                </p>
                                 @if($isMatured)
                                     <span class="inline-flex items-center gap-1 rounded-full border border-[#F0A93D]/30 bg-[#F0A93D]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#F0A93D]">
                                         <svg width="9" height="9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>

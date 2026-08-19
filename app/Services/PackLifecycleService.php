@@ -228,15 +228,6 @@ class PackLifecycleService {
                 ]);
             }
 
-            // Any remaining slots in the new tier beyond what carried over stay empty for fresh funding.
-            for ($i = $oldFundedSlots->count() + 1; $i <= $newTier->slot_count; $i++) {
-                PackSlot::create([
-                    'pack_subscription_id' => $new->id,
-                    'slot_number' => $i,
-                    'status' => PackSlotStatus::EMPTY,
-                ]);
-            }
-
             $old->update([
                 'status' => PackSubscriptionStatus::RENEWED,
                 'renewed_into_subscription_id' => $new->id,
