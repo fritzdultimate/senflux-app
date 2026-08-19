@@ -108,9 +108,6 @@ class LiveTradesPage extends Component {
             ->first();
 
         return [
-            // ASSUMPTION: no real heartbeat source wired up yet — wire this
-            // to a queue/cron last-run health check if you want it to mean
-            // something beyond "the page rendered".
             'active' => true,
             'last_activity' => $lastTrade?->block_time,
         ];
@@ -123,7 +120,7 @@ class LiveTradesPage extends Component {
             ->where('source', TradeActivitySource::SENFLUX)
             ->where('block_time', '>=', Carbon::today());
 
-        $activeSlots = PackSlot::where('status', 'active');
+        $activeSlots = PackSlot::where('status', 'funded');
 
         return [
             'active_formations' => Formation::where('state', 'active')->count(),
@@ -135,16 +132,7 @@ class LiveTradesPage extends Component {
         ];
     }
 
-    /**
-     * Current Intelligence — formation state breakdown.
-     *
-     * ASSUMPTION: Formation::state is the six-state lifecycle enum
-     * (Idle, Early, Building, Active, Mature, Weakening). "Strengthening"
-     * and "Stable" aren't literal states in that enum, so they're mapped
-     * here as a first pass: Early → strengthening, Building/Active →
-     * building, Mature → stable, Weakening → weakening. Confirm this
-     * mapping matches how you want it described before shipping.
-     */
+   
     #[Computed]
     public function intelligence(): array {
         $counts = Formation::query()
@@ -177,13 +165,7 @@ class LiveTradesPage extends Component {
         ];
     }
 
-    /**
-     * Deployment performance.
-     *
-     * ASSUMPTION: realized/unrealized P/L and 24h % require your
-     * SlotEarning schema, which isn't confirmed here — left as explicit
-     * TODOs rather than fabricated numbers on a page showing client capital.
-     */
+   
     #[Computed]
     public function performance(): array {
         $overview = $this->overview;

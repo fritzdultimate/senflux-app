@@ -13,27 +13,23 @@ use Livewire\WithPagination;
 
 #[Layout('components.layouts.protected')]
 #[Title('Activity Log')]
-class ActivityFeed extends Component
-{
+class ActivityFeed extends Component {
     use WithPagination;
 
     #[Url]
     public string $filter = 'all';
 
-    public function mount(): void
-    {
+    public function mount(): void {
         Auth::user()->forceFill(['last_activity_seen_at' => now()])->save();
     }
 
     #[Computed]
-    public function user()
-    {
+    public function user() {
         return Auth::user();
     }
 
     #[Computed]
-    public function categories(): array
-    {
+    public function categories(): array {
         return [
             'all' => 'All',
             'financial' => 'Financial',

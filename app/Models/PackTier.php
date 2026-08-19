@@ -61,6 +61,7 @@ class PackTier extends Model
 
         $midpointPercent = ((float) $this->historical_outcome_min + (float) $this->historical_outcome_max) / 2;
 
-        return ($midpointPercent / 100) / $this->duration_days;
+        // divide by 30 (a month)
+        return ($midpointPercent / 100) / 30;
     }
 }
