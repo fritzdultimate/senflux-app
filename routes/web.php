@@ -100,6 +100,12 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
     Route::get('/withdraw', Withdraw::class)
     ->name('withdraw');
 
+    Route::get('/kyc', \App\Livewire\Protected\Kyc\KycOverview::class)
+        ->name('kyc');
+
+    Route::get('/security', \App\Livewire\Protected\Security\TwoFactorSetup::class)
+        ->name('security');
+
     Route::get('/affiliate', Affiliate::class)
         ->name('affiliate');
 
@@ -145,6 +151,11 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
 Route::post('/webhook/nowpayments', [NowPaymentsWebhookController::class, 'handle'])
     ->name('webhooks.nowpayments');
+
+// Private KYC document access — always a short-lived signed URL, never a raw path.
+Route::get('/kyc-documents/{submission}/{field}', [\App\Http\Controllers\KycDocumentController::class, 'show'])
+    ->middleware(['auth', 'signed'])
+    ->name('kyc.documents.show');
 
 Route::get('/test-log', function () {
     Log::error('Telescope should capture this');

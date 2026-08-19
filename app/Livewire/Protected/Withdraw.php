@@ -4,6 +4,7 @@ namespace App\Livewire\Protected;
 
 use App\Enums\WalletType;
 use App\Enums\WithdrawalStatus;
+use App\Livewire\Concerns\RequiresStepUp;
 use App\Models\MainWallet;
 use App\Models\Withdrawal;
 use App\Services\WithdrawalService;
@@ -19,6 +20,8 @@ use Livewire\Component;
 #[Title('Withdraw')]
 class Withdraw extends Component
 {
+    use RequiresStepUp;
+
     // ── Form fields ───────────────────────────────────────────────────────
 
     public string $walletType    = 'main';
@@ -131,6 +134,12 @@ class Withdraw extends Component
 
     public function submit(WithdrawalService $service): void {
         $this->errorMessage = '';
+
+        // Step-up re-auth: a fresh 2FA code is required before money moves,
+        // unless the user already verified within the last 10 minutes.
+        if (! $this->ensureStepUp()) {
+            return;
+        }
 
         try {
             $service->create(

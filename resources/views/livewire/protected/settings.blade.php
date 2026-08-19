@@ -57,25 +57,32 @@
         </div>
 
         {{-- ── KYC status ───────────────────────────────────────────────────── --}}
-        <div class="set-panel">
-            <p class="set-panel__title">Identity Verification</p>
-            @if(auth()->user()->kyc_verified_at)
-                <div class="set-kyc set-kyc--verified">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <div>
-                        <p class="set-kyc__title">Identity Verified</p>
-                        <p class="set-kyc__sub">Verified on {{ auth()->user()->kyc_verified_at->format('M j, Y') }}</p>
+        <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] sm:p-6">
+            <p class="font-['Sora'] text-sm font-semibold text-[#F2F3F7]">Identity Verification</p>
+
+            <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                @if(auth()->user()->kyc_tier)
+                    <div class="flex items-center gap-3">
+                        <svg class="h-5 w-5 shrink-0 text-[#2DD4A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div>
+                            <p class="text-sm text-[#F2F3F7]">{{ \App\Enums\KycTier::from(auth()->user()->kyc_tier)->label() }} Verified</p>
+                            <p class="text-xs text-[#565B6E]">Verified on {{ auth()->user()->kyc_verified_at?->format('M j, Y') }}</p>
+                        </div>
                     </div>
-                </div>
-            @else
-                <div class="set-kyc set-kyc--pending">
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-                    <div>
-                        <p class="set-kyc__title">Not Verified</p>
-                        <p class="set-kyc__sub">Identity verification is required for withdrawals above certain limits.</p>
+                @else
+                    <div class="flex items-center gap-3">
+                        <svg class="h-5 w-5 shrink-0 text-[#F0A93D]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                        <div>
+                            <p class="text-sm text-[#F2F3F7]">Not Verified</p>
+                            <p class="text-xs text-[#565B6E]">Identity verification is required before you can withdraw.</p>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
+                <a href="{{ route('dashboard.kyc') }}" wire:navigate
+                   class="shrink-0 rounded-lg border border-white/10 px-4 py-2.5 text-center text-xs font-semibold text-[#888EA3] transition-colors hover:text-[#F2F3F7]">
+                    Manage verification
+                </a>
+            </div>
         </div>
 
         {{-- ── Password ─────────────────────────────────────────────────────── --}}
@@ -122,33 +129,22 @@
         </div>
 
         {{-- ── 2FA ───────────────────────────────────────────────────────────── --}}
-        <div class="set-panel">
-            <p class="set-panel__title">Two-Factor Authentication</p>
+        <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)] sm:p-6">
+            <p class="font-['Sora'] text-sm font-semibold text-[#F2F3F7]">Two-Factor Authentication</p>
 
-            @if($twoFactorFlash)
-                <div class="set-flash set-flash--success">
-                    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                    {{ $twoFactorFlash }}
-                </div>
-            @endif
-
-            <div class="set-2fa-row">
-                <div class="set-2fa-row__body">
-                    <span class="set-2fa-row__title">
+            <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <span class="text-sm {{ $two_factor_enabled ? 'text-[#2DD4A7]' : 'text-[#888EA3]' }}">
                         {{ $two_factor_enabled ? 'Enabled' : 'Disabled' }}
                     </span>
-                    <span class="set-2fa-row__desc">
+                    <p class="mt-0.5 text-xs text-[#565B6E]">
                         Adds an extra layer of security to your account using an authenticator app.
-                    </span>
+                    </p>
                 </div>
-                <button
-                    wire:click="toggleTwoFactor"
-                    wire:loading.attr="disabled"
-                    type="button"
-                    class="set-btn-{{ $two_factor_enabled ? 'ghost' : 'primary' }}"
-                >
-                    {{ $two_factor_enabled ? 'Disable 2FA' : 'Enable 2FA' }}
-                </button>
+                <a href="{{ route('dashboard.security') }}" wire:navigate
+                   class="shrink-0 rounded-lg border border-white/10 px-4 py-2.5 text-center text-xs font-semibold text-[#888EA3] transition-colors hover:text-[#F2F3F7]">
+                    Manage 2FA
+                </a>
             </div>
         </div>
 

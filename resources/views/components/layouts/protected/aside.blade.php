@@ -139,6 +139,24 @@
     {{-- ── SYSTEM ───────────────────────────────────────────────────── --}}
     <div class="sb-sect">SYSTEM</div>
 
+    <a href="{{ route('dashboard.kyc') }}" wire:navigate class="sb-item {{ request()->routeIs('dashboard.kyc') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Verification</span>
+        @if(auth()->user() && !auth()->user()->kyc_tier)
+            <span class="ml-auto h-1.5 w-1.5 rounded-full bg-amber-400"></span>
+        @endif
+    </a>
+
+    <a href="{{ route('dashboard.security') }}" wire:navigate class="sb-item {{ request()->routeIs('dashboard.security') ? 'active' : '' }}">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+        </svg>
+        <span>Security</span>
+    </a>
+
     <a href="{{ route('dashboard.settings') }}" wire:navigate class="sb-item">
         <svg width="15" height="15" fill="none" viewBox="0 0 15 15" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">
             <path d="M7.5 1L9 4l3-.5L13 6l-2 2 1.5 3-2.5 1L8 10H7l-1.5 2-2.5-1L4.5 8 2 6l1.5-2.5L6.5 4zM7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />

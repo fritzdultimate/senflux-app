@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\KycTier;
 use App\Enums\TransactionType;
 use App\Enums\WalletType;
 use App\Enums\WithdrawalStatus;
@@ -30,6 +31,18 @@ class WithdrawalService
 
         if (!$settings->is_enabled) {
             throw new \RuntimeException('Withdrawals are currently disabled.');
+        }
+
+        if (($settings->kyc_required ?? true) && $user->kyc_tier === null) {
+            throw new \RuntimeException('Identity verification is required before you can withdraw. Please complete KYC verification.');
+        }
+
+        if (
+            $user->kyc_tier === KycTier::BASIC->value
+            && !empty($settings->basic_tier_daily_limit)
+            && $amount > (float) $settings->basic_tier_daily_limit
+        ) {
+            throw new \RuntimeException("Amounts above \${$settings->basic_tier_daily_limit} require Enhanced verification. Please upgrade your verification level.");
         }
 
         if ($amount < (float) $settings->min_amount) {
@@ -81,8 +94,7 @@ class WithdrawalService
     /**
      * Admin approves a withdrawal.
      */
-    public function approve(Withdrawal $withdrawal, int $adminId, string $note = ''): void
-    {
+    public function approve(Withdrawal $withdrawal, int $adminId, string $note = ''): void {
         if ($withdrawal->status !== WithdrawalStatus::PENDING->value) {
             throw new \RuntimeException('Only pending withdrawals can be approved.');
         }
@@ -98,8 +110,7 @@ class WithdrawalService
     /**
      * Admin rejects a withdrawal. Releases locked balance.
      */
-    public function reject(Withdrawal $withdrawal, int $adminId, string $reason): void
-    {
+    public function reject(Withdrawal $withdrawal, int $adminId, string $reason): void {
         if ($withdrawal->status !== WithdrawalStatus::PENDING->value) {
             throw new \RuntimeException('Only pending withdrawals can be rejected.');
         }
@@ -188,6 +199,8 @@ class WithdrawalService
                 'fee_value'       => 0,
                 'processing_days' => 1,
                 'allowed_networks'=> '["sol","bsc","eth","trc20"]',
+                'kyc_required'    => true,
+                'basic_tier_daily_limit' => null,
             ];
     }
 

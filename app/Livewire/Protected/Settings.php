@@ -50,7 +50,7 @@ class Settings extends Component
         $this->phone = $user->phone_number ?? '';
         $this->country = $user->country ?? '';
         $this->timezone = $user->timezone ?? 'UTC';
-        $this->two_factor_enabled = (bool) $user->two_factor_enabled;
+        $this->two_factor_enabled = (bool) ($user->two_factor_enable && $user->two_factor_confirmed_at);
     }
 
     public function saveProfile(): void {
@@ -114,22 +114,6 @@ class Settings extends Component
 
         $this->reset(['current_password', 'new_password', 'new_password_confirmation']);
         $this->passwordFlash = 'Password updated successfully.';
-    }
-
-    public function toggleTwoFactor(): void {
-        $user = Auth::user();
-        $user->update(['two_factor_enable' => !$user->two_factor_enable]);
-        $this->two_factor_enabled = (bool) $user->two_factor_enable;
-
-        ActivityLog::record(
-            action: $this->two_factor_enabled ? 'enabled_2fa' : 'disabled_2fa',
-            description: $this->two_factor_enabled ? 'Enabled two-factor authentication' : 'Disabled two-factor authentication',
-            subject: $user,
-        );
-
-        $this->twoFactorFlash = $this->two_factor_enabled
-            ? 'Two-factor authentication enabled.'
-            : 'Two-factor authentication disabled.';
     }
 
     public function clearFlashes(): void {

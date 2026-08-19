@@ -42,8 +42,8 @@ class SocialAuthController extends Controller {
         Auth::login($user, remember: true);
         session()->regenerate();
 
-        // 2FA check
-        if ($user->two_factor_enable && $user->two_factor_secret) {
+        // 2FA check — only a fully confirmed enrollment can gate login
+        if ($user->two_factor_enable && $user->two_factor_secret && $user->two_factor_confirmed_at) {
             session(['2fa_user_id' => $user->id]);
             Auth::logout();
             return redirect()->route('two-factor.challenge');

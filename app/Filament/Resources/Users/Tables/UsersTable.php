@@ -159,22 +159,13 @@ class UsersTable
                         ->successNotificationTitle('Wallet debited successfully')
                         ->requiresConfirmation(),
 
-                    Action::make('verifyKyc')
-                        ->label('Verify KYC')
+                    Action::make('viewKycSubmissions')
+                        ->label('KYC Submissions')
                         ->icon('heroicon-o-shield-check')
                         ->color('info')
-                        ->visible(fn (User $record) => $record->kyc_verified_at === null)
-                        ->action(function (User $record) {
-                            $record->update(['kyc_verified_at' => now()]);
-    
-                            ActivityLog::record(
-                                action: 'admin_verify_kyc',
-                                description: "Verified KYC for {$record->name}",
-                                subject: $record,
-                            );
-                        })
-                        ->successNotificationTitle('KYC verified')
-                        ->requiresConfirmation(),
+                        ->url(fn (User $record) => \App\Filament\Resources\KycSubmissions\KycSubmissionResource::getUrl('index', [
+                            'tableFilters' => ['user_id' => ['value' => $record->id]],
+                        ])),
 
                      Action::make('toggleActive')
                         ->label(fn (User $record) => $record->is_active ? 'Suspend' : 'Reactivate')
@@ -203,13 +194,18 @@ class UsersTable
                         ->label('Reset 2FA')
                         ->icon('heroicon-o-key')
                         ->color('warning')
-                        ->visible(fn (User $record) => $record->two_factor_enabled)
+                        ->visible(fn (User $record) => (bool) $record->two_factor_enable)
                         ->action(function (User $record) {
-                            $record->update(['two_factor_enabled' => false]);
-    
+                            $record->update([
+                                'two_factor_enable' => false,
+                                'two_factor_secret' => null,
+                                'two_factor_recovery_codes' => null,
+                                'two_factor_confirmed_at' => null,
+                            ]);
+
                             ActivityLog::record(
                                 action:      'admin_reset_2fa',
-                                description: "Reset 2FA for {$record->name}",
+                                description: "Reset 2FA for {$record->name} — secret and recovery codes cleared",
                                 subject:     $record,
                             );
                         })

@@ -17,6 +17,22 @@
             </div>
         @endif
 
+        @if(!$this->user->kyc_tier)
+            <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/[0.06] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div class="flex items-start gap-3">
+                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <div>
+                        <p class="text-sm font-semibold text-[#F2F3F7]">Identity verification required</p>
+                        <p class="mt-0.5 text-xs text-[#a3a3b8]">You must complete KYC verification before you can withdraw funds.</p>
+                    </div>
+                </div>
+                <a href="{{ route('dashboard.kyc') }}" wire:navigate
+                   class="shrink-0 rounded-lg bg-amber-400 px-4 py-2.5 text-center text-xs font-bold text-black transition-transform hover:scale-105">
+                    Verify identity
+                </a>
+            </div>
+        @endif
+
         <div class="wd-layout">
 
             {{-- ── LEFT: Form ──────────────────────────────────────────────── --}}
@@ -128,10 +144,11 @@
                         wire:click="requestConfirm"
                         wire:loading.attr="disabled"
                         type="button"
-                        class="wd-submit-btn"
+                        @disabled(!$this->user->kyc_tier)
+                        class="wd-submit-btn {{ !$this->user->kyc_tier ? 'opacity-50 cursor-not-allowed' : '' }}"
                     >
                         <span wire:loading.remove wire:target="requestConfirm">
-                            Request Withdrawal
+                            {{ $this->user->kyc_tier ? 'Request Withdrawal' : 'Verify identity to withdraw' }}
                             <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                         </span>
                         <span wire:loading wire:target="requestConfirm">Validating…</span>
@@ -169,18 +186,42 @@
                         <p class="wd-confirm__warning">
                             This action cannot be undone. Funds will be sent to the address above.
                         </p>
-                        <div class="wd-confirm__actions">
-                            <button wire:click="cancelConfirm" type="button" class="wd-btn-ghost">Cancel</button>
-                            <button
-                                wire:click="submit"
-                                wire:loading.attr="disabled"
-                                type="button"
-                                class="wd-btn-primary"
-                            >
-                                <span wire:loading.remove wire:target="submit">Confirm</span>
-                                <span wire:loading wire:target="submit">Processing…</span>
-                            </button>
-                        </div>
+
+                        @if($stepUpRequired)
+                            <div class="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                                <p class="mb-1 text-xs font-bold uppercase tracking-wide text-[#a3a3b8]">Security check</p>
+                                <p class="mb-3 text-xs text-[#565B6E]">Enter the 6-digit code from your authenticator app (or a recovery code) to confirm this withdrawal.</p>
+                                <input
+                                    type="text"
+                                    wire:model="stepUpCode"
+                                    inputmode="numeric"
+                                    autocomplete="one-time-code"
+                                    placeholder="000000"
+                                    maxlength="10"
+                                    class="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-center font-mono text-lg tracking-[0.3em] text-[#F2F3F7] outline-none focus:border-white/30"
+                                >
+                                @if($stepUpError)
+                                    <p class="mt-2 text-xs text-red-400">{{ $stepUpError }}</p>
+                                @endif
+                                <div class="mt-3 flex gap-2">
+                                    <button wire:click="cancelStepUp" type="button" class="flex-1 rounded-lg border border-white/10 px-4 py-2.5 text-xs font-semibold text-[#a3a3b8] hover:text-[#F2F3F7]">Cancel</button>
+                                    <button wire:click="verifyStepUp" wire:loading.attr="disabled" type="button" class="flex-1 rounded-lg bg-white px-4 py-2.5 text-xs font-bold text-black hover:scale-[1.02] transition-transform">Verify &amp; Continue</button>
+                                </div>
+                            </div>
+                        @else
+                            <div class="wd-confirm__actions">
+                                <button wire:click="cancelConfirm" type="button" class="wd-btn-ghost">Cancel</button>
+                                <button
+                                    wire:click="submit"
+                                    wire:loading.attr="disabled"
+                                    type="button"
+                                    class="wd-btn-primary"
+                                >
+                                    <span wire:loading.remove wire:target="submit">Confirm</span>
+                                    <span wire:loading wire:target="submit">Processing…</span>
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 @endif
 

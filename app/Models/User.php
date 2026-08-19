@@ -3,11 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\KycTier;
 use App\Enums\RankLevel;
 use App\Enums\WalletType;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -22,9 +25,18 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements MustVerifyEmail {
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes;
+
+    /**
+     * Only users flagged as admin may log into the Filament admin panel.
+     * The panel currently has no other role/permission distinction.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return (bool) $this->is_admin;
+    }
 
     public $guarded = [];
 
@@ -39,10 +51,13 @@ class User extends Authenticatable implements MustVerifyEmail {
             'rank_achieved_at' => 'datetime',
             'subscription_expires_at' => 'datetime',
             'kyc_verified_at' => 'datetime',
+            'kyc_submitted_at' => 'datetime',
             'last_login_at' => 'datetime',
             'password' => 'hashed',
-            'two_factor_enabled' => 'boolean',
+            'two_factor_enable' => 'boolean',
+            'two_factor_confirmed_at' => 'datetime',
             'is_active' => 'boolean',
+            'is_admin' => 'boolean',
             'rank' => RankLevel::class,
             'balances' => 'array',
             'notification_preferences' => 'array',
@@ -225,7 +240,35 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     public function getIsKycVerifiedAttribute(): bool
     {
-        return $this->kyc_verified_at !== null;
+        return $this->kyc_tier !== null;
+    }
+
+    // ── KYC ───────────────────────────────────────────────────────────────────
+
+    public function kycSubmissions(): HasMany
+    {
+        return $this->hasMany(KycSubmission::class);
+    }
+
+    public function latestKycSubmission(?KycTier $tier = null): ?KycSubmission
+    {
+        return $this->kycSubmissions()
+            ->when($tier, fn ($q) => $q->where('tier', $tier->value))
+            ->latest()
+            ->first();
+    }
+
+    public function getKycTierEnumAttribute(): ?KycTier
+    {
+        return $this->kyc_tier ? KycTier::from($this->kyc_tier) : null;
+    }
+
+    /** Enhanced approval implies Basic is also satisfied. */
+    public function hasApprovedTier(KycTier $tier): bool
+    {
+        $current = $this->kyc_tier_enum;
+
+        return $current !== null && $current->rank() >= $tier->rank();
     }
 
 
