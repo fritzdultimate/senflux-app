@@ -57,7 +57,7 @@ class FormationMarketDataSyncService
 
         $score = $this->migrationScorer->score($formation);
 
-        dd($score);
+        
 
         if ($score !== null) {
             $formation->update(['liquidity_migration' => $score]);

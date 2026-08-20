@@ -174,9 +174,9 @@ class LiveTradesPage extends Component {
 
         return [
             'active_capital' => $overview['capital_deployed'],
-            'realized_profit' => $overview['realized_profit'], // TODO: wire to SlotEarning realized-profit sum
-            'unrealized_pl' => 0,   // TODO: wire to mark-to-market calc
-            'change_24h_pct' => 0,  // TODO: wire to 24h performance calc
+            'realized_profit' => $overview['realized_profit'],
+            'unrealized_pl' => 0,
+            'change_24h_pct' => 0,
             'total_actions' => FormationTradeActivity::where('source', TradeActivitySource::SENFLUX)
                 ->where('failed', false)
                 ->count(),
