@@ -23,7 +23,6 @@ class Checklist extends Component {
 
     #[On('onboarding:step-complete')]
     public function markStep(string $step): void {
-        dd($step);
         Auth::user()->onboarding->markStep($step);
     }
 
