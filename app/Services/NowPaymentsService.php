@@ -15,7 +15,7 @@ class NowPaymentsService {
     public function __construct() {
         $settings = Cache::remember(
             'payment_settings_nowpayments',
-            now()->addMinutes(30),
+            now()->addMinutes(1),
             fn () => PaymentSetting::where('provider', 'nowpayments')
                 ->where('is_active', true)
                 ->first()
