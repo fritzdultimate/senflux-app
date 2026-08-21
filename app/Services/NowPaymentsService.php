@@ -69,7 +69,7 @@ class NowPaymentsService {
             'pay_currency'        => $payCurrency,
             'order_id'            => $orderId,
             'order_description'   => $orderDescription,
-            'ipn_callback_url'    => $ipnCallbackUrl ?: route('webhook.nowpayments'),
+            'ipn_callback_url'    => $ipnCallbackUrl ?: route('webhooks.nowpayments'),
             'success_url'         => $successUrl,
             'cancel_url'          => $cancelUrl,
             'is_fixed_rate'       => false,
