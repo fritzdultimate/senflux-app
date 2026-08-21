@@ -136,10 +136,10 @@
 			</div>
 
 			<h1 class="font-syne font-extrabold text-[clamp(1.5rem,3.5vw,2.6rem)] text-white leading-[1.1] mb-4">
-				The Future of <span class="tg">Capital</span> <br> is <span class="tg">On-chain</span>.
+				<span class="tg">AI-Powered</span> <br> Trading Across <span class="tg">Solana</span>.
 			</h1>
 			<p class="text-[15px] text-[#7a7a9a] max-w-[540px] mx-auto mb-8 leading-[1.75]">
-				{{ env('APP_NAME') }} identifies strengthening market formations across the Solana network through AI-powered capital intelligence, validating qualifying conditions and automatically deploying when opportunities emerge.
+				{{ env('APP_NAME') }} uses capital and liquidity intelligence to identify where opportunity is building across Solana, and automatically trades when conditions align.
 			</p>
 			<div class="flex gap-3 justify-center flex-wrap">
 				<a href="{{ route('register') }}" class="btn-p" style="padding:11px 26px;font-size:14px">
