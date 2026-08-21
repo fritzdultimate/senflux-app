@@ -28,6 +28,7 @@ class NowPaymentsService {
     // }
 
     public function __construct() {
+        f;
         $settings = Cache::remember(
             'payment_settings_nowpayments',
             now()->addMinutes(1),
