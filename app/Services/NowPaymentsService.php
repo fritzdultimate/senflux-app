@@ -12,19 +12,35 @@ class NowPaymentsService {
     private string $ipnSecret;
     private string $baseUrl;
 
+    // public function __construct() {
+    //     $settings = Cache::remember(
+    //         'payment_settings_nowpayments',
+    //         now()->addMinutes(30),
+    //         fn () => PaymentSetting::where('provider', 'nowpayments')
+    //             ->where('is_active', true)
+    //             ->first()
+    //     );
+
+    //     $sandbox = config('services.nowpayments.sandbox', true);
+    //     $this->apiKey  = $settings?->api_key ?? config('services.nowpayments.api_key', '');
+    //     $this->ipnSecret = $settings?->ipn_secret ??  config('services.nowpayments.ipn_secret', '');
+    //     $this->baseUrl = 'https://api.nowpayments.io/v1';
+    // }
+
     public function __construct() {
         $settings = Cache::remember(
             'payment_settings_nowpayments',
-            now()->addMinutes(30), // cache for 30 mins
+            now()->addMinutes(30),
             fn () => PaymentSetting::where('provider', 'nowpayments')
                 ->where('is_active', true)
                 ->first()
+                ?->toArray()
         );
 
         $sandbox = config('services.nowpayments.sandbox', true);
-        $this->apiKey  = $settings?->api_key ?? config('services.nowpayments.api_key', '');
-        $this->ipnSecret = $settings?->ipn_secret ??  config('services.nowpayments.ipn_secret', '');
-        $this->baseUrl = 'https://api.nowpayments.io/v1';
+        $this->apiKey    = $settings['api_key']    ?? config('services.nowpayments.api_key', '');
+        $this->ipnSecret = $settings['ipn_secret'] ?? config('services.nowpayments.ipn_secret', '');
+        $this->baseUrl   = 'https://api.nowpayments.io/v1';
     }
 
     /**
